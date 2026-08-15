@@ -89,6 +89,40 @@ accepted, later variants should stay recognizably the same character
   (a few KB, non-sensitive image), not worth building a listing endpoint
   just to chase it down.
 
+## Imagen fallback attempt, 2026-08-16 (Issue #10) — didn't work, here's why
+
+Added `tryImagen()` ahead of the native Gemini image path, based on the
+account's own rate-limit dashboard showing real `0/25` daily quota for all
+three Imagen 4 variants (unlike the native "Nano Banana" models' `0/0/0`).
+Implemented against the doc-verified (context7, not memory) `:predict` REST
+shape — `x-goog-api-key` header, `instances`/`parameters` body,
+`predictions[].bytesBase64Encoded` response.
+
+**Result: none of the three Imagen 4 variants work on this account either.**
+`imagen-4.0-generate-001`, `imagen-4.0-ultra-generate-001`, and
+`imagen-4.0-fast-generate-001` all returned the identical error, live-tested
+one at a time (not guessed): `404 "This model ... is no longer available to
+new users... use the Interactions API"`. Model discovery correctly found
+and tried all three from the account's live `/v1beta/models` list — this
+isn't a wrong-model-name bug like the earlier text/image discovery fixes,
+it's the account itself being gated off every legacy (`:predict` and
+`:generateContent`) image path. The rate-limit dashboard's `0/25` shows
+*entitlement*, not *actual current access* — a newly-created Google account
+apparently doesn't get either regardless of what the dashboard displays.
+
+Kept the code (`tryImagen()` tries every discovered candidate, not just
+one, before falling through to `tryGeminiNative()` then Pollinations) —
+structurally correct and may start working on this account automatically
+as it ages, or immediately for a different/older/billing-enabled Google
+account. Not spending further quota chasing this further this session;
+Pollinations remains the only path that actually produces an image here.
+
+Cleaned up: reset all four characters' `basePortrait` back to placeholder
+and deleted the four test R2 objects this produced — including the one
+"orphaned" object flagged in the note above, whose id turned up during this
+pass (`char_grace_hale`'s portrait, presumably from browser UI testing
+between the original build and now).
+
 ## Deliberately deferred
 
 - **§166 Character Reference Lock** ("Lock Appearance" button, feeding an
