@@ -1,5 +1,6 @@
 import type {
   CharacterResponse,
+  InventoryItemResponse,
   LetterResponse,
   LocationResponse,
   MemoryResponse,
@@ -32,6 +33,15 @@ interface CharacterRow {
   goals_json: string;
   player_knowledge_json: string;
   gm_state_json: string;
+  skills_json: string;
+  wardrobe_json: string;
+}
+
+interface InventoryRow {
+  id: string;
+  owner_id: string;
+  name: string;
+  description: string;
 }
 
 interface RelationshipRow {
@@ -141,7 +151,7 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
 
   if (!simulation) return null;
 
-  const [characters, relationships, locations, memories, letters, worldEvents, socialCalendar, chapters, canonEvents, financeTransactions] =
+  const [characters, relationships, locations, memories, letters, worldEvents, socialCalendar, chapters, canonEvents, financeTransactions, inventory] =
     await Promise.all([
       db.prepare('SELECT * FROM characters WHERE simulation_id = ?').bind(simulationId).all<CharacterRow>(),
       db.prepare('SELECT * FROM relationships WHERE simulation_id = ?').bind(simulationId).all<RelationshipRow>(),
@@ -165,6 +175,10 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
         .prepare('SELECT id, date, description, amount FROM finance_transactions WHERE simulation_id = ?')
         .bind(simulationId)
         .all<FinanceTransactionRow>(),
+      db
+        .prepare('SELECT id, owner_id, name, description FROM inventory WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<InventoryRow>(),
     ]);
 
   const characterMap: Record<string, CharacterResponse> = {};
@@ -181,6 +195,8 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
       goals: JSON.parse(row.goals_json),
       playerKnowledge: JSON.parse(row.player_knowledge_json),
       gmState: JSON.parse(row.gm_state_json),
+      skills: JSON.parse(row.skills_json),
+      wardrobe: JSON.parse(row.wardrobe_json),
     };
   }
 
@@ -292,5 +308,8 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
     socialCalendar: socialCalendarList,
     chapters: chapterList,
     financeLedger: financeTransactions.results,
+    inventory: inventory.results.map(
+      (row): InventoryItemResponse => ({ id: row.id, ownerId: row.owner_id, name: row.name, description: row.description }),
+    ),
   };
 }

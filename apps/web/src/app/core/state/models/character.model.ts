@@ -37,6 +37,13 @@ export interface CharacterGoals {
   currentlyImportantPeople: EntityId[];
 }
 
+/** §70-71 — a wardrobe item's note is elegant prose, never a gamified "Suitable/Unsuitable" label. */
+export interface WardrobeItem {
+  id: string;
+  name: string;
+  note: string;
+}
+
 export interface Character {
   id: EntityId;
   name: string;
@@ -52,4 +59,7 @@ export interface Character {
   gmState: Record<string, unknown>;
   locationId: EntityId | null;
   memoryIds: EntityId[];
+  /** §79 — qualitative levels (e.g. "sehr gut"), never a numeric skill point. */
+  skills: Record<string, string>;
+  wardrobe: WardrobeItem[];
 }

@@ -67,6 +67,10 @@ export class SimulationStateStore {
   readonly chapters = computed(() => this.state().chapters);
   readonly canonEvents = computed(() => Object.values(this.state().canonEvents));
 
+  readonly playerInventory = computed(() =>
+    this.state().inventory.filter((item) => item.ownerId === this.state().playerId),
+  );
+
   readonly discoveredLocations = computed(() =>
     Object.values(this.state().locations).filter((location) => location.discovered),
   );

@@ -11,6 +11,7 @@ import { JournalScreen } from './features/journal/journal-screen/journal-screen'
 import { TimelineScreen } from './features/timeline/timeline-screen/timeline-screen';
 import { SettingsScreen } from './features/settings/settings-screen/settings-screen';
 import { GmDashboardScreen } from './features/gm/gm-dashboard-screen/gm-dashboard-screen';
+import { PlayerProfileScreen } from './features/player/player-profile-screen/player-profile-screen';
 import { MapScreen } from './features/map/map-screen/map-screen';
 
 export const routes: Routes = [
@@ -19,6 +20,7 @@ export const routes: Routes = [
     component: AppShell,
     children: [
       { path: '', component: StoryScreen },
+      { path: 'profile', component: PlayerProfileScreen },
       { path: 'characters', component: CharactersScreen },
       { path: 'world', component: WorldScreen },
       { path: 'relationships', component: RelationshipsScreen },

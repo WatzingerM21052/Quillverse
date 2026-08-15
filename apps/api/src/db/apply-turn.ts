@@ -230,8 +230,8 @@ export async function applyTurn(
     statements.push(
       db
         .prepare(
-          `INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json, skills_json, wardrobe_json)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         )
         .bind(
           character.id,
@@ -246,7 +246,17 @@ export async function applyTurn(
           JSON.stringify(character.goals ?? {}),
           JSON.stringify(character.playerKnowledge ?? []),
           JSON.stringify(character.gmState ?? {}),
+          JSON.stringify(character.skills ?? {}),
+          JSON.stringify(character.wardrobe ?? []),
         ),
+    );
+  }
+
+  for (const item of patch.newInventoryItems ?? []) {
+    statements.push(
+      db
+        .prepare('INSERT INTO inventory (id, simulation_id, owner_id, name, description) VALUES (?, ?, ?, ?, ?)')
+        .bind(item.id, simulationId, item.ownerId, item.name, item.description),
     );
   }
 

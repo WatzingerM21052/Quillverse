@@ -22,6 +22,13 @@ export interface SimulationStateResponse {
   worldEvents: unknown[];
   socialCalendar: unknown[];
   chapters: unknown[];
+  inventory: InventoryItemResponse[];
+}
+
+export interface WardrobeItem {
+  id: string;
+  name: string;
+  note: string;
 }
 
 export interface CharacterResponse {
@@ -36,6 +43,15 @@ export interface CharacterResponse {
   goals: unknown;
   playerKnowledge: string[];
   gmState: unknown;
+  skills: Record<string, string>;
+  wardrobe: WardrobeItem[];
+}
+
+export interface InventoryItemResponse {
+  id: string;
+  ownerId: string;
+  name: string;
+  description: string;
 }
 
 export interface RelationshipResponse {
@@ -135,6 +151,7 @@ export interface ManualTurnPatch {
   newLetters?: LetterResponse[];
   newCharacters?: CharacterResponse[];
   newLocations?: LocationResponse[];
+  newInventoryItems?: InventoryItemResponse[];
   openThreadsAdd?: string[];
   openThreadsRemove?: string[];
 }

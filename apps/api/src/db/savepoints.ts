@@ -55,6 +55,7 @@ const CHILD_TABLES = [
   'world_events',
   'social_calendar',
   'chapters',
+  'inventory',
 ] as const;
 
 /** Wholesale replace — a restore is a rollback, not a merge (§153-155 Undo/Branching). */
@@ -81,8 +82,8 @@ export async function restoreSavepoint(
     statements.push(
       db
         .prepare(
-          `INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+          `INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json, skills_json, wardrobe_json)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
         )
         .bind(
           character.id,
@@ -97,6 +98,8 @@ export async function restoreSavepoint(
           JSON.stringify(character.goals),
           JSON.stringify(character.playerKnowledge),
           JSON.stringify(character.gmState),
+          JSON.stringify(character.skills),
+          JSON.stringify(character.wardrobe),
         ),
     );
   }
@@ -235,6 +238,14 @@ export async function restoreSavepoint(
       db
         .prepare('INSERT INTO social_calendar (id, simulation_id, title, date, host, location, access) VALUES (?, ?, ?, ?, ?, ?, ?)')
         .bind(entry.id, simulationId, entry.title, entry.date, entry.host, entry.location, entry.access),
+    );
+  }
+
+  for (const item of snapshot.inventory) {
+    statements.push(
+      db
+        .prepare('INSERT INTO inventory (id, simulation_id, owner_id, name, description) VALUES (?, ?, ?, ?, ?)')
+        .bind(item.id, simulationId, item.ownerId, item.name, item.description),
     );
   }
 

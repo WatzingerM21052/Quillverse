@@ -11,6 +11,7 @@ interface NavItem {
 /** Primary areas per ui-master-prompt-v1.md §7. Settings/AI/Save live separately. */
 const PRIMARY_NAV: NavItem[] = [
   { path: '', label: 'Story' },
+  { path: 'profile', label: 'Profile' },
   { path: 'world', label: 'World' },
   { path: 'characters', label: 'Characters' },
   { path: 'relationships', label: 'Relationships' },

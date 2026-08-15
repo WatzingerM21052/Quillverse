@@ -9,6 +9,7 @@ import { SocialCalendarEntry } from '../models/social-calendar.model';
 import { Letter } from '../models/letter.model';
 import { Chapter } from '../models/chapter.model';
 import { Memory } from '../models/memory.model';
+import { InventoryItem } from '../models/inventory.model';
 
 /**
  * Default player setup per simulation-master-prompt-v3.md §132 (Default-Hof) —
@@ -100,6 +101,19 @@ const player: Character = {
   gmState: {},
   locationId: FARM_ID,
   memoryIds: [],
+  skills: {
+    Landwirtschaft: 'sehr gut',
+    Reiten: 'gut',
+    Lesen: 'mittel',
+    Schreiben: 'mittel',
+    Etikette: 'gering',
+    Tanzen: 'keine Erfahrung',
+    Geschäftssinn: 'mittel',
+  },
+  wardrobe: [
+    { id: 'wardrobe_work_shirt', name: 'Arbeitshemd', note: 'für den Alltag geeignet, für gesellschaftliche Anlässe unpassend' },
+    { id: 'wardrobe_sunday_coat', name: 'Sonntagsmantel', note: 'einfach, aber ordentlich — für die Kirche und kleinere Anlässe ausreichend' },
+  ],
 };
 
 const mother: Character = {
@@ -146,6 +160,8 @@ const mother: Character = {
   gmState: {},
   locationId: FARM_ID,
   memoryIds: [],
+  skills: {},
+  wardrobe: [],
 };
 
 const sister: Character = {
@@ -192,6 +208,8 @@ const sister: Character = {
   gmState: {},
   locationId: FARM_ID,
   memoryIds: [],
+  skills: {},
+  wardrobe: [],
 };
 
 const UNCLE_ID = 'char_thomas_hale';
@@ -240,6 +258,8 @@ const uncle: Character = {
   gmState: {},
   locationId: null,
   memoryIds: [],
+  skills: {},
+  wardrobe: [],
 };
 
 const letters: Letter[] = [
@@ -477,6 +497,21 @@ const memories: Memory[] = [
   },
 ];
 
+const inventory: InventoryItem[] = [
+  {
+    id: 'inv_pocket_watch',
+    ownerId: PLAYER_ID,
+    name: 'Taschenuhr des Vaters',
+    description: 'Eine einfache, aber gut erhaltene Taschenuhr — eines der wenigen Dinge, die von seinem Vater geblieben sind.',
+  },
+  {
+    id: 'inv_old_book',
+    ownerId: PLAYER_ID,
+    name: 'Altes Buch',
+    description: 'Ein abgegriffenes Buch, an dem Matthias das Lesen geübt hat.',
+  },
+];
+
 export function createSeedState(): SimulationState {
   return {
     simulationId: 'sim_default',
@@ -509,5 +544,6 @@ export function createSeedState(): SimulationState {
     socialAccessLevel: 1,
     socialCalendar,
     chapters,
+    inventory,
   };
 }

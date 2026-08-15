@@ -1,0 +1,80 @@
+<div class="player-profile">
+  <div class="profile-header">
+    <div class="profile-header__portrait"></div>
+    <div>
+      <h1>{{ player().name }}</h1>
+      <p class="profile-header__age">{{ player().visualState.currentAge }} Jahre</p>
+      <p class="profile-header__origin">{{ origin }}</p>
+    </div>
+  </div>
+
+  <div class="profile-grid">
+    <section class="profile-card">
+      <h2>Aussehen</h2>
+      <dl>
+        <dt>Größe</dt>
+        <dd>{{ player().appearance.height }}</dd>
+        <dt>Statur</dt>
+        <dd>{{ player().appearance.build }}</dd>
+        <dt>Gesicht</dt>
+        <dd>{{ player().appearance.face }}</dd>
+        <dt>Haare</dt>
+        <dd>{{ player().appearance.hair }}</dd>
+        <dt>Augen</dt>
+        <dd>{{ player().appearance.eyes }}</dd>
+        <dt>Besondere Merkmale</dt>
+        <dd>{{ player().appearance.distinguishingFeatures }}</dd>
+      </dl>
+    </section>
+
+    <section class="profile-card">
+      <h2>Fähigkeiten</h2>
+      <dl>
+        @for (entry of skillEntries(player().skills); track entry[0]) {
+          <dt>{{ entry[0] }}</dt>
+          <dd>{{ entry[1] }}</dd>
+        }
+      </dl>
+    </section>
+
+    <section class="profile-card">
+      <h2>Persönliche Ziele</h2>
+      <ul>
+        @for (goal of player().goals.midTerm; track $index) {
+          <li>{{ goal }}</li>
+        }
+        @for (goal of player().goals.shortTerm; track $index) {
+          <li>{{ goal }}</li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <section class="profile-section">
+    <h2>Kleidung</h2>
+    <div class="wardrobe">
+      @for (item of player().wardrobe; track item.id) {
+        <div class="wardrobe-card" [class.is-current]="item.id.includes(player().visualState.currentOutfit)">
+          <span class="wardrobe-card__name">{{ item.name }}</span>
+          <span class="wardrobe-card__note">{{ item.note }}</span>
+        </div>
+      }
+    </div>
+  </section>
+
+  <section class="profile-section">
+    <h2>Besitz</h2>
+    @if (inventory().length === 0) {
+      <p class="profile-empty">Nichts Nennenswertes bei sich.</p>
+    } @else {
+      <div class="inventory">
+        @for (item of inventory(); track item.id) {
+          <div class="inventory-card">
+            <span class="inventory-card__name">{{ item.name }}</span>
+            <p class="inventory-card__description">{{ item.description }}</p>
+          </div>
+        }
+      </div>
+    }
+  </section>
+</div>

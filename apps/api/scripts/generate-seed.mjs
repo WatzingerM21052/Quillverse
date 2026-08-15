@@ -100,6 +100,19 @@ const characters = [
     },
     playerKnowledge: [],
     gmState: {},
+    skills: {
+      Landwirtschaft: 'sehr gut',
+      Reiten: 'gut',
+      Lesen: 'mittel',
+      Schreiben: 'mittel',
+      Etikette: 'gering',
+      Tanzen: 'keine Erfahrung',
+      Geschäftssinn: 'mittel',
+    },
+    wardrobe: [
+      { id: 'wardrobe_work_shirt', name: 'Arbeitshemd', note: 'für den Alltag geeignet, für gesellschaftliche Anlässe unpassend' },
+      { id: 'wardrobe_sunday_coat', name: 'Sonntagsmantel', note: 'einfach, aber ordentlich — für die Kirche und kleinere Anlässe ausreichend' },
+    ],
   },
   {
     id: MOTHER_ID,
@@ -399,10 +412,22 @@ lines.push(`INSERT INTO simulations (id, world_pack_id, state_version, current_w
 lines.push('');
 
 for (const c of characters) {
-  lines.push(`INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json) VALUES (
+  lines.push(`INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json, skills_json, wardrobe_json) VALUES (
   ${sql(c.id)}, ${sql(SIM_ID)}, ${sql(c.name)}, ${sql(c.isCanon)}, ${sql(c.isPlayer)}, ${sql(c.locationId)},
   ${sqlJson(c.appearance)}, ${sqlJson(c.visualState)}, ${sqlJson(c.personality)}, ${sqlJson(c.goals)},
-  ${sqlJson(c.playerKnowledge)}, ${sqlJson(c.gmState)}
+  ${sqlJson(c.playerKnowledge)}, ${sqlJson(c.gmState)}, ${sqlJson(c.skills ?? {})}, ${sqlJson(c.wardrobe ?? [])}
+);`);
+}
+lines.push('');
+
+const inventory = [
+  { id: 'inv_pocket_watch', ownerId: PLAYER_ID, name: "Taschenuhr des Vaters", description: 'Eine einfache, aber gut erhaltene Taschenuhr — eines der wenigen Dinge, die von seinem Vater geblieben sind.' },
+  { id: 'inv_old_book', ownerId: PLAYER_ID, name: 'Altes Buch', description: 'Ein abgegriffenes Buch, an dem Matthias das Lesen geübt hat.' },
+];
+
+for (const item of inventory) {
+  lines.push(`INSERT INTO inventory (id, simulation_id, owner_id, name, description) VALUES (
+  ${sql(item.id)}, ${sql(SIM_ID)}, ${sql(item.ownerId)}, ${sql(item.name)}, ${sql(item.description)}
 );`);
 }
 lines.push('');
