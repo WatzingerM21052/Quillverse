@@ -263,6 +263,47 @@ const farm: Location = {
   type: 'farm',
   discovered: true,
   baseAsset: 'asset://location/player_farm/base',
+  mapPosition: { x: 22, y: 78 },
+};
+
+const villageMarket: Location = {
+  id: 'loc_village_market',
+  name: 'Dorfmarkt',
+  type: 'market',
+  discovered: true,
+  baseAsset: 'asset://location/village_market/base',
+  mapPosition: { x: 34, y: 62 },
+  travel: {
+    distance: 'knapp 2 Meilen',
+    travelTime: 'etwa eine halbe Stunde zu Fuß',
+    transport: 'zu Fuß oder mit dem Karren',
+    cost: 'keine',
+  },
+};
+
+const london: Location = {
+  id: 'loc_london',
+  name: 'London',
+  type: 'city',
+  discovered: true,
+  baseAsset: 'asset://location/london/base',
+  mapPosition: { x: 72, y: 30 },
+  travel: {
+    distance: 'etwa 12 Meilen',
+    travelTime: 'zwei bis drei Stunden mit der Kutsche',
+    transport: 'Postkutsche oder eigenes Gespann',
+    cost: 'einige Shilling',
+  },
+};
+
+/** Not discovered yet — demonstrates fog of knowledge (§41); the Map screen must not render it. */
+const aubreyHall: Location = {
+  id: 'loc_aubrey_hall',
+  name: 'Aubrey Hall',
+  type: 'estate',
+  discovered: false,
+  baseAsset: 'asset://location/aubrey_hall/base',
+  mapPosition: { x: 82, y: 74 },
 };
 
 const playerToMother: Relationship = {
@@ -451,7 +492,12 @@ export function createSeedState(): SimulationState {
       [UNCLE_ID]: uncle,
     },
     relationships: [playerToMother, playerToSister],
-    locations: { [FARM_ID]: farm },
+    locations: {
+      [FARM_ID]: farm,
+      [villageMarket.id]: villageMarket,
+      [london.id]: london,
+      [aubreyHall.id]: aubreyHall,
+    },
     memories: Object.fromEntries(memories.map((memory) => [memory.id, memory])),
     letters: Object.fromEntries(letters.map((letter) => [letter.id, letter])),
     canonEvents: {},

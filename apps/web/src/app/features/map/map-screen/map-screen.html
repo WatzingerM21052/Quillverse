@@ -1,0 +1,41 @@
+<div class="map-screen">
+  <h1 class="map-screen__title">Map</h1>
+
+  <div class="map">
+    @for (location of locations(); track location.id) {
+      <button
+        type="button"
+        class="map__pin"
+        [class]="'map__pin--' + location.type"
+        [style.left.%]="location.mapPosition.x"
+        [style.top.%]="location.mapPosition.y"
+        (click)="select(location.id)"
+      >
+        <span class="map__pin-dot"></span>
+        <span class="map__pin-label">{{ location.name }}</span>
+      </button>
+    }
+  </div>
+
+  @if (selectedLocation(); as location) {
+    <qv-modal [title]="location.name" (closed)="close()">
+      @if (location.travel; as travel) {
+        <dl class="travel-info">
+          <dt>Entfernung</dt>
+          <dd>{{ travel.distance }}</dd>
+          <dt>Reisezeit</dt>
+          <dd>{{ travel.travelTime }}</dd>
+          <dt>Verkehrsmittel</dt>
+          <dd>{{ travel.transport }}</dd>
+          <dt>Kosten</dt>
+          <dd>{{ travel.cost }}</dd>
+        </dl>
+        <button type="button" class="travel-start" disabled title="Reisen benötigen die AI-Anbindung, die noch folgt">
+          Reise beginnen
+        </button>
+      } @else {
+        <p class="travel-info__home">Du bist hier zuhause.</p>
+      }
+    </qv-modal>
+  }
+</div>

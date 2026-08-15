@@ -37,6 +37,10 @@ export class SimulationStateStore {
   readonly chapters = computed(() => this.state().chapters);
   readonly canonEvents = computed(() => Object.values(this.state().canonEvents));
 
+  readonly discoveredLocations = computed(() =>
+    Object.values(this.state().locations).filter((location) => location.discovered),
+  );
+
   private static readonly JOURNAL_WORTHY = new Set(['important', 'major', 'life-changing']);
 
   readonly journalMemories = computed(() =>

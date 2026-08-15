@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { AppShell } from './features/shell/app-shell/app-shell';
-import { PlaceholderScreen } from './features/shell/placeholder-screen/placeholder-screen';
 import { StoryScreen } from './features/story/story-screen/story-screen';
 import { CharactersScreen } from './features/characters/characters-screen/characters-screen';
 import { RelationshipsScreen } from './features/relationships/relationships-screen/relationships-screen';
@@ -11,6 +10,7 @@ import { LettersScreen } from './features/letters/letters-screen/letters-screen'
 import { JournalScreen } from './features/journal/journal-screen/journal-screen';
 import { TimelineScreen } from './features/timeline/timeline-screen/timeline-screen';
 import { SettingsScreen } from './features/settings/settings-screen/settings-screen';
+import { MapScreen } from './features/map/map-screen/map-screen';
 
 export const routes: Routes = [
   {
@@ -21,11 +21,7 @@ export const routes: Routes = [
       { path: 'characters', component: CharactersScreen },
       { path: 'world', component: WorldScreen },
       { path: 'relationships', component: RelationshipsScreen },
-      {
-        path: 'map',
-        component: PlaceholderScreen,
-        data: { title: 'Map', description: 'Regency-Karte mit Fog of Knowledge — unbekannte Orte werden erst durch Gespräche, Reisen oder Briefe sichtbar.' },
-      },
+      { path: 'map', component: MapScreen },
       { path: 'estate', component: EstateScreen },
       { path: 'society', component: SocietyScreen },
       { path: 'letters', component: LettersScreen },
