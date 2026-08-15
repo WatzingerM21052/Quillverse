@@ -42,6 +42,40 @@
           </dl>
         </section>
       }
+
+      @if (gmMode.enabled()) {
+        <section class="character-sheet__section character-sheet__section--gm">
+          <h3>GM ONLY</h3>
+          <dl class="gm-facts">
+            <dt>Tatsächlicher Ort</dt>
+            <dd>{{ character.locationId ?? '—' }}</dd>
+            <dt>Kurzfristige Ziele</dt>
+            <dd>{{ character.goals.shortTerm.join(', ') || '—' }}</dd>
+            <dt>Langfristige Ziele</dt>
+            <dd>{{ character.goals.longTerm.join(', ') || '—' }}</dd>
+            <dt>Sorgen</dt>
+            <dd>{{ character.goals.currentWorries.join(', ') || '—' }}</dd>
+          </dl>
+          @if (selectedRelationship(); as relationship) {
+            @if (relationship.innerThoughts.length > 0) {
+              <h4>Innere Gedanken über den Spieler</h4>
+              <ul class="gm-thoughts">
+                @for (thought of relationship.innerThoughts; track $index) {
+                  <li><em>„{{ thought.text }}"</em> — {{ thought.worldDate }}</li>
+                }
+              </ul>
+            }
+            @if (relationship.misconceptions.length > 0) {
+              <h4>Fehlannahmen über den Spieler</h4>
+              <ul class="gm-thoughts">
+                @for (m of relationship.misconceptions; track $index) {
+                  <li>{{ m }}</li>
+                }
+              </ul>
+            }
+          }
+        </section>
+      }
     </qv-modal>
   }
 </div>

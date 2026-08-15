@@ -87,6 +87,49 @@
   margin: 0;
 }
 
+.character-sheet__section--gm {
+  border: 1px solid var(--qv-oxblood);
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+  background: rgba(110, 44, 51, 0.08);
+
+  h3 {
+    color: var(--qv-oxblood) !important;
+  }
+
+  h4 {
+    font-family: var(--qv-font-ui);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    color: var(--qv-oxblood);
+    margin: 0.75rem 0 0.3rem;
+  }
+}
+
+.gm-facts {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.3rem 1rem;
+  margin: 0;
+  font-family: var(--qv-font-serif);
+  font-size: 0.9rem;
+
+  dt {
+    color: var(--qv-champagne);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.gm-thoughts {
+  margin: 0;
+  padding-left: 1.2rem;
+  font-family: var(--qv-font-serif);
+  font-size: 0.85rem;
+}
+
 .relationship-summary {
   display: grid;
   grid-template-columns: auto 1fr;

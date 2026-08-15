@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
+import { GmModeService } from '../../../core/gm/gm-mode.service';
 
 interface NavItem {
   path: string;
@@ -31,6 +32,7 @@ const SECONDARY_NAV: NavItem[] = [{ path: 'settings', label: 'Settings' }];
 })
 export class AppShell {
   private readonly store = inject(SimulationStateStore);
+  protected readonly gmMode = inject(GmModeService);
 
   protected readonly primaryNav = PRIMARY_NAV;
   protected readonly secondaryNav = SECONDARY_NAV;

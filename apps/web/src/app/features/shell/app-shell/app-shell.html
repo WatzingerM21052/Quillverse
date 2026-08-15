@@ -24,6 +24,11 @@
           <a [routerLink]="item.path" routerLinkActive="is-active">{{ item.label }}</a>
         </li>
       }
+      @if (gmMode.enabled()) {
+        <li>
+          <a routerLink="gm" routerLinkActive="is-active" class="shell__gm-link">GM Dashboard</a>
+        </li>
+      }
     </ul>
   </nav>
 

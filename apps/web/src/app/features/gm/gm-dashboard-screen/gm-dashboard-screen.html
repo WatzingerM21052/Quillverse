@@ -1,0 +1,63 @@
+<div class="gm-dashboard">
+  <div class="gm-dashboard__warning">⚠ GM ONLY — enthält Spoiler und verborgene Informationen (§180)</div>
+  <h1 class="gm-dashboard__title">GM Dashboard</h1>
+
+  <div class="gm-grid">
+    <section class="gm-card">
+      <h2>Continuity</h2>
+      <p class="gm-card__status" [class.is-healthy]="issues().length === 0" [class.is-issue]="issues().length > 0">
+        {{ issues().length === 0 ? '✓ Healthy' : issues().length + ' potenzielle Probleme' }}
+      </p>
+      @if (issues().length > 0) {
+        <ul class="gm-issues">
+          @for (issue of issues(); track $index) {
+            <li [class]="'gm-issues__' + issue.severity">{{ issue.message }}</li>
+          }
+        </ul>
+      }
+    </section>
+
+    <section class="gm-card">
+      <h2>State</h2>
+      <dl>
+        <dt>State Version</dt>
+        <dd>{{ stateVersion() }}</dd>
+        <dt>Canon Drift</dt>
+        <dd>{{ canonDrift() }}</dd>
+        <dt>Open Threads</dt>
+        <dd>{{ openThreads().length === 0 ? '(keine)' : openThreads().length }}</dd>
+      </dl>
+      @if (openThreads().length > 0) {
+        <ul class="gm-threads">
+          @for (thread of openThreads(); track $index) {
+            <li>{{ thread }}</li>
+          }
+        </ul>
+      }
+    </section>
+  </div>
+
+  <section class="gm-npcs">
+    <h2>NPC Locations &amp; Goals</h2>
+    <table class="gm-npc-table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Actual Location (GM ONLY)</th>
+          <th>Priorities</th>
+          <th>Worries</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (character of allCharacters(); track character.id) {
+          <tr>
+            <td>{{ character.name }}{{ character.isPlayer ? ' (Player)' : '' }}</td>
+            <td>{{ character.locationId ?? '—' }}</td>
+            <td>{{ character.goals.currentPriorities.join(', ') || '—' }}</td>
+            <td>{{ character.goals.currentWorries.join(', ') || '—' }}</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>

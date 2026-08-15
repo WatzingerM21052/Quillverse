@@ -3,6 +3,7 @@ import { SimulationStateStore } from '../../../core/state/simulation-state.store
 import { EntityId } from '../../../core/state/models/entity-id';
 import { describeDimension } from '../../../core/state/relationship-language';
 import { Modal } from '../../../shared/ui/modal/modal';
+import { GmModeService } from '../../../core/gm/gm-mode.service';
 
 @Component({
   selector: 'qv-characters-screen',
@@ -12,6 +13,7 @@ import { Modal } from '../../../shared/ui/modal/modal';
 })
 export class CharactersScreen {
   private readonly store = inject(SimulationStateStore);
+  protected readonly gmMode = inject(GmModeService);
 
   protected readonly describeDimension = describeDimension;
   protected readonly characters = this.store.knownCharacters;

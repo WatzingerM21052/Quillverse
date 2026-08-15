@@ -10,6 +10,7 @@ import { LettersScreen } from './features/letters/letters-screen/letters-screen'
 import { JournalScreen } from './features/journal/journal-screen/journal-screen';
 import { TimelineScreen } from './features/timeline/timeline-screen/timeline-screen';
 import { SettingsScreen } from './features/settings/settings-screen/settings-screen';
+import { GmDashboardScreen } from './features/gm/gm-dashboard-screen/gm-dashboard-screen';
 import { MapScreen } from './features/map/map-screen/map-screen';
 
 export const routes: Routes = [
@@ -28,6 +29,7 @@ export const routes: Routes = [
       { path: 'journal', component: JournalScreen },
       { path: 'timeline', component: TimelineScreen },
       { path: 'settings', component: SettingsScreen },
+      { path: 'gm', component: GmDashboardScreen },
     ],
   },
 ];

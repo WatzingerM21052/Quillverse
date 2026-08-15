@@ -1,8 +1,10 @@
 import { Component, computed, inject, signal } from '@angular/core';
+import { RouterLink } from '@angular/router';
 import { Modal } from '../../../shared/ui/modal/modal';
 import { AiProvidersApiService, ProviderStatus } from '../../../core/ai/ai-providers-api.service';
+import { GmModeService } from '../../../core/gm/gm-mode.service';
 
-type SettingsSection = 'simulation' | 'appearance' | 'story' | 'ai' | 'backup' | 'privacy';
+type SettingsSection = 'simulation' | 'appearance' | 'story' | 'ai' | 'gm' | 'backup' | 'privacy';
 
 interface SettingsNavItem {
   id: SettingsSection;
@@ -21,6 +23,7 @@ const SETTINGS_NAV: SettingsNavItem[] = [
   { id: 'appearance', label: 'Appearance' },
   { id: 'story', label: 'Story' },
   { id: 'ai', label: 'AI & Models' },
+  { id: 'gm', label: 'GM / Debug' },
   { id: 'backup', label: 'Backup & Export' },
   { id: 'privacy', label: 'Privacy' },
 ];
@@ -29,12 +32,13 @@ const FALLBACK_ORDER = ['Gemini', 'OpenAI', 'Claude', 'Manual Relay'];
 
 @Component({
   selector: 'qv-settings-screen',
-  imports: [Modal],
+  imports: [Modal, RouterLink],
   templateUrl: './settings-screen.html',
   styleUrl: './settings-screen.scss',
 })
 export class SettingsScreen {
   private readonly api = inject(AiProvidersApiService);
+  protected readonly gmMode = inject(GmModeService);
 
   protected readonly nav = SETTINGS_NAV;
   protected readonly activeSection = signal<SettingsSection>('ai');

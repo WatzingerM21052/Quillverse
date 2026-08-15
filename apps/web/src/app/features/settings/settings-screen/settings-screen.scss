@@ -195,6 +195,39 @@ h2 {
   margin: 0 0 1.5rem;
 }
 
+.gm-toggle {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-family: var(--qv-font-serif);
+  font-size: 1rem;
+  margin-bottom: 1rem;
+  cursor: pointer;
+}
+
+.gm-settings__warning {
+  font-family: var(--qv-font-serif);
+  font-size: 0.85rem;
+  color: var(--qv-oxblood);
+  background: rgba(110, 44, 51, 0.12);
+  border-left: 2px solid var(--qv-oxblood);
+  padding: 0.6rem 0.9rem;
+  max-width: 60ch;
+}
+
+.gm-settings__link {
+  display: inline-block;
+  margin-top: 1rem;
+  color: var(--qv-gold);
+  font-family: var(--qv-font-ui);
+  font-size: 0.85rem;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .api-key-error {
   font-family: var(--qv-font-serif);
   font-size: 0.85rem;

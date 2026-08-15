@@ -56,6 +56,22 @@
             </table>
           </section>
         }
+        @case ('gm') {
+          <section class="gm-settings">
+            <label class="gm-toggle">
+              <input type="checkbox" [checked]="gmMode.enabled()" (change)="gmMode.toggle()" />
+              <span>GM / Debug Mode aktivieren</span>
+            </label>
+            <p class="gm-settings__warning">
+              ⚠ Enthält Spoiler und verborgene Charakterinformationen (innere Gedanken, exakte
+              Beziehungswerte, tatsächliche NPC-Orte). Nur für dich als Spielleiter gedacht — nicht
+              das, was deine Spielfigur wissen würde (§180).
+            </p>
+            @if (gmMode.enabled()) {
+              <a routerLink="/gm" class="gm-settings__link">GM Dashboard öffnen →</a>
+            }
+          </section>
+        }
         @default {
           <p class="settings__placeholder">Dieser Bereich folgt in einer späteren Phase.</p>
         }

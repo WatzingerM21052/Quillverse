@@ -4,6 +4,7 @@ import { EntityId } from '../../../core/state/models/entity-id';
 import { Character } from '../../../core/state/models/character.model';
 import { Relationship } from '../../../core/state/models/relationship.model';
 import { describeDimension } from '../../../core/state/relationship-language';
+import { GmModeService } from '../../../core/gm/gm-mode.service';
 
 interface WebNode {
   character: Character;
@@ -21,8 +22,10 @@ interface WebNode {
 })
 export class RelationshipsScreen {
   private readonly store = inject(SimulationStateStore);
+  protected readonly gmMode = inject(GmModeService);
 
   protected readonly describeDimension = describeDimension;
+  protected readonly dimensionEntries = (dimensions: Relationship['dimensions']) => Object.entries(dimensions);
   protected readonly player = this.store.player;
   protected readonly selectedId = signal<EntityId | null>(null);
 
