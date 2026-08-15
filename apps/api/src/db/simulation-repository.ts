@@ -529,13 +529,14 @@ interface SimulationListRow {
   created_at: string;
   updated_at: string;
   player_name: string | null;
+  parent_simulation_id: string | null;
 }
 
 /** Save Selection (§124 Timeline Identity) — every branchable timeline, newest first. */
 export async function listSimulations(db: D1Database): Promise<SimulationSummary[]> {
   const { results } = await db
     .prepare(
-      `SELECT s.id, s.label, s.world_pack_id, s.current_world_date, s.state_version, s.created_at, s.updated_at,
+      `SELECT s.id, s.label, s.world_pack_id, s.current_world_date, s.state_version, s.created_at, s.updated_at, s.parent_simulation_id,
               (SELECT name FROM characters WHERE simulation_id = s.id AND is_player = 1 LIMIT 1) AS player_name
        FROM simulations s
        ORDER BY s.updated_at DESC`,
@@ -551,5 +552,6 @@ export async function listSimulations(db: D1Database): Promise<SimulationSummary
     playerName: row.player_name,
     createdAt: row.created_at,
     updatedAt: row.updated_at,
+    parentSimulationId: row.parent_simulation_id,
   }));
 }

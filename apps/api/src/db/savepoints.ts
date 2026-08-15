@@ -459,8 +459,8 @@ export async function forkSavepoint(
   const statements: D1PreparedStatement[] = [
     db
       .prepare(
-        `INSERT INTO simulations (id, label, world_pack_id, state_version, current_world_date, current_season, player_id, social_access_level, world_status_json, farm_json, finance_ledger_json, open_threads_json)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '[]', ?)`,
+        `INSERT INTO simulations (id, label, world_pack_id, state_version, current_world_date, current_season, player_id, social_access_level, world_status_json, farm_json, finance_ledger_json, open_threads_json, parent_simulation_id)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '[]', ?, ?)`,
       )
       .bind(
         newSimulationId,
@@ -474,6 +474,7 @@ export async function forkSavepoint(
         JSON.stringify(snapshot.worldStatus),
         JSON.stringify(snapshot.farm),
         JSON.stringify(snapshot.openThreads),
+        sourceSimulationId,
       ),
     ...buildChildInsertStatements(db, newSimulationId, snapshot),
   ];
@@ -489,5 +490,6 @@ export async function forkSavepoint(
     playerName: snapshot.characters[snapshot.playerId]?.name ?? null,
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
+    parentSimulationId: sourceSimulationId,
   };
 }

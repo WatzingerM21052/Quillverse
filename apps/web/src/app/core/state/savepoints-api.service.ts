@@ -21,6 +21,8 @@ export interface SimulationSummary {
   playerName: string | null;
   createdAt: string;
   updatedAt: string;
+  /** §155 Timeline Tree — which simulation this one was forked from, if any. */
+  parentSimulationId: string | null;
 }
 
 /** Named full-state snapshots (§94-96, §153-155) — create, list, restore, fork into a new timeline. */

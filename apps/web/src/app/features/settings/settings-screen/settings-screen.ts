@@ -76,6 +76,29 @@ export class SettingsScreen {
 
   protected readonly timelines = signal<SimulationSummary[]>([]);
   protected readonly timelinesLoading = signal(true);
+
+  /** §155 Timeline Tree — flattened depth-first (root, its children, their children, ...) so a plain list can render it indented. */
+  protected readonly timelineTree = computed(() => {
+    const all = this.timelines();
+    const byParent = new Map<string | null, SimulationSummary[]>();
+    for (const timeline of all) {
+      const key = timeline.parentSimulationId;
+      const siblings = byParent.get(key) ?? [];
+      siblings.push(timeline);
+      byParent.set(key, siblings);
+    }
+
+    const flattened: Array<{ timeline: SimulationSummary; depth: number }> = [];
+    const visit = (parentId: string | null, depth: number) => {
+      for (const timeline of byParent.get(parentId) ?? []) {
+        flattened.push({ timeline, depth });
+        visit(timeline.id, depth + 1);
+      }
+    };
+    visit(null, 0);
+
+    return flattened;
+  });
   protected readonly forkingSavepointId = signal<string | null>(null);
   protected readonly forkLabelDraft = signal('');
   protected readonly forkBusy = signal(false);

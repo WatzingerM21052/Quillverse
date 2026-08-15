@@ -138,26 +138,32 @@
             <h2>Save Selection</h2>
             <p class="settings__hint">
               Mehrere alternative Zeitlinien derselben Geschichte (§123-124, §154). "Aktiv" ist die
-              Zeitlinie, die gerade in allen Screens angezeigt wird.
+              Zeitlinie, die gerade in allen Screens angezeigt wird. Eingerückte Einträge sind aus der
+              Zeitlinie darüber abgezweigt (§155 Timeline Tree).
             </p>
 
             @if (timelinesLoading()) {
               <p class="settings__hint">Lädt …</p>
             } @else {
-              <ul class="savepoint-list">
-                @for (tl of timelines(); track tl.id) {
-                  <li>
+              <ul class="savepoint-list timeline-tree">
+                @for (entry of timelineTree(); track entry.timeline.id) {
+                  <li [style.marginLeft.rem]="entry.depth * 1.5">
+                    @if (entry.depth > 0) {
+                      <span class="timeline-tree__branch">└─</span>
+                    }
                     <span class="savepoint-list__label">
-                      {{ tl.label }}
-                      @if (tl.id === activeSimulation.id()) {
+                      {{ entry.timeline.label }}
+                      @if (entry.timeline.id === activeSimulation.id()) {
                         <em>(aktiv)</em>
                       }
                     </span>
                     <span class="savepoint-list__meta">
-                      {{ tl.playerName ?? '—' }} · {{ tl.currentWorldDate }} · v{{ tl.stateVersion }}
+                      {{ entry.timeline.playerName ?? '—' }} · {{ entry.timeline.currentWorldDate }} · v{{
+                        entry.timeline.stateVersion
+                      }}
                     </span>
-                    @if (tl.id !== activeSimulation.id()) {
-                      <button type="button" (click)="switchTimeline(tl.id)">Wechseln</button>
+                    @if (entry.timeline.id !== activeSimulation.id()) {
+                      <button type="button" (click)="switchTimeline(entry.timeline.id)">Wechseln</button>
                     }
                   </li>
                 }

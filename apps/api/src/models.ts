@@ -10,6 +10,8 @@ export interface SimulationSummary {
   playerName: string | null;
   createdAt: string;
   updatedAt: string;
+  /** §155 Timeline Tree — which simulation this one was forked from, if any. */
+  parentSimulationId: string | null;
 }
 
 export interface SimulationStateResponse {

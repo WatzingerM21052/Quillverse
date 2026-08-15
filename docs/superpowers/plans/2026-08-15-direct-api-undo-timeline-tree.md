@@ -84,3 +84,45 @@ Same discipline as the image pipeline: type-check, then verify what's
 verifiable without a key or without touching prod, then deploy, then verify
 live against the real connected Gemini key, in that order. Migrations →
 Worker deploy → frontend push, never reversed.
+
+## Done, verified live, 2026-08-15
+
+All three parts shipped and verified against production with the real
+connected Gemini key, each as its own commit:
+
+- **Direct-API turns**: a hardcoded `gemini-2.5-flash` 404'd live as "no
+  longer available to new users" despite still being listed by
+  `/v1beta/models` — the list includes models a given API key/project isn't
+  actually allowed to call. Fixed by discovering a model at call time and
+  preferring the `-latest` alias (`gemini-flash-latest`) Google publishes
+  specifically so callers don't have to track version numbers; version-number
+  sorting is not a safe heuristic for "current" here. Confirmed working:
+  real, coherent, world-consistent narration back from Gemini for two
+  different player actions.
+- **Undo Last Turn**: generated a real turn, undid it, confirmed
+  `stateVersion` reverted and a second undo call correctly reports nothing
+  to undo (single-use, depth 1).
+- **Timeline Tree**: forked a test savepoint, confirmed `parentSimulationId`
+  round-trips through both the fork response and `listSimulations`, and the
+  Settings → Backup & Export nested list renders it indented under its
+  parent correctly in a real browser.
+- All test artifacts (2 test turns, 1 test savepoint, 1 test fork) cleaned
+  up afterward — `sim_default` reset to its pristine seed state
+  (`stateVersion: 1`) via a script mirroring migrations 0002/0005/0006/0007's
+  seed data exactly.
+
+## Gemini quota, from the account's actual rate-limit dashboard (28-day window)
+
+The user shared the real numbers, which sharpen what "free" means here:
+
+- Text models have real but small daily caps — the model this session
+  landed on (`gemini-3.7-flash`) shows **5 RPM / 20 RPD**. `-flash-lite`
+  variants show 500 RPD instead — a real lever if daily volume matters more
+  than per-turn quality.
+- Every native multimodal image model (all "Nano Banana" variants) shows a
+  hard **0/0/0** — not rate-limited, simply not granted to this
+  account/project at all.
+- **Imagen 4 (Fast/Generate/Ultra) shows 0/25** — real daily quota, unlike
+  the Nano Banana family. This is the lead for the "proper fallback" the
+  user wants to look at next for the image pipeline: same Gemini API key,
+  different endpoint shape (`:predict`, not `:generateContent`).
