@@ -1,37 +1,64 @@
 import { Routes } from '@angular/router';
 import { AppShell } from './features/shell/app-shell/app-shell';
 import { StoryScreen } from './features/story/story-screen/story-screen';
-import { CharactersScreen } from './features/characters/characters-screen/characters-screen';
-import { RelationshipsScreen } from './features/relationships/relationships-screen/relationships-screen';
-import { EstateScreen } from './features/estate/estate-screen/estate-screen';
-import { WorldScreen } from './features/world/world-screen/world-screen';
-import { SocietyScreen } from './features/society/society-screen/society-screen';
-import { LettersScreen } from './features/letters/letters-screen/letters-screen';
-import { JournalScreen } from './features/journal/journal-screen/journal-screen';
-import { TimelineScreen } from './features/timeline/timeline-screen/timeline-screen';
-import { SettingsScreen } from './features/settings/settings-screen/settings-screen';
-import { GmDashboardScreen } from './features/gm/gm-dashboard-screen/gm-dashboard-screen';
-import { PlayerProfileScreen } from './features/player/player-profile-screen/player-profile-screen';
-import { MapScreen } from './features/map/map-screen/map-screen';
 
+// Story Mode is the landing screen (§9) so it loads eagerly with the shell —
+// every other screen is lazy: nothing else ships in the initial bundle.
 export const routes: Routes = [
   {
     path: '',
     component: AppShell,
     children: [
       { path: '', component: StoryScreen },
-      { path: 'profile', component: PlayerProfileScreen },
-      { path: 'characters', component: CharactersScreen },
-      { path: 'world', component: WorldScreen },
-      { path: 'relationships', component: RelationshipsScreen },
-      { path: 'map', component: MapScreen },
-      { path: 'estate', component: EstateScreen },
-      { path: 'society', component: SocietyScreen },
-      { path: 'letters', component: LettersScreen },
-      { path: 'journal', component: JournalScreen },
-      { path: 'timeline', component: TimelineScreen },
-      { path: 'settings', component: SettingsScreen },
-      { path: 'gm', component: GmDashboardScreen },
+      {
+        path: 'profile',
+        loadComponent: () => import('./features/player/player-profile-screen/player-profile-screen').then((m) => m.PlayerProfileScreen),
+      },
+      {
+        path: 'characters',
+        loadComponent: () => import('./features/characters/characters-screen/characters-screen').then((m) => m.CharactersScreen),
+      },
+      {
+        path: 'world',
+        loadComponent: () => import('./features/world/world-screen/world-screen').then((m) => m.WorldScreen),
+      },
+      {
+        path: 'relationships',
+        loadComponent: () =>
+          import('./features/relationships/relationships-screen/relationships-screen').then((m) => m.RelationshipsScreen),
+      },
+      {
+        path: 'map',
+        loadComponent: () => import('./features/map/map-screen/map-screen').then((m) => m.MapScreen),
+      },
+      {
+        path: 'estate',
+        loadComponent: () => import('./features/estate/estate-screen/estate-screen').then((m) => m.EstateScreen),
+      },
+      {
+        path: 'society',
+        loadComponent: () => import('./features/society/society-screen/society-screen').then((m) => m.SocietyScreen),
+      },
+      {
+        path: 'letters',
+        loadComponent: () => import('./features/letters/letters-screen/letters-screen').then((m) => m.LettersScreen),
+      },
+      {
+        path: 'journal',
+        loadComponent: () => import('./features/journal/journal-screen/journal-screen').then((m) => m.JournalScreen),
+      },
+      {
+        path: 'timeline',
+        loadComponent: () => import('./features/timeline/timeline-screen/timeline-screen').then((m) => m.TimelineScreen),
+      },
+      {
+        path: 'settings',
+        loadComponent: () => import('./features/settings/settings-screen/settings-screen').then((m) => m.SettingsScreen),
+      },
+      {
+        path: 'gm',
+        loadComponent: () => import('./features/gm/gm-dashboard-screen/gm-dashboard-screen').then((m) => m.GmDashboardScreen),
+      },
     ],
   },
 ];
