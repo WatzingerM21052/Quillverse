@@ -30,9 +30,21 @@
   font-weight: 600;
   letter-spacing: 0.03em;
   color: var(--qv-champagne);
-  padding: 0 1.5rem 1.5rem;
-  border-bottom: 1px solid rgba(184, 147, 74, 0.4);
-  margin-bottom: 1rem;
+  padding: 0 1.5rem 0.5rem;
+}
+
+.shell__status {
+  font-family: var(--qv-font-ui);
+  font-size: 0.7rem;
+  color: var(--qv-champagne);
+  opacity: 0.6;
+  padding: 0 1.5rem 1rem;
+  margin: 0;
+
+  &--error {
+    color: var(--qv-oxblood);
+    opacity: 0.9;
+  }
 }
 
 .shell__nav-list {

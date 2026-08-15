@@ -1,18 +1,43 @@
-import { Injectable, computed, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Injectable, computed, inject, signal } from '@angular/core';
 import { EntityId } from './models/entity-id';
 import { SimulationState } from './models/simulation-state.model';
 import { Relationship } from './models/relationship.model';
 import { createSeedState } from './seed/seed-state';
 import { WORLD_PACKS } from '../world-pack/world-pack-registry';
+import { API_BASE_URL } from '../config/api.config';
+
+const DEFAULT_SIMULATION_ID = 'sim_default';
 
 /**
  * The app's own memory (§76-78, §86): the single place every screen reads
- * simulation state from. Never the AI, never the chat log. Until the AI
- * Orchestrator (later phase) applies real StatePatches, this holds seed data.
+ * simulation state from. Never the AI, never the chat log.
+ *
+ * Renders instantly from the same seed data as the backend (§A54 — state must
+ * never wait on the network) and then swaps to the real fetched state from
+ * quillverse-api once it arrives. If the fetch fails, the seed stays in place
+ * rather than breaking the screen (mirrors the asset-fallback rule, A53).
  */
 @Injectable({ providedIn: 'root' })
 export class SimulationStateStore {
+  private readonly http = inject(HttpClient);
+
   private readonly state = signal<SimulationState>(createSeedState());
+  readonly loading = signal(true);
+  readonly loadError = signal<string | null>(null);
+
+  constructor() {
+    this.http.get<SimulationState>(`${API_BASE_URL}/api/simulations/${DEFAULT_SIMULATION_ID}`).subscribe({
+      next: (loaded) => {
+        this.state.set(loaded);
+        this.loading.set(false);
+      },
+      error: () => {
+        this.loadError.set('Konnte keine Verbindung zum Server herstellen — zeige lokalen Stand.');
+        this.loading.set(false);
+      },
+    });
+  }
 
   readonly current = this.state.asReadonly();
 

@@ -89,6 +89,43 @@ interface LetterRow {
   known_by_json: string;
 }
 
+interface WorldEventRow {
+  id: string;
+  category: string;
+  title: string;
+  description: string;
+  date: string;
+}
+
+interface SocialCalendarRow {
+  id: string;
+  title: string;
+  date: string;
+  host: string;
+  location: string;
+  access: string;
+}
+
+interface ChapterRow {
+  id: string;
+  number: number;
+  title: string;
+  summary: string;
+  start_date: string;
+}
+
+interface CanonEventRow {
+  id: string;
+  name: string;
+  original_course: string;
+  requirements_json: string;
+  window_json: string;
+  status: string;
+  player_influence: string;
+  current_likely_variant: string;
+  consequences_json: string;
+}
+
 /** Assembles the full SimulationState from D1 rows — see docs/spec/ui-master-prompt-v1.md §86. */
 export async function getSimulationState(db: D1Database, simulationId: string): Promise<SimulationStateResponse | null> {
   const simulation = await db
@@ -105,10 +142,19 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
       db.prepare('SELECT * FROM locations WHERE simulation_id = ?').bind(simulationId).all<LocationRow>(),
       db.prepare('SELECT * FROM memories WHERE simulation_id = ?').bind(simulationId).all<MemoryRow>(),
       db.prepare('SELECT * FROM letters WHERE simulation_id = ?').bind(simulationId).all<LetterRow>(),
-      db.prepare('SELECT * FROM world_events WHERE simulation_id = ?').bind(simulationId).all(),
-      db.prepare('SELECT * FROM social_calendar WHERE simulation_id = ?').bind(simulationId).all(),
-      db.prepare('SELECT * FROM chapters WHERE simulation_id = ?').bind(simulationId).all(),
-      db.prepare('SELECT * FROM canon_events WHERE simulation_id = ?').bind(simulationId).all(),
+      db
+        .prepare('SELECT id, category, title, description, date FROM world_events WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<WorldEventRow>(),
+      db
+        .prepare('SELECT id, title, date, host, location, access FROM social_calendar WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<SocialCalendarRow>(),
+      db
+        .prepare('SELECT id, number, title, summary, start_date FROM chapters WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<ChapterRow>(),
+      db.prepare('SELECT * FROM canon_events WHERE simulation_id = ?').bind(simulationId).all<CanonEventRow>(),
     ]);
 
   const characterMap: Record<string, CharacterResponse> = {};
@@ -191,9 +237,29 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
   }
 
   const canonEventMap: Record<string, unknown> = {};
-  for (const row of canonEvents.results as Array<Record<string, unknown>>) {
-    canonEventMap[row['id'] as string] = row;
+  for (const row of canonEvents.results) {
+    canonEventMap[row.id] = {
+      id: row.id,
+      name: row.name,
+      originalCourse: row.original_course,
+      requirements: JSON.parse(row.requirements_json),
+      window: JSON.parse(row.window_json),
+      status: row.status,
+      playerInfluence: row.player_influence,
+      currentLikelyVariant: row.current_likely_variant,
+      consequences: JSON.parse(row.consequences_json),
+    };
   }
+
+  const worldEventList = worldEvents.results;
+  const socialCalendarList = socialCalendar.results;
+  const chapterList = chapters.results.map((row) => ({
+    id: row.id,
+    number: row.number,
+    title: row.title,
+    summary: row.summary,
+    startDate: row.start_date,
+  }));
 
   return {
     simulationId: simulation.id,
@@ -213,8 +279,8 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
     farm: JSON.parse(simulation.farm_json),
     financeLedger: JSON.parse(simulation.finance_ledger_json),
     worldStatus: JSON.parse(simulation.world_status_json),
-    worldEvents: worldEvents.results,
-    socialCalendar: socialCalendar.results,
-    chapters: chapters.results,
+    worldEvents: worldEventList,
+    socialCalendar: socialCalendarList,
+    chapters: chapterList,
   };
 }

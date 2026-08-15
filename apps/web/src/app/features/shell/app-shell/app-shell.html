@@ -2,6 +2,12 @@
   <nav class="shell__rail shell__rail--desktop" aria-label="Hauptnavigation">
     <div class="shell__brand">Quillverse</div>
 
+    @if (loading()) {
+      <p class="shell__status">Verbinde mit dem Server …</p>
+    } @else if (loadError()) {
+      <p class="shell__status shell__status--error">{{ loadError() }}</p>
+    }
+
     <ul class="shell__nav-list">
       @for (item of primaryNav; track item.path) {
         <li>

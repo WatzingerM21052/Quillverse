@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 
 interface NavItem {
   path: string;
@@ -29,6 +30,10 @@ const SECONDARY_NAV: NavItem[] = [{ path: 'settings', label: 'Settings' }];
   styleUrl: './app-shell.scss',
 })
 export class AppShell {
+  private readonly store = inject(SimulationStateStore);
+
   protected readonly primaryNav = PRIMARY_NAV;
   protected readonly secondaryNav = SECONDARY_NAV;
+  protected readonly loading = this.store.loading;
+  protected readonly loadError = this.store.loadError;
 }
