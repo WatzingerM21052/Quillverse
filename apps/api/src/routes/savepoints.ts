@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { createSavepoint, listSavepoints, restoreSavepoint } from '../db/savepoints';
+import { createSavepoint, forkSavepoint, listSavepoints, restoreSavepoint } from '../db/savepoints';
 
 export const savepointsRoute = new Hono<{ Bindings: Env }>();
 
@@ -27,4 +27,18 @@ savepointsRoute.post('/:id/savepoints/:savepointId/restore', async (c) => {
     return c.json({ error: 'Savepoint not found.' }, 404);
   }
   return c.json({ state });
+});
+
+savepointsRoute.post('/:id/savepoints/:savepointId/fork', async (c) => {
+  const body = await c.req.json<{ label?: string }>().catch(() => null);
+  const label = body?.label?.trim();
+  if (!label) {
+    return c.json({ error: 'label is required.' }, 400);
+  }
+
+  const summary = await forkSavepoint(c.env.DB, c.req.param('id'), c.req.param('savepointId'), label);
+  if (!summary) {
+    return c.json({ error: 'Savepoint not found.' }, 404);
+  }
+  return c.json(summary);
 });

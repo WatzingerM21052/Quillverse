@@ -1,8 +1,20 @@
 // Mirrors apps/web/src/app/core/state/models/*.ts field-for-field so the
 // frontend can consume this JSON with zero transformation.
 
+export interface SimulationSummary {
+  id: string;
+  label: string;
+  worldPackId: string;
+  currentWorldDate: string;
+  stateVersion: number;
+  playerName: string | null;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface SimulationStateResponse {
   simulationId: string;
+  label: string;
   worldPackId: string;
   stateVersion: number;
   currentWorldDate: string;

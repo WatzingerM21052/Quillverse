@@ -77,7 +77,7 @@
             <h2>Save Points</h2>
             <p class="settings__hint">
               Ein Save Point sichert den kompletten aktuellen Stand unter einem Namen. Wiederherstellen
-              ersetzt den aktuellen Stand vollständig (§94-96, §153-155).
+              ersetzt den aktuellen Stand vollständig (§94-96, §153).
             </p>
 
             <div class="savepoint-create">
@@ -107,7 +107,25 @@
                     <span class="savepoint-list__label">{{ sp.label }}</span>
                     <span class="savepoint-list__meta">v{{ sp.stateVersion }} · {{ sp.createdAt }}</span>
                     <button type="button" [disabled]="savepointBusy()" (click)="restoreSavepoint(sp.id)">Restore</button>
+                    <button type="button" [disabled]="savepointBusy()" (click)="startFork(sp.id)">Create Alternate Timeline</button>
                   </li>
+                  @if (forkingSavepointId() === sp.id) {
+                    <li class="fork-create">
+                      <input
+                        type="text"
+                        placeholder="Name der neuen Zeitlinie"
+                        [value]="forkLabelDraft()"
+                        (input)="forkLabelDraft.set($any($event.target).value)"
+                      />
+                      <button type="button" [disabled]="forkBusy() || !forkLabelDraft().trim()" (click)="confirmFork()">
+                        Bestätigen
+                      </button>
+                      <button type="button" [disabled]="forkBusy()" (click)="cancelFork()">Abbrechen</button>
+                    </li>
+                    @if (forkError()) {
+                      <li><p class="api-key-error">{{ forkError() }}</p></li>
+                    }
+                  }
                 }
               </ul>
             }
@@ -116,6 +134,35 @@
               ZIP-Export/-Import (Compact/Markdown/Full Archive, addendum-v1.1 A34-A45) ist noch nicht
               gebaut — Save Points sind aktuell der einzige Backup-Mechanismus.
             </p>
+
+            <h2>Save Selection</h2>
+            <p class="settings__hint">
+              Mehrere alternative Zeitlinien derselben Geschichte (§123-124, §154). "Aktiv" ist die
+              Zeitlinie, die gerade in allen Screens angezeigt wird.
+            </p>
+
+            @if (timelinesLoading()) {
+              <p class="settings__hint">Lädt …</p>
+            } @else {
+              <ul class="savepoint-list">
+                @for (tl of timelines(); track tl.id) {
+                  <li>
+                    <span class="savepoint-list__label">
+                      {{ tl.label }}
+                      @if (tl.id === activeSimulation.id()) {
+                        <em>(aktiv)</em>
+                      }
+                    </span>
+                    <span class="savepoint-list__meta">
+                      {{ tl.playerName ?? '—' }} · {{ tl.currentWorldDate }} · v{{ tl.stateVersion }}
+                    </span>
+                    @if (tl.id !== activeSimulation.id()) {
+                      <button type="button" (click)="switchTimeline(tl.id)">Wechseln</button>
+                    }
+                  </li>
+                }
+              </ul>
+            }
           </section>
         }
         @default {

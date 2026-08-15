@@ -63,7 +63,12 @@ providers/                    one adapter per AI provider (Gemini/OpenAI/Anthrop
                                implementing validateCredential/listModels against the real API —
                                structurally complete, untested against a real key (none available),
                                and not yet wired to generateStory
-db/savepoints.ts               create/list/restore named full-state snapshots (§94-96, §153-155)
+db/savepoints.ts               create/list/restore named full-state snapshots (§94-96, §153);
+                               fork() branches a savepoint into a brand-new simulation row with
+                               its own id, leaving the source timeline untouched (§154 Branching
+                               Timelines) — every entity table has a composite (id, simulation_id)
+                               primary key so the same entity ids can exist in both timelines
+routes/simulations.ts          GET /api/simulations lists every timeline for Save Selection (§123)
 ```
 
 D1 (`quillverse-db`) and R2 (`quillverse-storage`) are dedicated Cloudflare resources for this
@@ -138,7 +143,7 @@ packs for other settings, is deliberately deferred — see the roadmap below.
 | **1 — Core Foundation** (state schema, world-pack seam, AI provider interface, nav shell + all 10 screens) | **done**, now backed by a real D1 database |
 | **2 — Story MVP** | **done via Manual Relay** — the full turn loop (context package → external AI → paste back → validate → commit → every screen updates) works with zero API keys. Direct-API `generateStory` calls still not wired (no key available yet) |
 | 3 — World / 4 — Social | **done** — Map/Estate/World/Society (incl. Lady Whistledown)/Letters/Journal/Timeline/Relationships, plus the previously-missing Player Profile (§69-72: skills, wardrobe, inventory); all live-update after each committed turn |
-| **5 — Advanced Memory** | **done** — GM Mode toggle + GM Dashboard (real continuity audit, canon drift, NPC actual locations/goals), GM-only reveals in Characters/Relationships, Save Points (create/list/restore) |
+| **5 — Advanced Memory** | **done** — GM Mode toggle + GM Dashboard (real continuity audit, canon drift, NPC actual locations/goals), GM-only reveals in Characters/Relationships, Save Points (create/list/restore) plus **Branching Timelines** (§123-124, §154): fork any Save Point into a new, independent timeline, switch which timeline the whole app reads from in Settings → Backup & Export. Gaps: Timeline Identity (§124) is name/date/version/player-name only — no portrait/location/summary/last-image, since there's no image pipeline yet; Undo Last Turn (§153) and the Timeline Tree visualization (§155) are not started |
 | **6 — Multi-Provider** | backend complete (D1, R2, BYOK credential service, real provider adapters) **and now actually called** by Settings (Connect/Disconnect/status are real, not mocked) — only `generateStory` itself stays unwired, no key available |
 | 7 — Visual Polish (weather, expressions, cinematic artwork, audio, real portraits) | not started — everything is placeholder geometry today |
 | 8 — Multi-World (author additional world packs) | not started — deferred by request, will revisit the Bridgerton starting names/setup together first |

@@ -557,6 +557,7 @@ const causalityLog: CausalityLogEntry[] = [];
 export function createSeedState(): SimulationState {
   return {
     simulationId: 'sim_default',
+    label: 'The Farmer',
     worldPackId: 'bridgerton',
     stateVersion: 1,
     currentWorldDate: '12. April 1813',

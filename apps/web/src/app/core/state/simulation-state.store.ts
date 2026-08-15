@@ -1,13 +1,12 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, effect, inject, signal } from '@angular/core';
 import { EntityId } from './models/entity-id';
 import { SimulationState } from './models/simulation-state.model';
 import { Relationship } from './models/relationship.model';
 import { createSeedState } from './seed/seed-state';
 import { WORLD_PACKS } from '../world-pack/world-pack-registry';
 import { API_BASE_URL } from '../config/api.config';
-
-const DEFAULT_SIMULATION_ID = 'sim_default';
+import { ActiveSimulationService } from './active-simulation.service';
 
 /**
  * The app's own memory (§76-78, §86): the single place every screen reads
@@ -17,25 +16,33 @@ const DEFAULT_SIMULATION_ID = 'sim_default';
  * never wait on the network) and then swaps to the real fetched state from
  * quillverse-api once it arrives. If the fetch fails, the seed stays in place
  * rather than breaking the screen (mirrors the asset-fallback rule, A53).
+ * Re-fetches whenever the active timeline changes (§154-155 Branching).
  */
 @Injectable({ providedIn: 'root' })
 export class SimulationStateStore {
   private readonly http = inject(HttpClient);
+  private readonly activeSimulation = inject(ActiveSimulationService);
 
   private readonly state = signal<SimulationState>(createSeedState());
   readonly loading = signal(true);
   readonly loadError = signal<string | null>(null);
 
   constructor() {
-    this.http.get<SimulationState>(`${API_BASE_URL}/api/simulations/${DEFAULT_SIMULATION_ID}`).subscribe({
-      next: (loaded) => {
-        this.state.set(loaded);
-        this.loading.set(false);
-      },
-      error: () => {
-        this.loadError.set('Konnte keine Verbindung zum Server herstellen — zeige lokalen Stand.');
-        this.loading.set(false);
-      },
+    effect(() => {
+      const id = this.activeSimulation.id();
+      this.loading.set(true);
+      this.loadError.set(null);
+
+      this.http.get<SimulationState>(`${API_BASE_URL}/api/simulations/${id}`).subscribe({
+        next: (loaded) => {
+          this.state.set(loaded);
+          this.loading.set(false);
+        },
+        error: () => {
+          this.loadError.set('Konnte keine Verbindung zum Server herstellen — zeige lokalen Stand.');
+          this.loading.set(false);
+        },
+      });
     });
   }
 

@@ -272,6 +272,26 @@ h2 {
 
 .savepoint-list__label {
   font-family: var(--qv-font-serif);
+
+  em {
+    font-style: normal;
+    color: var(--qv-gold);
+    font-size: 0.75rem;
+    margin-left: 0.4rem;
+  }
+}
+
+.fork-create {
+  background: rgba(184, 147, 74, 0.08);
+
+  input {
+    flex: 1;
+    background: var(--qv-ivory);
+    border: 1px solid var(--qv-gold);
+    border-radius: 6px;
+    padding: 0.4rem 0.7rem;
+    font-family: var(--qv-font-serif);
+  }
 }
 
 .savepoint-list__meta {

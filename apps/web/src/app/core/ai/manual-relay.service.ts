@@ -4,8 +4,7 @@ import { Observable } from 'rxjs';
 import { API_BASE_URL } from '../config/api.config';
 import { SimulationState } from '../state/models/simulation-state.model';
 import { Scene } from '../state/models/scene.model';
-
-const SIMULATION_ID = 'sim_default';
+import { ActiveSimulationService } from '../state/active-simulation.service';
 
 export interface ContextPackage {
   contextText: string;
@@ -25,15 +24,16 @@ export interface CommitTurnResult {
 @Injectable({ providedIn: 'root' })
 export class ManualRelayService {
   private readonly http = inject(HttpClient);
+  private readonly activeSimulation = inject(ActiveSimulationService);
 
   generateContextPackage(playerAction: string): Observable<ContextPackage> {
-    return this.http.post<ContextPackage>(`${API_BASE_URL}/api/simulations/${SIMULATION_ID}/context-package`, {
+    return this.http.post<ContextPackage>(`${API_BASE_URL}/api/simulations/${this.activeSimulation.id()}/context-package`, {
       playerAction,
     });
   }
 
   commitTurn(playerAction: string, baseStateVersion: number, responseText: string): Observable<CommitTurnResult> {
-    return this.http.post<CommitTurnResult>(`${API_BASE_URL}/api/simulations/${SIMULATION_ID}/commit`, {
+    return this.http.post<CommitTurnResult>(`${API_BASE_URL}/api/simulations/${this.activeSimulation.id()}/commit`, {
       playerAction,
       baseStateVersion,
       responseText,

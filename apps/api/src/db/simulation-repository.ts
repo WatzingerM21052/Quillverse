@@ -14,11 +14,13 @@ import type {
   ScandalEntry,
   SecretEntry,
   SimulationStateResponse,
+  SimulationSummary,
   WhistledownIssueResponse,
 } from '../models';
 
 interface SimulationRow {
   id: string;
+  label: string;
   world_pack_id: string;
   state_version: number;
   current_world_date: string;
@@ -424,6 +426,7 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
 
   return {
     simulationId: simulation.id,
+    label: simulation.label,
     worldPackId: simulation.world_pack_id,
     stateVersion: simulation.state_version,
     currentWorldDate: simulation.current_world_date,
@@ -515,4 +518,38 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
       }),
     ),
   };
+}
+
+interface SimulationListRow {
+  id: string;
+  label: string;
+  world_pack_id: string;
+  current_world_date: string;
+  state_version: number;
+  created_at: string;
+  updated_at: string;
+  player_name: string | null;
+}
+
+/** Save Selection (§124 Timeline Identity) — every branchable timeline, newest first. */
+export async function listSimulations(db: D1Database): Promise<SimulationSummary[]> {
+  const { results } = await db
+    .prepare(
+      `SELECT s.id, s.label, s.world_pack_id, s.current_world_date, s.state_version, s.created_at, s.updated_at,
+              (SELECT name FROM characters WHERE simulation_id = s.id AND is_player = 1 LIMIT 1) AS player_name
+       FROM simulations s
+       ORDER BY s.updated_at DESC`,
+    )
+    .all<SimulationListRow>();
+
+  return results.map((row) => ({
+    id: row.id,
+    label: row.label,
+    worldPackId: row.world_pack_id,
+    currentWorldDate: row.current_world_date,
+    stateVersion: row.state_version,
+    playerName: row.player_name,
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+  }));
 }

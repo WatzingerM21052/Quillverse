@@ -29,6 +29,7 @@ import {
  */
 export interface SimulationState {
   simulationId: EntityId;
+  label: string;
   /** Which World Pack this simulation was started from — the engine/content seam. */
   worldPackId: string;
   stateVersion: number;

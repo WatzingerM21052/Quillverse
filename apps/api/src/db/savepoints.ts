@@ -1,4 +1,4 @@
-import type { SimulationStateResponse } from '../models';
+import type { SimulationStateResponse, SimulationSummary } from '../models';
 import { getSimulationState } from './simulation-repository';
 
 export interface SavepointSummary {
@@ -67,25 +67,9 @@ const CHILD_TABLES = [
   'causality_log',
 ] as const;
 
-/** Wholesale replace — a restore is a rollback, not a merge (§153-155 Undo/Branching). */
-export async function restoreSavepoint(
-  db: D1Database,
-  simulationId: string,
-  savepointId: string,
-): Promise<SimulationStateResponse | null> {
-  const row = await db
-    .prepare('SELECT snapshot_json, state_version FROM savepoints WHERE id = ? AND simulation_id = ?')
-    .bind(savepointId, simulationId)
-    .first<{ snapshot_json: string; state_version: number }>();
-
-  if (!row) return null;
-
-  const snapshot = JSON.parse(row.snapshot_json) as SimulationStateResponse;
+/** Every child-table insert for one snapshot, targeting `simulationId` — shared by restore (overwrite) and fork (new id). */
+function buildChildInsertStatements(db: D1Database, simulationId: string, snapshot: SimulationStateResponse): D1PreparedStatement[] {
   const statements: D1PreparedStatement[] = [];
-
-  for (const table of CHILD_TABLES) {
-    statements.push(db.prepare(`DELETE FROM ${table} WHERE simulation_id = ?`).bind(simulationId));
-  }
 
   for (const character of Object.values(snapshot.characters)) {
     statements.push(
@@ -360,6 +344,31 @@ export async function restoreSavepoint(
     );
   }
 
+  return statements;
+}
+
+/** Wholesale replace — a restore is a rollback, not a merge (§153-155 Undo/Branching). */
+export async function restoreSavepoint(
+  db: D1Database,
+  simulationId: string,
+  savepointId: string,
+): Promise<SimulationStateResponse | null> {
+  const row = await db
+    .prepare('SELECT snapshot_json, state_version FROM savepoints WHERE id = ? AND simulation_id = ?')
+    .bind(savepointId, simulationId)
+    .first<{ snapshot_json: string; state_version: number }>();
+
+  if (!row) return null;
+
+  const snapshot = JSON.parse(row.snapshot_json) as SimulationStateResponse;
+  const statements: D1PreparedStatement[] = [];
+
+  for (const table of CHILD_TABLES) {
+    statements.push(db.prepare(`DELETE FROM ${table} WHERE simulation_id = ?`).bind(simulationId));
+  }
+
+  statements.push(...buildChildInsertStatements(db, simulationId, snapshot));
+
   statements.push(
     db
       .prepare(
@@ -385,4 +394,61 @@ export async function restoreSavepoint(
   await db.batch(statements);
 
   return getSimulationState(db, simulationId);
+}
+
+/**
+ * Fork (§154-155 Branching Timelines): unlike restore, the source simulation
+ * is left untouched — this creates a brand new simulation row and copies the
+ * snapshot into it under a fresh id, so both timelines keep existing.
+ */
+export async function forkSavepoint(
+  db: D1Database,
+  sourceSimulationId: string,
+  savepointId: string,
+  label: string,
+): Promise<SimulationSummary | null> {
+  const row = await db
+    .prepare('SELECT snapshot_json FROM savepoints WHERE id = ? AND simulation_id = ?')
+    .bind(savepointId, sourceSimulationId)
+    .first<{ snapshot_json: string }>();
+
+  if (!row) return null;
+
+  const snapshot = JSON.parse(row.snapshot_json) as SimulationStateResponse;
+  const newSimulationId = crypto.randomUUID();
+
+  const statements: D1PreparedStatement[] = [
+    db
+      .prepare(
+        `INSERT INTO simulations (id, label, world_pack_id, state_version, current_world_date, current_season, player_id, social_access_level, world_status_json, farm_json, finance_ledger_json, open_threads_json)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, '[]', ?)`,
+      )
+      .bind(
+        newSimulationId,
+        label,
+        snapshot.worldPackId,
+        snapshot.stateVersion,
+        snapshot.currentWorldDate,
+        snapshot.currentSeason,
+        snapshot.playerId,
+        snapshot.socialAccessLevel,
+        JSON.stringify(snapshot.worldStatus),
+        JSON.stringify(snapshot.farm),
+        JSON.stringify(snapshot.openThreads),
+      ),
+    ...buildChildInsertStatements(db, newSimulationId, snapshot),
+  ];
+
+  await db.batch(statements);
+
+  return {
+    id: newSimulationId,
+    label,
+    worldPackId: snapshot.worldPackId,
+    currentWorldDate: snapshot.currentWorldDate,
+    stateVersion: snapshot.stateVersion,
+    playerName: snapshot.characters[snapshot.playerId]?.name ?? null,
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
 }

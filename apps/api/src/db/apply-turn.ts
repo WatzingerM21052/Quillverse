@@ -170,7 +170,7 @@ export async function applyTurn(
           .prepare(
             `INSERT INTO canon_events (id, simulation_id, name, original_course, requirements_json, window_json, status, player_influence, current_likely_variant, consequences_json)
              VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-             ON CONFLICT(id) DO UPDATE SET
+             ON CONFLICT(id, simulation_id) DO UPDATE SET
                name = excluded.name,
                original_course = excluded.original_course,
                requirements_json = excluded.requirements_json,

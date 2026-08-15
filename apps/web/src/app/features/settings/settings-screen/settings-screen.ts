@@ -3,8 +3,9 @@ import { RouterLink } from '@angular/router';
 import { Modal } from '../../../shared/ui/modal/modal';
 import { AiProvidersApiService, ProviderStatus } from '../../../core/ai/ai-providers-api.service';
 import { GmModeService } from '../../../core/gm/gm-mode.service';
-import { SavepointsApiService, SavepointSummary } from '../../../core/state/savepoints-api.service';
+import { SavepointsApiService, SavepointSummary, SimulationSummary } from '../../../core/state/savepoints-api.service';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
+import { ActiveSimulationService } from '../../../core/state/active-simulation.service';
 
 type SettingsSection = 'simulation' | 'appearance' | 'story' | 'ai' | 'gm' | 'backup' | 'privacy';
 
@@ -42,6 +43,7 @@ export class SettingsScreen {
   private readonly api = inject(AiProvidersApiService);
   private readonly savepointsApi = inject(SavepointsApiService);
   private readonly store = inject(SimulationStateStore);
+  protected readonly activeSimulation = inject(ActiveSimulationService);
   protected readonly gmMode = inject(GmModeService);
 
   protected readonly nav = SETTINGS_NAV;
@@ -72,6 +74,13 @@ export class SettingsScreen {
   protected readonly savepointBusy = signal(false);
   protected readonly savepointError = signal<string | null>(null);
 
+  protected readonly timelines = signal<SimulationSummary[]>([]);
+  protected readonly timelinesLoading = signal(true);
+  protected readonly forkingSavepointId = signal<string | null>(null);
+  protected readonly forkLabelDraft = signal('');
+  protected readonly forkBusy = signal(false);
+  protected readonly forkError = signal<string | null>(null);
+
   constructor() {
     this.api.list().subscribe({
       next: (list) => {
@@ -82,6 +91,7 @@ export class SettingsScreen {
     });
 
     this.refreshSavepoints();
+    this.refreshTimelines();
   }
 
   private refreshSavepoints(): void {
@@ -92,6 +102,56 @@ export class SettingsScreen {
         this.savepointsLoading.set(false);
       },
       error: () => this.savepointsLoading.set(false),
+    });
+  }
+
+  private refreshTimelines(): void {
+    this.timelinesLoading.set(true);
+    this.savepointsApi.listTimelines().subscribe({
+      next: (list) => {
+        this.timelines.set(list);
+        this.timelinesLoading.set(false);
+      },
+      error: () => this.timelinesLoading.set(false),
+    });
+  }
+
+  /** §123 Save Selection — switch which timeline every screen reads/writes. */
+  protected switchTimeline(id: string): void {
+    this.activeSimulation.setActive(id);
+  }
+
+  protected startFork(savepointId: string): void {
+    this.forkingSavepointId.set(savepointId);
+    this.forkLabelDraft.set('');
+    this.forkError.set(null);
+  }
+
+  protected cancelFork(): void {
+    this.forkingSavepointId.set(null);
+    this.forkLabelDraft.set('');
+    this.forkError.set(null);
+  }
+
+  /** §154 Branching Timelines — the source timeline is left untouched. */
+  protected confirmFork(): void {
+    const savepointId = this.forkingSavepointId();
+    const label = this.forkLabelDraft().trim();
+    if (!savepointId || !label) return;
+
+    this.forkBusy.set(true);
+    this.forkError.set(null);
+
+    this.savepointsApi.fork(savepointId, label).subscribe({
+      next: () => {
+        this.forkBusy.set(false);
+        this.cancelFork();
+        this.refreshTimelines();
+      },
+      error: (err) => {
+        this.forkError.set(err?.error?.error ?? 'Alternate Timeline konnte nicht erstellt werden.');
+        this.forkBusy.set(false);
+      },
     });
   }
 
