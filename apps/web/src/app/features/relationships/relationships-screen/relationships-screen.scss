@@ -1,0 +1,126 @@
+.relationships {
+  height: 100%;
+  overflow-y: auto;
+  padding: 2.5rem 3rem;
+  color: var(--qv-ivory);
+  display: flex;
+  gap: 2rem;
+}
+
+.relationships__title {
+  font-family: var(--qv-font-display);
+  font-size: 2rem;
+  color: var(--qv-champagne);
+  margin: 0 0 1.5rem;
+  width: 100%;
+  position: absolute;
+}
+
+.web {
+  position: relative;
+  flex: 1;
+  min-width: 0;
+  aspect-ratio: 1 / 1;
+  max-height: calc(100vh - 8rem);
+  margin: 4rem auto 0;
+}
+
+.web__lines {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+
+  line {
+    stroke: rgba(184, 147, 74, 0.4);
+    stroke-width: 0.4;
+  }
+}
+
+.web__player {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  z-index: 2;
+}
+
+.web__player-portrait {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: rgba(184, 147, 74, 0.3);
+  border: 2px solid var(--qv-gold);
+}
+
+.web__node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  color: var(--qv-ivory);
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  cursor: pointer;
+  z-index: 1;
+
+  &-portrait {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background: rgba(233, 223, 199, 0.1);
+    border: 1px solid var(--qv-gold);
+  }
+
+  &.is-selected .web__node-portrait {
+    border-width: 2px;
+    box-shadow: 0 0 12px rgba(184, 147, 74, 0.6);
+  }
+}
+
+.detail {
+  width: 280px;
+  flex-shrink: 0;
+  margin-top: 4rem;
+  background: rgba(233, 223, 199, 0.06);
+  border: 1px solid var(--qv-gold);
+  border-radius: 8px;
+  padding: 1.5rem;
+  height: fit-content;
+
+  h2 {
+    font-family: var(--qv-font-display);
+    color: var(--qv-champagne);
+    margin: 0 0 1rem;
+  }
+
+  &__stance {
+    font-family: var(--qv-font-serif);
+    font-size: 0.9rem;
+    margin: 0 0 0.5rem;
+  }
+
+  &__dimensions {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 1rem;
+    margin: 1rem 0 0;
+    font-family: var(--qv-font-serif);
+
+    dt {
+      color: var(--qv-gold);
+      font-size: 0.85rem;
+    }
+
+    dd {
+      margin: 0;
+      font-size: 0.9rem;
+    }
+  }
+}

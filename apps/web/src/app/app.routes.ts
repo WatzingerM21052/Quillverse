@@ -3,6 +3,7 @@ import { AppShell } from './features/shell/app-shell/app-shell';
 import { PlaceholderScreen } from './features/shell/placeholder-screen/placeholder-screen';
 import { StoryScreen } from './features/story/story-screen/story-screen';
 import { CharactersScreen } from './features/characters/characters-screen/characters-screen';
+import { RelationshipsScreen } from './features/relationships/relationships-screen/relationships-screen';
 
 export const routes: Routes = [
   {
@@ -16,11 +17,7 @@ export const routes: Routes = [
         component: PlaceholderScreen,
         data: { title: 'World', description: 'Das lebende Welt-Dashboard: Datum, London Season, gesellschaftliche Stimmung, Wetter.' },
       },
-      {
-        path: 'relationships',
-        component: PlaceholderScreen,
-        data: { title: 'Relationships', description: 'Beziehungsnetz mit dem Spieler im Zentrum, qualitativ statt in Zahlen dargestellt.' },
-      },
+      { path: 'relationships', component: RelationshipsScreen },
       {
         path: 'map',
         component: PlaceholderScreen,
