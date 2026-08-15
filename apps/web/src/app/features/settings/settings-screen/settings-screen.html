@@ -72,6 +72,52 @@
             }
           </section>
         }
+        @case ('backup') {
+          <section class="savepoints-settings">
+            <h2>Save Points</h2>
+            <p class="settings__hint">
+              Ein Save Point sichert den kompletten aktuellen Stand unter einem Namen. Wiederherstellen
+              ersetzt den aktuellen Stand vollständig (§94-96, §153-155).
+            </p>
+
+            <div class="savepoint-create">
+              <input
+                type="text"
+                placeholder="z. B. Vor dem ersten Ball"
+                [value]="newSavepointLabel()"
+                (input)="newSavepointLabel.set($any($event.target).value)"
+              />
+              <button type="button" [disabled]="savepointBusy() || !newSavepointLabel().trim()" (click)="createSavepoint()">
+                Create Save Point
+              </button>
+            </div>
+
+            @if (savepointError()) {
+              <p class="api-key-error">{{ savepointError() }}</p>
+            }
+
+            @if (savepointsLoading()) {
+              <p class="settings__hint">Lädt …</p>
+            } @else if (savepoints().length === 0) {
+              <p class="settings__hint">Noch keine Save Points vorhanden.</p>
+            } @else {
+              <ul class="savepoint-list">
+                @for (sp of savepoints(); track sp.id) {
+                  <li>
+                    <span class="savepoint-list__label">{{ sp.label }}</span>
+                    <span class="savepoint-list__meta">v{{ sp.stateVersion }} · {{ sp.createdAt }}</span>
+                    <button type="button" [disabled]="savepointBusy()" (click)="restoreSavepoint(sp.id)">Restore</button>
+                  </li>
+                }
+              </ul>
+            }
+
+            <p class="settings__hint">
+              ZIP-Export/-Import (Compact/Markdown/Full Archive, addendum-v1.1 A34-A45) ist noch nicht
+              gebaut — Save Points sind aktuell der einzige Backup-Mechanismus.
+            </p>
+          </section>
+        }
         @default {
           <p class="settings__placeholder">Dieser Bereich folgt in einer späteren Phase.</p>
         }

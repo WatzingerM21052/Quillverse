@@ -17,7 +17,6 @@ interface SimulationRow {
   social_access_level: number;
   world_status_json: string;
   farm_json: string;
-  finance_ledger_json: string;
   open_threads_json: string;
 }
 
@@ -97,6 +96,13 @@ interface WorldEventRow {
   date: string;
 }
 
+interface FinanceTransactionRow {
+  id: string;
+  date: string;
+  description: string;
+  amount: number;
+}
+
 interface SocialCalendarRow {
   id: string;
   title: string;
@@ -135,7 +141,7 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
 
   if (!simulation) return null;
 
-  const [characters, relationships, locations, memories, letters, worldEvents, socialCalendar, chapters, canonEvents] =
+  const [characters, relationships, locations, memories, letters, worldEvents, socialCalendar, chapters, canonEvents, financeTransactions] =
     await Promise.all([
       db.prepare('SELECT * FROM characters WHERE simulation_id = ?').bind(simulationId).all<CharacterRow>(),
       db.prepare('SELECT * FROM relationships WHERE simulation_id = ?').bind(simulationId).all<RelationshipRow>(),
@@ -155,6 +161,10 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
         .bind(simulationId)
         .all<ChapterRow>(),
       db.prepare('SELECT * FROM canon_events WHERE simulation_id = ?').bind(simulationId).all<CanonEventRow>(),
+      db
+        .prepare('SELECT id, date, description, amount FROM finance_transactions WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<FinanceTransactionRow>(),
     ]);
 
   const characterMap: Record<string, CharacterResponse> = {};
@@ -277,10 +287,10 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
     canonEvents: canonEventMap,
     openThreads: JSON.parse(simulation.open_threads_json),
     farm: JSON.parse(simulation.farm_json),
-    financeLedger: JSON.parse(simulation.finance_ledger_json),
     worldStatus: JSON.parse(simulation.world_status_json),
     worldEvents: worldEventList,
     socialCalendar: socialCalendarList,
     chapters: chapterList,
+    financeLedger: financeTransactions.results,
   };
 }

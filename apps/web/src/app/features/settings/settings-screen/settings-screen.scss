@@ -195,6 +195,91 @@ h2 {
   margin: 0 0 1.5rem;
 }
 
+.settings__hint {
+  font-family: var(--qv-font-serif);
+  font-size: 0.85rem;
+  opacity: 0.75;
+  max-width: 60ch;
+}
+
+.savepoint-create {
+  display: flex;
+  gap: 0.6rem;
+  margin: 0.75rem 0 1rem;
+
+  input {
+    flex: 1;
+    max-width: 320px;
+    background: var(--qv-ivory);
+    border: 1px solid var(--qv-gold);
+    border-radius: 6px;
+    padding: 0.5rem 0.8rem;
+    font-family: var(--qv-font-serif);
+  }
+
+  button {
+    background: var(--qv-oxblood);
+    border: 1px solid var(--qv-gold);
+    color: var(--qv-ivory);
+    border-radius: 6px;
+    padding: 0.5rem 1rem;
+    font-family: var(--qv-font-ui);
+    font-size: 0.8rem;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.savepoint-list {
+  list-style: none;
+  margin: 0 0 1rem;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  max-width: 500px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0.8rem;
+    border: 1px solid rgba(184, 147, 74, 0.4);
+    border-radius: 6px;
+  }
+
+  button {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--qv-gold);
+    color: var(--qv-champagne);
+    border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    font-family: var(--qv-font-ui);
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.savepoint-list__label {
+  font-family: var(--qv-font-serif);
+}
+
+.savepoint-list__meta {
+  font-family: var(--qv-font-ui);
+  font-size: 0.7rem;
+  opacity: 0.6;
+}
+
 .gm-toggle {
   display: flex;
   align-items: center;

@@ -3,6 +3,8 @@ import { RouterLink } from '@angular/router';
 import { Modal } from '../../../shared/ui/modal/modal';
 import { AiProvidersApiService, ProviderStatus } from '../../../core/ai/ai-providers-api.service';
 import { GmModeService } from '../../../core/gm/gm-mode.service';
+import { SavepointsApiService, SavepointSummary } from '../../../core/state/savepoints-api.service';
+import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 
 type SettingsSection = 'simulation' | 'appearance' | 'story' | 'ai' | 'gm' | 'backup' | 'privacy';
 
@@ -38,6 +40,8 @@ const FALLBACK_ORDER = ['Gemini', 'OpenAI', 'Claude', 'Manual Relay'];
 })
 export class SettingsScreen {
   private readonly api = inject(AiProvidersApiService);
+  private readonly savepointsApi = inject(SavepointsApiService);
+  private readonly store = inject(SimulationStateStore);
   protected readonly gmMode = inject(GmModeService);
 
   protected readonly nav = SETTINGS_NAV;
@@ -62,6 +66,12 @@ export class SettingsScreen {
   protected readonly connectError = signal<string | null>(null);
   protected readonly connecting = signal(false);
 
+  protected readonly savepoints = signal<SavepointSummary[]>([]);
+  protected readonly savepointsLoading = signal(true);
+  protected readonly newSavepointLabel = signal('');
+  protected readonly savepointBusy = signal(false);
+  protected readonly savepointError = signal<string | null>(null);
+
   constructor() {
     this.api.list().subscribe({
       next: (list) => {
@@ -69,6 +79,55 @@ export class SettingsScreen {
         this.providersLoading.set(false);
       },
       error: () => this.providersLoading.set(false),
+    });
+
+    this.refreshSavepoints();
+  }
+
+  private refreshSavepoints(): void {
+    this.savepointsLoading.set(true);
+    this.savepointsApi.list().subscribe({
+      next: (list) => {
+        this.savepoints.set(list);
+        this.savepointsLoading.set(false);
+      },
+      error: () => this.savepointsLoading.set(false),
+    });
+  }
+
+  protected createSavepoint(): void {
+    const label = this.newSavepointLabel().trim();
+    if (!label) return;
+
+    this.savepointBusy.set(true);
+    this.savepointError.set(null);
+
+    this.savepointsApi.create(label).subscribe({
+      next: () => {
+        this.newSavepointLabel.set('');
+        this.savepointBusy.set(false);
+        this.refreshSavepoints();
+      },
+      error: (err) => {
+        this.savepointError.set(err?.error?.error ?? 'Save Point konnte nicht erstellt werden.');
+        this.savepointBusy.set(false);
+      },
+    });
+  }
+
+  protected restoreSavepoint(id: string): void {
+    this.savepointBusy.set(true);
+    this.savepointError.set(null);
+
+    this.savepointsApi.restore(id).subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.savepointBusy.set(false);
+      },
+      error: (err) => {
+        this.savepointError.set(err?.error?.error ?? 'Save Point konnte nicht wiederhergestellt werden.');
+        this.savepointBusy.set(false);
+      },
     });
   }
 
