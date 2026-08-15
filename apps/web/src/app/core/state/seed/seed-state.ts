@@ -4,6 +4,7 @@ import { Relationship, RelationshipDimensions } from '../models/relationship.mod
 import { Location } from '../models/location.model';
 import { Farm } from '../models/farm.model';
 import { FinanceTransaction } from '../models/finance.model';
+import { WorldEvent, WorldStatus } from '../models/world-status.model';
 
 /**
  * Default player setup per simulation-master-prompt-v3.md §132 (Default-Hof) —
@@ -287,6 +288,37 @@ const financeLedger: FinanceTransaction[] = [
   { id: 'txn_4', date: '11. April 1813', description: 'Pacht (Quartal)', amount: -6 },
 ];
 
+const worldStatus: WorldStatus = {
+  londonSeasonStatus: 'gerade erst begonnen',
+  socialMood: 'neugierig, abwartend',
+  region: 'ländliches Umland Londons',
+  weather: 'leichter Nebel, mild',
+};
+
+const worldEvents: WorldEvent[] = [
+  {
+    id: 'event_1',
+    category: 'social',
+    title: 'Die Season hat begonnen',
+    description: 'Die ersten Kutschen mit jungen Damen und ihren Müttern sind in Richtung London aufgebrochen.',
+    date: '10. April 1813',
+  },
+  {
+    id: 'event_2',
+    category: 'local',
+    title: 'Neuer Pächter am Nachbarhof',
+    description: 'Die Braddocks haben den leerstehenden Hof im Westen übernommen.',
+    date: '8. April 1813',
+  },
+  {
+    id: 'event_3',
+    category: 'economic',
+    title: 'Getreidepreise ziehen an',
+    description: 'Auf dem Wochenmarkt wird über steigende Preise für Weizen gesprochen.',
+    date: '11. April 1813',
+  },
+];
+
 export function createSeedState(): SimulationState {
   return {
     simulationId: 'sim_default',
@@ -308,5 +340,7 @@ export function createSeedState(): SimulationState {
     openThreads: [],
     farm: playerFarm,
     financeLedger,
+    worldStatus,
+    worldEvents,
   };
 }

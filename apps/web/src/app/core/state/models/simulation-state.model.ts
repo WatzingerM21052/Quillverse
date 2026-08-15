@@ -7,6 +7,7 @@ import { Letter } from './letter.model';
 import { CanonEvent } from './canon-event.model';
 import { Farm, Season } from './farm.model';
 import { FinanceTransaction } from './finance.model';
+import { WorldEvent, WorldStatus } from './world-status.model';
 
 /**
  * The single source of truth (§77, §86, A6). No AI model, chat log, or browser
@@ -29,4 +30,6 @@ export interface SimulationState {
   openThreads: string[];
   farm: Farm;
   financeLedger: FinanceTransaction[];
+  worldStatus: WorldStatus;
+  worldEvents: WorldEvent[];
 }

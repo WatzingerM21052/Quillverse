@@ -5,6 +5,7 @@ import { StoryScreen } from './features/story/story-screen/story-screen';
 import { CharactersScreen } from './features/characters/characters-screen/characters-screen';
 import { RelationshipsScreen } from './features/relationships/relationships-screen/relationships-screen';
 import { EstateScreen } from './features/estate/estate-screen/estate-screen';
+import { WorldScreen } from './features/world/world-screen/world-screen';
 
 export const routes: Routes = [
   {
@@ -13,11 +14,7 @@ export const routes: Routes = [
     children: [
       { path: '', component: StoryScreen },
       { path: 'characters', component: CharactersScreen },
-      {
-        path: 'world',
-        component: PlaceholderScreen,
-        data: { title: 'World', description: 'Das lebende Welt-Dashboard: Datum, London Season, gesellschaftliche Stimmung, Wetter.' },
-      },
+      { path: 'world', component: WorldScreen },
       { path: 'relationships', component: RelationshipsScreen },
       {
         path: 'map',

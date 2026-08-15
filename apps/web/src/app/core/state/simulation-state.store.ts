@@ -21,6 +21,8 @@ export class SimulationStateStore {
   readonly financeLedger = computed(() => this.state().financeLedger);
   readonly currentSeason = computed(() => this.state().currentSeason);
   readonly currentWorldDate = computed(() => this.state().currentWorldDate);
+  readonly worldStatus = computed(() => this.state().worldStatus);
+  readonly worldEvents = computed(() => this.state().worldEvents);
 
   readonly knownCharacters = computed(() =>
     Object.values(this.state().characters).filter((character) => character.id !== this.state().playerId),

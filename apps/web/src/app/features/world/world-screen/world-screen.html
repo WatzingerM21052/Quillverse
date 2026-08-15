@@ -1,0 +1,31 @@
+<div class="world">
+  <h1 class="world__title">World</h1>
+
+  <section class="almanac">
+    <div class="almanac__date">{{ worldDate() }}</div>
+    <dl class="almanac__facts">
+      <dt>London Season</dt>
+      <dd>{{ status().londonSeasonStatus }}</dd>
+      <dt>Gesellschaftliche Stimmung</dt>
+      <dd>{{ status().socialMood }}</dd>
+      <dt>Region</dt>
+      <dd>{{ status().region }}</dd>
+      <dt>Wetter</dt>
+      <dd>{{ status().weather }}</dd>
+    </dl>
+  </section>
+
+  <section class="events">
+    <h2>Was man sich erzählt</h2>
+    <div class="events__grid">
+      @for (event of events(); track event.id) {
+        <article class="event-card">
+          <span class="event-card__category">{{ categoryLabels[event.category] }}</span>
+          <h3>{{ event.title }}</h3>
+          <p>{{ event.description }}</p>
+          <span class="event-card__date">{{ event.date }}</span>
+        </article>
+      }
+    </div>
+  </section>
+</div>
