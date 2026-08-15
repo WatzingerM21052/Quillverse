@@ -19,6 +19,8 @@
   --qv-font-display: 'Cormorant Garamond', 'Times New Roman', serif;
   --qv-font-serif: 'EB Garamond', 'Georgia', serif;
   --qv-font-ui: 'Inter', system-ui, sans-serif;
+  /* Short headings/greetings only (§61) — long letters stay in the readable serif. */
+  --qv-font-hand: 'Mrs Saint Delafield', cursive;
 }
 
 * {

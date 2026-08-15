@@ -7,6 +7,7 @@ import { RelationshipsScreen } from './features/relationships/relationships-scre
 import { EstateScreen } from './features/estate/estate-screen/estate-screen';
 import { WorldScreen } from './features/world/world-screen/world-screen';
 import { SocietyScreen } from './features/society/society-screen/society-screen';
+import { LettersScreen } from './features/letters/letters-screen/letters-screen';
 
 export const routes: Routes = [
   {
@@ -24,11 +25,7 @@ export const routes: Routes = [
       },
       { path: 'estate', component: EstateScreen },
       { path: 'society', component: SocietyScreen },
-      {
-        path: 'letters',
-        component: PlaceholderScreen,
-        data: { title: 'Letters', description: 'Eingegangene und versandte Briefe, Entwürfe, Einladungen — kein E-Mail-Composer, ein Schreibtisch.' },
-      },
+      { path: 'letters', component: LettersScreen },
       {
         path: 'journal',
         component: PlaceholderScreen,

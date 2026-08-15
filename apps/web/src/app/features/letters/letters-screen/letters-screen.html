@@ -1,0 +1,51 @@
+<div class="letters">
+  <h1 class="letters__title">Correspondence</h1>
+
+  <div class="desk">
+    <section class="pile">
+      <h2>Eingegangen</h2>
+      @if (received().length === 0) {
+        <p class="pile__empty">Noch keine Briefe erhalten.</p>
+      } @else {
+        <ul>
+          @for (letter of received(); track letter.id) {
+            <li>
+              <button type="button" class="letter-row" (click)="open(letter.id)">
+                <span class="letter-row__seal"></span>
+                <span class="letter-row__from">{{ senderName(letter.senderId) }}</span>
+                <span class="letter-row__status">{{ statusLabels[letter.status] }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+
+    <section class="pile">
+      <h2>Versandt</h2>
+      @if (sent().length === 0) {
+        <p class="pile__empty">Noch keine Briefe versandt.</p>
+      } @else {
+        <ul>
+          @for (letter of sent(); track letter.id) {
+            <li>
+              <button type="button" class="letter-row" (click)="open(letter.id)">
+                <span class="letter-row__seal"></span>
+                <span class="letter-row__from">an {{ senderName(letter.recipientId) }}</span>
+                <span class="letter-row__status">{{ statusLabels[letter.status] }}</span>
+              </button>
+            </li>
+          }
+        </ul>
+      }
+    </section>
+  </div>
+
+  @if (selectedLetter(); as letter) {
+    <qv-modal (closed)="close()">
+      <p class="letter-heading">{{ senderName(letter.senderId) }}</p>
+      <p class="letter-content">{{ letter.content }}</p>
+      <p class="letter-status">{{ statusLabels[letter.status] }} · {{ letter.dateWritten }}</p>
+    </qv-modal>
+  }
+</div>

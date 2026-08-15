@@ -6,6 +6,7 @@ import { Farm } from '../models/farm.model';
 import { FinanceTransaction } from '../models/finance.model';
 import { WorldEvent, WorldStatus } from '../models/world-status.model';
 import { SocialCalendarEntry } from '../models/social-calendar.model';
+import { Letter } from '../models/letter.model';
 
 /**
  * Default player setup per simulation-master-prompt-v3.md §132 (Default-Hof) —
@@ -191,6 +192,69 @@ const sister: Character = {
   memoryIds: [],
 };
 
+const UNCLE_ID = 'char_thomas_hale';
+
+const uncle: Character = {
+  id: UNCLE_ID,
+  name: 'Thomas Hale',
+  isCanon: false,
+  isPlayer: false,
+  appearance: {
+    height: 'groß',
+    build: 'kräftig',
+    face: 'wettergegerbt, Bruder von Matthias' + "'" + ' verstorbenem Vater',
+    hair: 'ergraut',
+    eyes: 'braun',
+    voice: 'laut, herzlich',
+    posture: 'aufrecht',
+    typicalExpression: 'joviale Zurückhaltung',
+    hands: 'schwielig',
+    grooming: 'einfach',
+    clothing: 'Händlerkleidung',
+    distinguishingFeatures: '—',
+    generalPresence: 'entfernt, aber verlässlich',
+  },
+  visualState: {
+    characterId: UNCLE_ID,
+    basePortrait: 'asset://character/thomas/base',
+    currentOutfit: 'travel_coat',
+    currentHairState: 'neutral',
+    currentAge: '51',
+    currentCondition: 'healthy',
+    availableExpressions: ['neutral'],
+  },
+  personality: { traits: ['herzlich', 'geschäftstüchtig'] },
+  goals: {
+    shortTerm: [],
+    midTerm: [],
+    longTerm: [],
+    currentWorries: [],
+    currentObligations: [],
+    currentPriorities: [],
+    plannedActions: [],
+    currentlyImportantPeople: [PLAYER_ID],
+  },
+  playerKnowledge: ['Bruder des verstorbenen Vaters', 'Kornhändler in Bristol'],
+  gmState: {},
+  locationId: null,
+  memoryIds: [],
+};
+
+const letters: Letter[] = [
+  {
+    id: 'letter_1',
+    senderId: UNCLE_ID,
+    recipientId: PLAYER_ID,
+    dateWritten: '3. April 1813',
+    dateSent: '3. April 1813',
+    dateArrived: '9. April 1813',
+    content:
+      'Mein lieber Matthias,\n\nich hoffe, dieser Brief findet Euch und Eure Mutter bei guter Gesundheit. Die Geschäfte hier in Bristol laufen gut, und ich habe an Deinen Vater gedacht, als der Weizenpreis diese Woche wieder anzog...',
+    status: 'delivered',
+    knownBy: [PLAYER_ID, UNCLE_ID],
+  },
+];
+
 const farm: Location = {
   id: FARM_ID,
   name: 'Der Hale-Hof',
@@ -343,11 +407,12 @@ export function createSeedState(): SimulationState {
       [PLAYER_ID]: player,
       [MOTHER_ID]: mother,
       [SISTER_ID]: sister,
+      [UNCLE_ID]: uncle,
     },
     relationships: [playerToMother, playerToSister],
     locations: { [FARM_ID]: farm },
     memories: {},
-    letters: {},
+    letters: Object.fromEntries(letters.map((letter) => [letter.id, letter])),
     canonEvents: {},
     openThreads: [],
     farm: playerFarm,

@@ -30,6 +30,14 @@ export class SimulationStateStore {
   readonly socialAccessLevel = computed(() => this.state().socialAccessLevel);
   readonly socialLadder = computed(() => this.worldPack().socialLadder);
 
+  readonly receivedLetters = computed(() =>
+    Object.values(this.state().letters).filter((letter) => letter.recipientId === this.state().playerId),
+  );
+
+  readonly sentLetters = computed(() =>
+    Object.values(this.state().letters).filter((letter) => letter.senderId === this.state().playerId),
+  );
+
   readonly knownCharacters = computed(() =>
     Object.values(this.state().characters).filter((character) => character.id !== this.state().playerId),
   );
