@@ -108,6 +108,66 @@
   margin: 0 0 1rem;
 }
 
+.gm-hint {
+  font-family: var(--qv-font-serif);
+  font-size: 0.8rem;
+  opacity: 0.7;
+  margin: 0 0 0.75rem;
+}
+
+.gm-edit-trigger {
+  background: none;
+  border: 1px dashed var(--qv-gold);
+  color: var(--qv-ivory);
+  border-radius: 4px;
+  padding: 0.15rem 0.5rem;
+  font-family: inherit;
+  font-size: inherit;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(184, 147, 74, 0.15);
+  }
+}
+
+.gm-edit {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+
+  select,
+  input {
+    background: var(--qv-ivory);
+    color: var(--qv-mahogany);
+    border: 1px solid var(--qv-gold);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.8rem;
+  }
+
+  button {
+    background: var(--qv-oxblood);
+    color: var(--qv-ivory);
+    border: 1px solid var(--qv-gold);
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+.gm-edit__error {
+  flex-basis: 100%;
+  color: var(--qv-oxblood);
+  font-size: 0.75rem;
+}
+
 .gm-npc-table {
   width: 100%;
   border-collapse: collapse;

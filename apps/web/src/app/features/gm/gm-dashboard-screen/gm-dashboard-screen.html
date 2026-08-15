@@ -89,6 +89,7 @@
 
   <section class="gm-npcs">
     <h2>NPC Locations &amp; Goals</h2>
+    <p class="gm-hint">Ort anklicken, um ihn manuell zu korrigieren (§152) — jede Korrektur wird im Causality Log protokolliert.</p>
     <table class="gm-npc-table">
       <thead>
         <tr>
@@ -102,12 +103,72 @@
         @for (character of allCharacters(); track character.id) {
           <tr>
             <td>{{ character.name }}{{ character.isPlayer ? ' (Player)' : '' }}</td>
-            <td>{{ character.locationId ?? '—' }}</td>
+            <td>
+              @if (editingCharacterId() === character.id) {
+                <div class="gm-edit">
+                  <select [value]="editLocationId()" (change)="editLocationId.set($any($event.target).value)">
+                    <option value="">— unbekannt —</option>
+                    @for (location of allLocations(); track location.id) {
+                      <option [value]="location.id">{{ location.name }}</option>
+                    }
+                  </select>
+                  <input
+                    type="text"
+                    placeholder="Grund der Korrektur"
+                    [value]="editReason()"
+                    (input)="editReason.set($any($event.target).value)"
+                  />
+                  <button type="button" [disabled]="correctionSaving() || !editReason().trim()" (click)="saveCorrection()">
+                    Save
+                  </button>
+                  <button type="button" (click)="cancelEdit()">Cancel</button>
+                  @if (correctionError()) {
+                    <span class="gm-edit__error">{{ correctionError() }}</span>
+                  }
+                </div>
+              } @else {
+                <button type="button" class="gm-edit-trigger" (click)="startEdit(character.id, character.locationId)">
+                  {{ character.locationId ?? '—' }}
+                </button>
+              }
+            </td>
             <td>{{ character.goals.currentPriorities.join(', ') || '—' }}</td>
             <td>{{ character.goals.currentWorries.join(', ') || '—' }}</td>
           </tr>
         }
       </tbody>
     </table>
+  </section>
+
+  <section class="gm-npcs">
+    <h2>Memory Inspector</h2>
+    @if (allMemories().length === 0) {
+      <p class="gm-hint">Noch keine Erinnerungen erfasst.</p>
+    } @else {
+      <table class="gm-npc-table">
+        <thead>
+          <tr>
+            <th>Fact</th>
+            <th>Importance</th>
+            <th>Status</th>
+            <th>Reach</th>
+            <th>Fading</th>
+            <th>Involves</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (memory of allMemories(); track memory.id) {
+            <tr>
+              <td>{{ memory.fact }}</td>
+              <td>{{ memory.importance }}</td>
+              <td>{{ memory.status }}</td>
+              <td>{{ memory.reach }}</td>
+              <td>{{ memory.fading }}</td>
+              <td>{{ memory.entityIds.join(', ') }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    }
   </section>
 </div>
