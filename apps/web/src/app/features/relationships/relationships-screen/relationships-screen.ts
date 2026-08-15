@@ -5,6 +5,10 @@ import { Character } from '../../../core/state/models/character.model';
 import { Relationship } from '../../../core/state/models/relationship.model';
 import { describeDimension } from '../../../core/state/relationship-language';
 import { GmModeService } from '../../../core/gm/gm-mode.service';
+import { API_BASE_URL } from '../../../core/config/api.config';
+
+/** Seed data ships unused placeholder URIs (e.g. "asset://character/anne/base") — never render those as an <img src>. */
+const PLACEHOLDER_SCHEME = 'asset://';
 
 interface WebNode {
   character: Character;
@@ -49,5 +53,9 @@ export class RelationshipsScreen {
 
   protected select(id: EntityId): void {
     this.selectedId.set(id === this.selectedId() ? null : id);
+  }
+
+  protected portraitUrl(basePortrait: string): string | null {
+    return basePortrait.startsWith(PLACEHOLDER_SCHEME) ? null : `${API_BASE_URL}${basePortrait}`;
   }
 }

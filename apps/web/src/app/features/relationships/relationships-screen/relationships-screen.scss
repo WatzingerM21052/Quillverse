@@ -53,6 +53,13 @@
   border-radius: 50%;
   background: rgba(184, 147, 74, 0.3);
   border: 2px solid var(--qv-gold);
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
 }
 
 .web__node {
@@ -76,6 +83,13 @@
     border-radius: 50%;
     background: rgba(233, 223, 199, 0.1);
     border: 1px solid var(--qv-gold);
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
   }
 
   &.is-selected .web__node-portrait {

@@ -9,7 +9,11 @@
     </svg>
 
     <div class="web__player" style="left: 50%; top: 50%">
-      <div class="web__player-portrait"></div>
+      <div class="web__player-portrait">
+        @if (portraitUrl(player().visualState.basePortrait); as url) {
+          <img [src]="url" [alt]="player().name" />
+        }
+      </div>
       <span>{{ player().name }}</span>
     </div>
 
@@ -22,7 +26,11 @@
         [style.top.%]="node.y"
         (click)="select(node.character.id)"
       >
-        <div class="web__node-portrait"></div>
+        <div class="web__node-portrait">
+          @if (portraitUrl(node.character.visualState.basePortrait); as url) {
+            <img [src]="url" [alt]="node.character.name" />
+          }
+        </div>
         <span>{{ node.character.name }}</span>
       </button>
     }

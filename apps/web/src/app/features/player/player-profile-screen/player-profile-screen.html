@@ -1,10 +1,20 @@
 <div class="player-profile">
   <div class="profile-header">
-    <div class="profile-header__portrait"></div>
+    <div class="profile-header__portrait">
+      @if (portraitUrl(player().visualState.basePortrait); as url) {
+        <img [src]="url" [alt]="player().name" />
+      }
+    </div>
     <div>
       <h1>{{ player().name }}</h1>
       <p class="profile-header__age">{{ player().visualState.currentAge }} Jahre</p>
       <p class="profile-header__origin">{{ origin }}</p>
+      <button type="button" class="profile-header__generate" [disabled]="generatingPortrait()" (click)="generatePortrait()">
+        {{ generatingPortrait() ? 'Erzeuge Portrait …' : 'Portrait generieren' }}
+      </button>
+      @if (portraitError()) {
+        <p class="profile-header__error">{{ portraitError() }}</p>
+      }
     </div>
   </div>
 
