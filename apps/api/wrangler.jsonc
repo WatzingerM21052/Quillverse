@@ -1,0 +1,23 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "quillverse-api",
+  "main": "src/index.ts",
+  "compatibility_date": "2026-08-15",
+  "observability": {
+    "enabled": true
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "quillverse-db",
+      "database_id": "b446b3cf-7412-4878-a9fe-0c503e5f32cd",
+      "migrations_dir": "./migrations"
+    }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "ASSETS",
+      "bucket_name": "quillverse-storage"
+    }
+  ]
+}

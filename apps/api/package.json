@@ -1,0 +1,22 @@
+{
+  "name": "quillverse-api",
+  "version": "1.0.0",
+  "description": "Quillverse Cloudflare Worker backend (D1 + R2 + AI provider adapters)",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "wrangler dev",
+    "deploy": "wrangler deploy",
+    "types": "wrangler types",
+    "db:migrate:local": "wrangler d1 migrations apply quillverse-db --local",
+    "db:migrate:remote": "wrangler d1 migrations apply quillverse-db --remote"
+  },
+  "dependencies": {
+    "hono": "^4.13.2"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260815.1",
+    "typescript": "^5.7.3",
+    "wrangler": "^4.123.0"
+  }
+}
