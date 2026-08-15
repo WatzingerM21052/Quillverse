@@ -23,18 +23,39 @@ docs/
   superpowers/plans/   detailed per-phase implementation plans, written as each phase starts
 ```
 
+Live at **https://watzingerm21052.github.io/Quillverse/** — redeploys automatically via
+GitHub Actions on every push to `main`.
+
 Inside `apps/web/src/app/`:
 
 ```text
 core/
   state/models/     world-agnostic state schema (Character, Relationship, Memory, CanonEvent,
-                     Location, Letter, Scene, Turn, SimulationState) — entity IDs throughout,
-                     patches not full rewrites (ui-master-prompt-v1.md §88, addendum-v1.1 A28)
+                     Location, Letter, Scene, Turn, SimulationState, Farm, Finance, WorldStatus,
+                     SocialCalendar, Chapter) — entity IDs throughout, patches not full
+                     rewrites (ui-master-prompt-v1.md §88, addendum-v1.1 A28)
+  state/seed/       mock SimulationState (Matthias Hale + family) so every screen has real
+                     data to render before the AI Orchestrator exists
+  state/simulation-state.store.ts   the single place every screen reads state from (§76-78)
   ai/               provider-independent AiProvider interface + request/response contract
-                     (addendum-v1.2-byok.md B38-B40)
-  world-pack/       the engine/content seam (see below)
+                     (addendum-v1.2-byok.md B38-B40) — not yet wired to a real backend
+  world-pack/       the engine/content seam (see below) + WORLD_PACKS registry
+shared/
+  ui/modal/         the one modal component used everywhere an overlay is needed
 features/
-  story/            Story Mode screen — the primary view (§9)
+  shell/            AppShell (nav rail/bottom bar) + PlaceholderScreen (unused for now,
+                     kept for future nav areas)
+  story/            Story Mode — the primary view (§9)
+  characters/       Character grid + detail sheet (§27-33)
+  relationships/    Relationship web (§34-36)
+  world/            Living-world almanac (§37-39)
+  map/              Fog-of-knowledge map + travel info (§40-43)
+  estate/           Farm overview, ledger, calendar (§44-49)
+  society/          Social access ladder + invitations (§50-58)
+  letters/          Correspondence desk (§59-63)
+  journal/          Chapters + important memories (§64-65)
+  timeline/         Chronological events + Canon Divergence view (§66-68)
+  settings/         AI & Models shell — provider cards, Connect flow UI, no live calls
 ```
 
 ## The world-pack seam
@@ -54,13 +75,12 @@ packs for other settings, is deliberately deferred — see the roadmap below.
 | Phase | Status |
 |---|---|
 | 0 — Manual validation of the simulation design | skipped by request |
-| **1 — Core Foundation** (state schema, world-pack seam, AI provider abstraction, Story screen skeleton) | **in progress** |
-| 2 — Story MVP (wire AI Orchestrator, autosave, character sheets) | not started |
-| 3 — World (Map, Estate, Calendar, Letters, Timeline) | not started |
-| 4 — Social (Relationships, Society, Whistledown, Ball UI) | not started |
-| 5 — Advanced Memory (retrieval, snapshots, canon-divergence view, GM dashboard) | not started |
-| 6 — Multi-Provider (OpenAI/Anthropic/Gemini adapters, fallback) | not started |
-| 7 — Visual Polish (weather, expressions, cinematic artwork, audio) | not started |
+| **1 — Core Foundation** (state schema, world-pack seam, AI provider interface, nav shell + all 10 screens with mock data) | **mostly done** — no real AI wiring yet, by request |
+| 2 — Story MVP (wire AI Orchestrator to a real backend, autosave, state-mutating actions) | not started |
+| 3 — World / 4 — Social | UI built ahead of schedule (Map/Estate/World/Society/Letters/Journal/Timeline/Relationships all render from seed data); still needs live state changes |
+| 5 — Advanced Memory (retrieval, snapshots, GM dashboard) | not started |
+| 6 — Multi-Provider (OpenAI/Anthropic/Gemini adapters, fallback, Cloudflare Worker backend) | not started — Settings UI shell exists, no network calls |
+| 7 — Visual Polish (weather, expressions, cinematic artwork, audio, real portraits) | not started — everything is placeholder geometry today |
 | 8 — Multi-World (author additional world packs) | not started |
 
 ## Development
