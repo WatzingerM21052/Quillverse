@@ -59,6 +59,13 @@ export const routes: Routes = [
         path: 'gm',
         loadComponent: () => import('./features/gm/gm-dashboard-screen/gm-dashboard-screen').then((m) => m.GmDashboardScreen),
       },
+      {
+        path: 'new-character',
+        loadComponent: () =>
+          import('./features/character-creator/character-creator-screen/character-creator-screen').then(
+            (m) => m.CharacterCreatorScreen,
+          ),
+      },
     ],
   },
 ];

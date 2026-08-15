@@ -1,0 +1,138 @@
+<div class="creator">
+  <h1 class="creator__title">Neue Zeitlinie beginnen</h1>
+  <p class="creator__hint">
+    Beantworte so viel oder so wenig wie du möchtest — was du leer lässt, füllt die KI mit einem
+    glaubwürdigen Vorschlag (§131). Der Ausgangspunkt bleibt immer ein gewöhnlicher, armer, aber
+    respektabler Pächter im ländlichen Umland Londons — das ist die feste Ausgangslage der Simulation,
+    kein Adel, keine geheime Herkunft.
+  </p>
+
+  @if (!draft()) {
+    <section class="creator__form">
+      <h2>Charakter</h2>
+      <label>Name<input type="text" (input)="setAnswer('characterName', $any($event.target).value)" /></label>
+      <label>Alter<input type="text" (input)="setAnswer('age', $any($event.target).value)" /></label>
+      <label>Geschlecht<input type="text" (input)="setAnswer('gender', $any($event.target).value)" /></label>
+      <label
+        >Aussehen<textarea rows="2" (input)="setAnswer('appearanceNotes', $any($event.target).value)"></textarea
+      ></label>
+      <label
+        >Persönlichkeit, Humor<textarea rows="2" (input)="setAnswer('personalityNotes', $any($event.target).value)"></textarea
+      ></label>
+      <label
+        >Stärken &amp; Schwächen<textarea
+          rows="2"
+          (input)="setAnswer('strengthsWeaknesses', $any($event.target).value)"
+        ></textarea
+      ></label>
+      <label>Bildung (Lesen/Schreiben)<input type="text" (input)="setAnswer('education', $any($event.target).value)" /></label>
+      <label
+        >Besondere Fähigkeiten<input type="text" (input)="setAnswer('specialSkills', $any($event.target).value)"
+      /></label>
+      <label
+        >Bisherige Lebensgeschichte<textarea rows="3" (input)="setAnswer('backstory', $any($event.target).value)"></textarea
+      ></label>
+      <label
+        >Persönliche Ziele<textarea rows="2" (input)="setAnswer('personalGoals', $any($event.target).value)"></textarea
+      ></label>
+
+      <h2>Familie</h2>
+      <label
+        >Eltern, Geschwister, Verhältnis, Haushalt<textarea
+          rows="3"
+          (input)="setAnswer('family', $any($event.target).value)"
+        ></textarea
+      ></label>
+
+      <h2>Hof</h2>
+      <label
+        >Größe, Besitz/Pacht, Tiere, Schulden, Einkommen<textarea
+          rows="3"
+          (input)="setAnswer('farmDetails', $any($event.target).value)"
+        ></textarea
+      ></label>
+
+      <h2>Gewünschter Ton</h2>
+      <label
+        >Romantikintensität
+        <input type="text" placeholder="z. B. eher zurückhaltend" (input)="setTone('romanceIntensity', $any($event.target).value)" />
+      </label>
+      <label
+        >Gesellschaftliche Intrigen
+        <input type="text" (input)="setTone('socialIntrigueDepth', $any($event.target).value)" />
+      </label>
+      <label>Hof-/Wirtschaftstiefe<input type="text" (input)="setTone('farmEconomyDepth', $any($event.target).value)" /></label>
+      <label
+        >Historische Genauigkeit
+        <input type="text" (input)="setTone('historicalAccuracy', $any($event.target).value)" />
+      </label>
+      <label>Erzähltempo<input type="text" (input)="setTone('narrativePace', $any($event.target).value)" /></label>
+
+      @if (error()) {
+        <p class="creator__error">{{ error() }}</p>
+      }
+
+      <button type="button" class="creator__submit" [disabled]="generating()" (click)="generateDraft()">
+        {{ generating() ? 'Erzeuge Vorschlag …' : 'Vorschlag generieren' }}
+      </button>
+    </section>
+  } @else {
+    <section class="creator__summary">
+      <h2>{{ draft()!.player.name }}</h2>
+      <p class="creator__opening">{{ draft()!.openingSummary }}</p>
+
+      <div class="creator__summary-grid">
+        <div>
+          <h3>Aussehen</h3>
+          <p>
+            {{ draft()!.player.appearance['height'] }}, {{ draft()!.player.appearance['build'] }}.
+            {{ draft()!.player.appearance['face'] }}, {{ draft()!.player.appearance['hair'] }} Haar,
+            {{ draft()!.player.appearance['eyes'] }} Augen.
+          </p>
+        </div>
+        <div>
+          <h3>Persönlichkeit</h3>
+          <p>{{ draft()!.player.personalityTraits.join(', ') }}</p>
+        </div>
+        <div>
+          <h3>Hintergrund</h3>
+          <p>{{ draft()!.player.backstory }}</p>
+        </div>
+        @if (draft()!.family.length > 0) {
+          <div>
+            <h3>Familie</h3>
+            <ul>
+              @for (member of draft()!.family; track member.name) {
+                <li>{{ member.name }} ({{ member.relation }}, {{ member.age }})</li>
+              }
+            </ul>
+          </div>
+        }
+        <div>
+          <h3>Hof</h3>
+          <p>
+            {{ draft()!.farm.landAcres }} Acres, {{ draft()!.farm.annualRent }}. {{ draft()!.farm.livestock }}.
+            Vorräte: {{ draft()!.farm.supplies }}.
+          </p>
+        </div>
+      </div>
+
+      <label class="creator__label-field"
+        >Name dieser Zeitlinie<input type="text" [value]="label()" (input)="label.set($any($event.target).value)"
+      /></label>
+
+      @if (error()) {
+        <p class="creator__error">{{ error() }}</p>
+      }
+
+      <div class="creator__summary-actions">
+        <button type="button" [disabled]="generating()" (click)="regenerate()">
+          {{ generating() ? 'Erzeuge neuen Vorschlag …' : 'Nochmal versuchen' }}
+        </button>
+        <button type="button" class="creator__submit" [disabled]="confirming() || !label().trim()" (click)="confirmAndStart()">
+          {{ confirming() ? 'Erstelle Zeitlinie …' : 'Bestätigen & Geschichte beginnen' }}
+        </button>
+      </div>
+    </section>
+  }
+</div>
