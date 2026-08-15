@@ -29,6 +29,10 @@ jobs:
 
       - run: npm ci
 
+      # worker-configuration.d.ts is generated from wrangler.jsonc and gitignored (like .dev.vars) —
+      # a fresh checkout has no Env type members without this.
+      - run: npx wrangler types
+
       - run: npx tsc --noEmit -p .
 
       - run: npx tsc --noEmit -p tsconfig.vitest.json
