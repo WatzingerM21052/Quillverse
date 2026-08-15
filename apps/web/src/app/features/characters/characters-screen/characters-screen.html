@@ -4,7 +4,11 @@
   <div class="characters__grid">
     @for (character of characters(); track character.id) {
       <button type="button" class="character-card" (click)="select(character.id)">
-        <div class="character-card__portrait"></div>
+        <div class="character-card__portrait">
+          @if (portraitUrl(character.visualState.basePortrait); as url) {
+            <img [src]="url" [alt]="character.name" />
+          }
+        </div>
         <span class="character-card__name">{{ character.name }}</span>
       </button>
     }
@@ -12,7 +16,23 @@
 
   @if (selectedCharacter(); as character) {
     <qv-modal [title]="character.name" (closed)="closeSheet()">
-      <div class="character-sheet__portrait"></div>
+      <div class="character-sheet__portrait">
+        @if (portraitUrl(character.visualState.basePortrait); as url) {
+          <img [src]="url" [alt]="character.name" />
+        }
+      </div>
+
+      <button
+        type="button"
+        class="portrait-generate"
+        [disabled]="generatingPortraitId() === character.id"
+        (click)="generatePortrait(character.id)"
+      >
+        {{ generatingPortraitId() === character.id ? 'Erzeuge Portrait …' : 'Portrait generieren' }}
+      </button>
+      @if (portraitError()) {
+        <p class="api-key-error">{{ portraitError() }}</p>
+      }
 
       <section class="character-sheet__section">
         <h3>Was du über sie weißt</h3>
