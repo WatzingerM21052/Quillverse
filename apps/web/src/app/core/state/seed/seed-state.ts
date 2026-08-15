@@ -10,6 +10,7 @@ import { Letter } from '../models/letter.model';
 import { Chapter } from '../models/chapter.model';
 import { Memory } from '../models/memory.model';
 import { InventoryItem } from '../models/inventory.model';
+import { WhistledownIssue } from '../models/whistledown.model';
 
 /**
  * Default player setup per simulation-master-prompt-v3.md §132 (Default-Hof) —
@@ -512,6 +513,19 @@ const inventory: InventoryItem[] = [
   },
 ];
 
+const whistledownIssues: WhistledownIssue[] = [
+  {
+    id: 'whistledown_1',
+    issueNumber: 1,
+    date: '10. April 1813',
+    headline: 'Die Saison ist eröffnet',
+    body: [
+      'Dieser Autorin ist zu Ohren gekommen, dass die ersten Kutschen bereits Richtung London aufgebrochen sind — beladen mit hoffnungsvollen jungen Damen und ihren nicht minder hoffnungsvollen Müttern.',
+      'Wer in dieser Saison die Herzen — und, seien wir ehrlich, liebe Leserschaft, die Vermögen — erobern wird, bleibt abzuwarten. Diese Autorin wird, wie stets, ein wachsames Auge behalten.',
+    ],
+  },
+];
+
 export function createSeedState(): SimulationState {
   return {
     simulationId: 'sim_default',
@@ -545,5 +559,6 @@ export function createSeedState(): SimulationState {
     socialCalendar,
     chapters,
     inventory,
+    whistledownIssues,
   };
 }

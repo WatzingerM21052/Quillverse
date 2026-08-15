@@ -361,6 +361,19 @@ const worldEvents = [
   { id: 'event_3', category: 'economic', title: 'Getreidepreise ziehen an', description: 'Auf dem Wochenmarkt wird über steigende Preise für Weizen gesprochen.', date: '11. April 1813' },
 ];
 
+const whistledownIssues = [
+  {
+    id: 'whistledown_1',
+    issueNumber: 1,
+    date: '10. April 1813',
+    headline: 'Die Saison ist eröffnet',
+    body: [
+      'Dieser Autorin ist zu Ohren gekommen, dass die ersten Kutschen bereits Richtung London aufgebrochen sind — beladen mit hoffnungsvollen jungen Damen und ihren nicht minder hoffnungsvollen Müttern.',
+      'Wer in dieser Saison die Herzen — und, seien wir ehrlich, liebe Leserschaft, die Vermögen — erobern wird, bleibt abzuwarten. Diese Autorin wird, wie stets, ein wachsames Auge behalten.',
+    ],
+  },
+];
+
 const socialCalendar = [
   { id: 'social_1', title: "Lady Danbury's Evening", date: '20. April 1813', host: 'Lady Danbury', location: 'Danbury House, London', access: 'not-invited' },
 ];
@@ -428,6 +441,13 @@ const inventory = [
 for (const item of inventory) {
   lines.push(`INSERT INTO inventory (id, simulation_id, owner_id, name, description) VALUES (
   ${sql(item.id)}, ${sql(SIM_ID)}, ${sql(item.ownerId)}, ${sql(item.name)}, ${sql(item.description)}
+);`);
+}
+lines.push('');
+
+for (const issue of whistledownIssues) {
+  lines.push(`INSERT INTO whistledown_issues (id, simulation_id, issue_number, date, headline, body_json) VALUES (
+  ${sql(issue.id)}, ${sql(SIM_ID)}, ${sql(issue.issueNumber)}, ${sql(issue.date)}, ${sql(issue.headline)}, ${sqlJson(issue.body)}
 );`);
 }
 lines.push('');

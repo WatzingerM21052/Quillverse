@@ -11,6 +11,7 @@ import { WorldEvent, WorldStatus } from './world-status.model';
 import { SocialCalendarEntry } from './social-calendar.model';
 import { Chapter } from './chapter.model';
 import { InventoryItem } from './inventory.model';
+import { WhistledownIssue } from './whistledown.model';
 
 /**
  * The single source of truth (§77, §86, A6). No AI model, chat log, or browser
@@ -40,4 +41,5 @@ export interface SimulationState {
   socialCalendar: SocialCalendarEntry[];
   chapters: Chapter[];
   inventory: InventoryItem[];
+  whistledownIssues: WhistledownIssue[];
 }

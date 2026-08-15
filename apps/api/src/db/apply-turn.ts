@@ -260,6 +260,14 @@ export async function applyTurn(
     );
   }
 
+  for (const issue of patch.newWhistledownIssues ?? []) {
+    statements.push(
+      db
+        .prepare('INSERT INTO whistledown_issues (id, simulation_id, issue_number, date, headline, body_json) VALUES (?, ?, ?, ?, ?, ?)')
+        .bind(issue.id, simulationId, issue.issueNumber, issue.date, issue.headline, JSON.stringify(issue.body)),
+    );
+  }
+
   for (const location of patch.newLocations ?? []) {
     statements.push(
       db

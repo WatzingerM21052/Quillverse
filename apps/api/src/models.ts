@@ -23,6 +23,7 @@ export interface SimulationStateResponse {
   socialCalendar: unknown[];
   chapters: unknown[];
   inventory: InventoryItemResponse[];
+  whistledownIssues: WhistledownIssueResponse[];
 }
 
 export interface WardrobeItem {
@@ -45,6 +46,14 @@ export interface CharacterResponse {
   gmState: unknown;
   skills: Record<string, string>;
   wardrobe: WardrobeItem[];
+}
+
+export interface WhistledownIssueResponse {
+  id: string;
+  issueNumber: number;
+  date: string;
+  headline: string;
+  body: string[];
 }
 
 export interface InventoryItemResponse {
@@ -152,6 +161,7 @@ export interface ManualTurnPatch {
   newCharacters?: CharacterResponse[];
   newLocations?: LocationResponse[];
   newInventoryItems?: InventoryItemResponse[];
+  newWhistledownIssues?: WhistledownIssueResponse[];
   openThreadsAdd?: string[];
   openThreadsRemove?: string[];
 }

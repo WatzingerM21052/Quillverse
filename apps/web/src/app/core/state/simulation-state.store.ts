@@ -55,6 +55,7 @@ export class SimulationStateStore {
   readonly worldStatus = computed(() => this.state().worldStatus);
   readonly worldEvents = computed(() => this.state().worldEvents);
   readonly socialCalendar = computed(() => this.state().socialCalendar);
+  readonly whistledownIssues = computed(() => this.state().whistledownIssues);
 
   readonly worldPack = computed(() => WORLD_PACKS[this.state().worldPackId]);
   readonly socialAccessLevel = computed(() => this.state().socialAccessLevel);

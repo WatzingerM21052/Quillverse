@@ -6,6 +6,7 @@ import type {
   MemoryResponse,
   RelationshipResponse,
   SimulationStateResponse,
+  WhistledownIssueResponse,
 } from '../models';
 
 interface SimulationRow {
@@ -42,6 +43,14 @@ interface InventoryRow {
   owner_id: string;
   name: string;
   description: string;
+}
+
+interface WhistledownRow {
+  id: string;
+  issue_number: number;
+  date: string;
+  headline: string;
+  body_json: string;
 }
 
 interface RelationshipRow {
@@ -151,7 +160,7 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
 
   if (!simulation) return null;
 
-  const [characters, relationships, locations, memories, letters, worldEvents, socialCalendar, chapters, canonEvents, financeTransactions, inventory] =
+  const [characters, relationships, locations, memories, letters, worldEvents, socialCalendar, chapters, canonEvents, financeTransactions, inventory, whistledownIssues] =
     await Promise.all([
       db.prepare('SELECT * FROM characters WHERE simulation_id = ?').bind(simulationId).all<CharacterRow>(),
       db.prepare('SELECT * FROM relationships WHERE simulation_id = ?').bind(simulationId).all<RelationshipRow>(),
@@ -179,6 +188,10 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
         .prepare('SELECT id, owner_id, name, description FROM inventory WHERE simulation_id = ?')
         .bind(simulationId)
         .all<InventoryRow>(),
+      db
+        .prepare('SELECT id, issue_number, date, headline, body_json FROM whistledown_issues WHERE simulation_id = ? ORDER BY issue_number DESC')
+        .bind(simulationId)
+        .all<WhistledownRow>(),
     ]);
 
   const characterMap: Record<string, CharacterResponse> = {};
@@ -310,6 +323,15 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
     financeLedger: financeTransactions.results,
     inventory: inventory.results.map(
       (row): InventoryItemResponse => ({ id: row.id, ownerId: row.owner_id, name: row.name, description: row.description }),
+    ),
+    whistledownIssues: whistledownIssues.results.map(
+      (row): WhistledownIssueResponse => ({
+        id: row.id,
+        issueNumber: row.issue_number,
+        date: row.date,
+        headline: row.headline,
+        body: JSON.parse(row.body_json),
+      }),
     ),
   };
 }

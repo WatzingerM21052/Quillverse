@@ -113,6 +113,139 @@ h2 {
   }
 }
 
+.whistledown-section {
+  margin-top: 2.5rem;
+}
+
+.whistledown-latest {
+  display: block;
+  width: 100%;
+  max-width: 520px;
+  text-align: left;
+  background: var(--qv-cream);
+  color: var(--qv-mahogany);
+  border: 1px solid var(--qv-gold);
+  border-radius: 4px;
+  padding: 1.5rem 1.75rem;
+  cursor: pointer;
+  font-family: var(--qv-font-serif);
+
+  &:hover {
+    filter: brightness(0.97);
+  }
+
+  &__masthead {
+    display: block;
+    font-family: var(--qv-font-display);
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-align: center;
+    border-bottom: 1px solid var(--qv-mahogany);
+    padding-bottom: 0.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  &__date {
+    display: block;
+    font-size: 0.75rem;
+    text-align: center;
+    opacity: 0.7;
+    margin-bottom: 0.75rem;
+  }
+
+  &__headline {
+    font-family: var(--qv-font-display);
+    font-size: 1.4rem;
+    text-align: center;
+    margin: 0 0 0.75rem;
+  }
+
+  &__excerpt {
+    font-size: 0.9rem;
+    margin: 0;
+    column-count: 1;
+  }
+}
+
+.whistledown-archive__title {
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--qv-gold);
+  margin: 1.5rem 0 0.75rem;
+}
+
+.whistledown-archive {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 520px;
+
+  li {
+    border-bottom: 1px solid rgba(184, 147, 74, 0.3);
+  }
+
+  button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    background: none;
+    border: none;
+    color: var(--qv-ivory);
+    font-family: var(--qv-font-serif);
+    padding: 0.5rem 0.25rem;
+    cursor: pointer;
+    text-align: left;
+
+    &:hover {
+      color: var(--qv-gold);
+    }
+  }
+}
+
+.whistledown-archive__date {
+  opacity: 0.6;
+  font-size: 0.8rem;
+  white-space: nowrap;
+}
+
+.whistledown-issue {
+  background: var(--qv-cream);
+  color: var(--qv-mahogany);
+  margin: -2rem;
+  padding: 2rem;
+  border-radius: 0 0 10px 10px;
+  font-family: var(--qv-font-serif);
+
+  &__masthead {
+    font-family: var(--qv-font-display);
+    text-align: center;
+    letter-spacing: 0.12em;
+    border-bottom: 1px solid var(--qv-mahogany);
+    padding-bottom: 0.5rem;
+    margin: 0 0 0.4rem;
+  }
+
+  &__date {
+    text-align: center;
+    font-size: 0.75rem;
+    opacity: 0.7;
+    margin: 0 0 1rem;
+  }
+
+  &__headline {
+    font-family: var(--qv-font-display);
+    text-align: center;
+    margin: 0 0 1.25rem;
+  }
+
+  &__paragraph {
+    line-height: 1.6;
+  }
+}
+
 .invitation-detail {
   display: grid;
   grid-template-columns: auto 1fr;

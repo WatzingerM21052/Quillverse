@@ -30,6 +30,53 @@
     }
   </section>
 
+  <section class="whistledown-section">
+    <h2>Lady Whistledown's Society Papers</h2>
+    @if (whistledownIssues().length === 0) {
+      <p class="calendar-section__empty">Noch keine Ausgabe hat je von dir berichtet.</p>
+    } @else {
+      @for (issue of whistledownIssues(); track issue.id; let first = $first) {
+        @if (first) {
+          <button type="button" class="whistledown-latest" (click)="openWhistledown(issue)">
+            <span class="whistledown-latest__masthead">LADY WHISTLEDOWN'S SOCIETY PAPERS</span>
+            <span class="whistledown-latest__date">{{ issue.date }}</span>
+            <h3 class="whistledown-latest__headline">{{ issue.headline }}</h3>
+            <p class="whistledown-latest__excerpt">{{ issue.body[0] }}</p>
+          </button>
+        }
+      }
+
+      @if (whistledownIssues().length > 1) {
+        <h3 class="whistledown-archive__title">Archiv</h3>
+        <ul class="whistledown-archive">
+          @for (issue of whistledownIssues(); track issue.id; let first = $first) {
+            @if (!first) {
+              <li>
+                <button type="button" (click)="openWhistledown(issue)">
+                  <span>Nr. {{ issue.issueNumber }} — {{ issue.headline }}</span>
+                  <span class="whistledown-archive__date">{{ issue.date }}</span>
+                </button>
+              </li>
+            }
+          }
+        </ul>
+      }
+    }
+  </section>
+
+  @if (openIssue(); as issue) {
+    <qv-modal (closed)="closeWhistledown()">
+      <div class="whistledown-issue">
+        <p class="whistledown-issue__masthead">LADY WHISTLEDOWN'S SOCIETY PAPERS</p>
+        <p class="whistledown-issue__date">{{ issue.date }} · Nr. {{ issue.issueNumber }}</p>
+        <h2 class="whistledown-issue__headline">{{ issue.headline }}</h2>
+        @for (paragraph of issue.body; track $index) {
+          <p class="whistledown-issue__paragraph">{{ paragraph }}</p>
+        }
+      </div>
+    </qv-modal>
+  }
+
   @if (selectedEntry(); as entry) {
     <qv-modal [title]="entry.title" (closed)="close()">
       <dl class="invitation-detail">

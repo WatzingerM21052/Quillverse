@@ -56,6 +56,7 @@ const CHILD_TABLES = [
   'social_calendar',
   'chapters',
   'inventory',
+  'whistledown_issues',
 ] as const;
 
 /** Wholesale replace — a restore is a rollback, not a merge (§153-155 Undo/Branching). */
@@ -246,6 +247,14 @@ export async function restoreSavepoint(
       db
         .prepare('INSERT INTO inventory (id, simulation_id, owner_id, name, description) VALUES (?, ?, ?, ?, ?)')
         .bind(item.id, simulationId, item.ownerId, item.name, item.description),
+    );
+  }
+
+  for (const issue of snapshot.whistledownIssues as Array<{ id: string; issueNumber: number; date: string; headline: string; body: string[] }>) {
+    statements.push(
+      db
+        .prepare('INSERT INTO whistledown_issues (id, simulation_id, issue_number, date, headline, body_json) VALUES (?, ?, ?, ?, ?, ?)')
+        .bind(issue.id, simulationId, issue.issueNumber, issue.date, issue.headline, JSON.stringify(issue.body)),
     );
   }
 
