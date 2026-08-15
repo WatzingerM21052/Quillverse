@@ -28,8 +28,10 @@ Frontend live at **https://watzingerm21052.github.io/Quillverse/** — redeploys
 via GitHub Actions on every push to `main`.
 
 Backend live at **https://quillverse-api.svhofkirchen-api.workers.dev** — deploy manually with
-`cd apps/api && npm run deploy` (no CI wiring yet). Not yet called by the frontend; the web
-app still renders from its own local seed data (`apps/web/src/app/core/state/seed/`).
+`cd apps/api && npm run deploy` (no CI wiring yet). The frontend fetches
+`GET /api/simulations/sim_default` on startup (`simulation-state.store.ts`) and falls back to
+its local seed only if that request fails — read-only for now, no way yet for the player's
+actions to write anything back.
 
 Inside `apps/api/src/`:
 
