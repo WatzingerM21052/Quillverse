@@ -30,14 +30,32 @@ via GitHub Actions on every push to `main`.
 Backend live at **https://quillverse-api.svhofkirchen-api.workers.dev** — deploy manually with
 `cd apps/api && npm run deploy` (no CI wiring yet). The frontend fetches
 `GET /api/simulations/sim_default` on startup (`simulation-state.store.ts`) and falls back to
-its local seed only if that request fails — read-only for now, no way yet for the player's
-actions to write anything back.
+its local seed only if that request fails.
+
+**Manual Relay Mode is live** (addendum-v1.1 A23-A26, addendum-v1.2 B68) — the player types an
+action, the Story screen builds a full context package (complete master-prompt rules + current
+state, `apps/api/src/services/context-builder.ts`), the player copies it into any external AI
+chat (ChatGPT/Claude/Gemini quick-links provided), pastes the reply back, and
+`POST /api/simulations/:id/commit` validates + atomically applies it to D1 (relationship/canon
+merges, new memories/letters/finance/characters/locations, stale-stateVersion rejection).
+Verified end-to-end in a real browser session. This needs **no AI API key at all** — it's the
+whole story loop working today, before any Direct API provider is connected.
+
+> Note: the Angular service worker can serve a stale cached build for a little while after a
+> deploy. If the live site behaves unexpectedly, unregister the service worker / hard-reload
+> before assuming something broke.
 
 Inside `apps/api/src/`:
 
 ```text
 db/simulation-repository.ts   assembles a full SimulationState JSON from D1 rows
+db/apply-turn.ts              atomically applies a turn's StatePatch via db.batch(), merging
+                               (not overwriting) relationships/canon events against existing rows
 routes/simulations.ts         GET /api/simulations/:id
+routes/turns.ts                POST /api/simulations/:id/context-package and .../commit — Manual Relay
+services/context-builder.ts   assembles the full context package (master prompt + state + action)
+services/validate-turn-response.ts   rejects malformed pasted responses before they touch D1
+assets/master-prompt.ts       simulation-master-prompt-v3.md embedded whole (scripts/embed-master-prompt.mjs)
 routes/ai-providers.ts        GET/POST/DELETE /api/ai/providers — BYOK Test & Save flow (B4-B19)
 crypto/credential-encryption.ts   AES-GCM encrypt/decrypt using the CREDENTIAL_MASTER_KEY secret
 providers/                    one adapter per AI provider (Gemini/OpenAI/Anthropic), each
@@ -109,9 +127,9 @@ packs for other settings, is deliberately deferred — see the roadmap below.
 | Phase | Status |
 |---|---|
 | 0 — Manual validation of the simulation design | skipped by request |
-| **1 — Core Foundation** (state schema, world-pack seam, AI provider interface, nav shell + all 10 screens with mock data) | **mostly done** — no real AI wiring yet, by request |
-| 2 — Story MVP (wire AI Orchestrator to a real backend, autosave, state-mutating actions) | not started |
-| 3 — World / 4 — Social | UI built ahead of schedule (Map/Estate/World/Society/Letters/Journal/Timeline/Relationships all render from seed data); still needs live state changes |
+| **1 — Core Foundation** (state schema, world-pack seam, AI provider interface, nav shell + all 10 screens) | **done**, now backed by a real D1 database |
+| **2 — Story MVP** | **done via Manual Relay** — the full turn loop (context package → external AI → paste back → validate → commit → every screen updates) works with zero API keys. Direct-API `generateStory` calls still not wired (no key available yet) |
+| 3 — World / 4 — Social | UI complete (Map/Estate/World/Society/Letters/Journal/Timeline/Relationships); now live-updates after each committed turn |
 | 5 — Advanced Memory (retrieval, snapshots, GM dashboard) | not started |
 | 6 — Multi-Provider (OpenAI/Anthropic/Gemini adapters, fallback, Cloudflare Worker backend) | **backend built and deployed** (D1, R2, BYOK credential service, real provider adapters) — frontend Settings screen still not wired to call it |
 | 7 — Visual Polish (weather, expressions, cinematic artwork, audio, real portraits) | not started — everything is placeholder geometry today |
