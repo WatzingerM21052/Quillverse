@@ -17,6 +17,11 @@ export class SimulationStateStore {
 
   readonly player = computed(() => this.state().characters[this.state().playerId]);
 
+  readonly farm = computed(() => this.state().farm);
+  readonly financeLedger = computed(() => this.state().financeLedger);
+  readonly currentSeason = computed(() => this.state().currentSeason);
+  readonly currentWorldDate = computed(() => this.state().currentWorldDate);
+
   readonly knownCharacters = computed(() =>
     Object.values(this.state().characters).filter((character) => character.id !== this.state().playerId),
   );

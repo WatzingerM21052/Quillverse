@@ -1,0 +1,155 @@
+.estate {
+  height: 100%;
+  overflow-y: auto;
+  padding: 2.5rem 3rem;
+  color: var(--qv-ivory);
+}
+
+.estate__title {
+  font-family: var(--qv-font-display);
+  font-size: 2rem;
+  color: var(--qv-champagne);
+  margin: 0 0 1.5rem;
+}
+
+.estate__overview {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  gap: 0.75rem;
+  margin-bottom: 2rem;
+}
+
+.building {
+  padding: 1.5rem 0.75rem;
+  text-align: center;
+  border-radius: 6px;
+  border: 1px solid rgba(184, 147, 74, 0.4);
+  background: rgba(233, 223, 199, 0.04);
+  font-family: var(--qv-font-ui);
+  font-size: 0.8rem;
+
+  &--derelict {
+    border-color: rgba(110, 44, 51, 0.7);
+    opacity: 0.6;
+  }
+
+  &--worn {
+    opacity: 0.75;
+  }
+
+  &--sound {
+    opacity: 1;
+  }
+
+  &--well-kept,
+  &--renovated {
+    border-color: var(--qv-gold);
+    background: rgba(184, 147, 74, 0.1);
+  }
+}
+
+.estate__columns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+
+  @media (max-width: 700px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+h2 {
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--qv-gold);
+  border-bottom: 1px solid rgba(184, 147, 74, 0.4);
+  padding-bottom: 0.4rem;
+  margin: 0 0 0.75rem;
+}
+
+.stats dl {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0;
+  font-family: var(--qv-font-serif);
+  font-size: 0.9rem;
+  opacity: 0.85;
+
+  dt {
+    color: var(--qv-champagne);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.calendar__wheel {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0.5rem;
+
+  li {
+    padding: 0.6rem 0.8rem;
+    border: 1px solid rgba(184, 147, 74, 0.3);
+    border-radius: 6px;
+    font-family: var(--qv-font-serif);
+
+    &.is-current {
+      border-color: var(--qv-gold);
+      background: rgba(184, 147, 74, 0.12);
+    }
+  }
+}
+
+.calendar__season {
+  display: block;
+  font-family: var(--qv-font-display);
+  font-weight: 600;
+  color: var(--qv-champagne);
+}
+
+.calendar__task {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+.ledger table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--qv-font-serif);
+}
+
+.ledger tr {
+  border-bottom: 1px solid rgba(184, 147, 74, 0.2);
+}
+
+.ledger td {
+  padding: 0.5rem 0.4rem;
+}
+
+.ledger__date {
+  color: var(--qv-champagne);
+  white-space: nowrap;
+  width: 1%;
+}
+
+.ledger__amount {
+  text-align: right;
+  white-space: nowrap;
+
+  &.is-income {
+    color: var(--qv-sage);
+  }
+
+  &.is-expense {
+    color: var(--qv-oxblood);
+  }
+}

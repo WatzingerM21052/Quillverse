@@ -1,0 +1,58 @@
+<div class="estate">
+  <h1 class="estate__title">Estate</h1>
+
+  <section class="estate__overview">
+    @for (building of farm().buildings; track building.id) {
+      <div class="building" [class]="'building--' + building.condition">
+        <span class="building__name">{{ building.name }}</span>
+      </div>
+    }
+  </section>
+
+  <div class="estate__columns">
+    <section class="stats">
+      <h2>Land &amp; Betrieb</h2>
+      <dl>
+        <dt>Land</dt>
+        <dd>{{ farm().stats.landAcres }} acres</dd>
+        <dt>Pacht</dt>
+        <dd>{{ farm().stats.annualRent }}</dd>
+        <dt>Vieh</dt>
+        <dd>{{ farm().stats.livestock }}</dd>
+        <dt>Vorräte</dt>
+        <dd>{{ farm().stats.supplies }}</dd>
+        <dt>Arbeiter</dt>
+        <dd>{{ farm().stats.workers }}</dd>
+      </dl>
+    </section>
+
+    <section class="calendar">
+      <h2>Hofkalender</h2>
+      <ul class="calendar__wheel">
+        @for (entry of farm().calendar; track entry.season) {
+          <li [class.is-current]="entry.season === currentSeason()">
+            <span class="calendar__season">{{ seasonLabels[entry.season] }}</span>
+            <span class="calendar__task">{{ entry.task }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+  </div>
+
+  <section class="ledger">
+    <h2>Finanz-Ledger</h2>
+    <table>
+      <tbody>
+        @for (entry of financeLedger(); track entry.id) {
+          <tr>
+            <td class="ledger__date">{{ entry.date }}</td>
+            <td class="ledger__description">{{ entry.description }}</td>
+            <td class="ledger__amount" [class.is-income]="entry.amount > 0" [class.is-expense]="entry.amount < 0">
+              {{ entry.amount > 0 ? '+' : '' }}£{{ entry.amount }}
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</div>

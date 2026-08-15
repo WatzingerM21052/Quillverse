@@ -4,6 +4,7 @@ import { PlaceholderScreen } from './features/shell/placeholder-screen/placehold
 import { StoryScreen } from './features/story/story-screen/story-screen';
 import { CharactersScreen } from './features/characters/characters-screen/characters-screen';
 import { RelationshipsScreen } from './features/relationships/relationships-screen/relationships-screen';
+import { EstateScreen } from './features/estate/estate-screen/estate-screen';
 
 export const routes: Routes = [
   {
@@ -23,11 +24,7 @@ export const routes: Routes = [
         component: PlaceholderScreen,
         data: { title: 'Map', description: 'Regency-Karte mit Fog of Knowledge — unbekannte Orte werden erst durch Gespräche, Reisen oder Briefe sichtbar.' },
       },
-      {
-        path: 'estate',
-        component: PlaceholderScreen,
-        data: { title: 'Estate', description: 'Der Hof visuell: Haus, Scheune, Stall, Felder, Finanz-Ledger, Jahresrad.' },
-      },
+      { path: 'estate', component: EstateScreen },
       {
         path: 'society',
         component: PlaceholderScreen,

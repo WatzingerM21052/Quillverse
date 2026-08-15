@@ -2,6 +2,8 @@ import { SimulationState } from '../models/simulation-state.model';
 import { Character } from '../models/character.model';
 import { Relationship, RelationshipDimensions } from '../models/relationship.model';
 import { Location } from '../models/location.model';
+import { Farm } from '../models/farm.model';
+import { FinanceTransaction } from '../models/finance.model';
 
 /**
  * Default player setup per simulation-master-prompt-v3.md §132 (Default-Hof) —
@@ -250,12 +252,48 @@ const playerToSister: Relationship = {
   memoryIds: [],
 };
 
+const playerFarm: Farm = {
+  id: 'farm_hale',
+  ownerId: PLAYER_ID,
+  stats: {
+    landAcres: 18,
+    annualRent: '£24 jährlich',
+    livestock: '1 Kuh, 1 Zugpferd, 8 Hühner',
+    supplies: 'für den Winter knapp bemessen',
+    workers: 'Familie + gelegentliche Tagelöhner zur Ernte',
+  },
+  calendar: [
+    { season: 'spring', task: 'Aussaat' },
+    { season: 'summer', task: 'Heuernte' },
+    { season: 'autumn', task: 'Getreideernte' },
+    { season: 'winter', task: 'Instandhaltung' },
+  ],
+  buildings: [
+    { id: 'house', name: 'Wohnhaus', condition: 'worn' },
+    { id: 'barn', name: 'Scheune', condition: 'worn' },
+    { id: 'stable', name: 'Stall', condition: 'sound' },
+    { id: 'fields', name: 'Felder', condition: 'sound' },
+    { id: 'pasture', name: 'Weiden', condition: 'sound' },
+    { id: 'garden', name: 'Garten', condition: 'worn' },
+    { id: 'storage', name: 'Lager', condition: 'worn' },
+    { id: 'drive', name: 'Zufahrt', condition: 'worn' },
+  ],
+};
+
+const financeLedger: FinanceTransaction[] = [
+  { id: 'txn_1', date: '2. April 1813', description: 'Saatgut', amount: -3.5 },
+  { id: 'txn_2', date: '5. April 1813', description: 'Marktverkauf — Eier', amount: 1.2 },
+  { id: 'txn_3', date: '9. April 1813', description: 'Reparatur Zaun', amount: -0.8 },
+  { id: 'txn_4', date: '11. April 1813', description: 'Pacht (Quartal)', amount: -6 },
+];
+
 export function createSeedState(): SimulationState {
   return {
     simulationId: 'sim_default',
     worldPackId: 'bridgerton',
     stateVersion: 1,
     currentWorldDate: '12. April 1813',
+    currentSeason: 'spring',
     playerId: PLAYER_ID,
     characters: {
       [PLAYER_ID]: player,
@@ -268,5 +306,7 @@ export function createSeedState(): SimulationState {
     letters: {},
     canonEvents: {},
     openThreads: [],
+    farm: playerFarm,
+    financeLedger,
   };
 }

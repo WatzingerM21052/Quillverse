@@ -5,6 +5,8 @@ import { Location } from './location.model';
 import { Memory } from './memory.model';
 import { Letter } from './letter.model';
 import { CanonEvent } from './canon-event.model';
+import { Farm, Season } from './farm.model';
+import { FinanceTransaction } from './finance.model';
 
 /**
  * The single source of truth (§77, §86, A6). No AI model, chat log, or browser
@@ -16,6 +18,7 @@ export interface SimulationState {
   worldPackId: string;
   stateVersion: number;
   currentWorldDate: string;
+  currentSeason: Season;
   playerId: EntityId;
   characters: Record<EntityId, Character>;
   relationships: Relationship[];
@@ -24,4 +27,6 @@ export interface SimulationState {
   letters: Record<EntityId, Letter>;
   canonEvents: Record<EntityId, CanonEvent>;
   openThreads: string[];
+  farm: Farm;
+  financeLedger: FinanceTransaction[];
 }
