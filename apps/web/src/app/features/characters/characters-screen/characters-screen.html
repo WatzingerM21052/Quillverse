@@ -1,0 +1,52 @@
+<div class="characters">
+  <h1 class="characters__title">Characters</h1>
+
+  <div class="characters__grid">
+    @for (character of characters(); track character.id) {
+      <button type="button" class="character-card" (click)="select(character.id)">
+        <div class="character-card__portrait"></div>
+        <span class="character-card__name">{{ character.name }}</span>
+      </button>
+    }
+  </div>
+
+  @if (selectedCharacter(); as character) {
+    <div class="character-sheet-overlay" (click)="closeSheet()">
+      <div class="character-sheet" (click)="$event.stopPropagation()">
+        <button type="button" class="character-sheet__close" (click)="closeSheet()" aria-label="Schließen">✕</button>
+
+        <div class="character-sheet__portrait"></div>
+        <h2 class="character-sheet__name">{{ character.name }}</h2>
+
+        <section class="character-sheet__section">
+          <h3>Was du über sie weißt</h3>
+          @if (character.playerKnowledge.length === 0) {
+            <p class="character-sheet__empty">Noch nichts Nennenswertes.</p>
+          } @else {
+            <ul>
+              @for (fact of character.playerKnowledge; track $index) {
+                <li>{{ fact }}</li>
+              }
+            </ul>
+          }
+        </section>
+
+        @if (selectedRelationship(); as relationship) {
+          <section class="character-sheet__section">
+            <h3>Eure Beziehung</h3>
+            <dl class="relationship-summary">
+              <dt>Vertrautheit</dt>
+              <dd>{{ describeDimension(relationship.dimensions.familiarity) }}</dd>
+              <dt>Vertrauen</dt>
+              <dd>{{ describeDimension(relationship.dimensions.trust) }}</dd>
+              <dt>Humor</dt>
+              <dd>{{ describeDimension(relationship.dimensions.sharedHumor) }}</dd>
+              <dt>Nähe</dt>
+              <dd>{{ describeDimension(relationship.dimensions.emotionalCloseness) }}</dd>
+            </dl>
+          </section>
+        }
+      </div>
+    </div>
+  }
+</div>

@@ -1,0 +1,39 @@
+<div class="shell">
+  <nav class="shell__rail shell__rail--desktop" aria-label="Hauptnavigation">
+    <div class="shell__brand">Quillverse</div>
+
+    <ul class="shell__nav-list">
+      @for (item of primaryNav; track item.path) {
+        <li>
+          <a [routerLink]="item.path" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">{{
+            item.label
+          }}</a>
+        </li>
+      }
+    </ul>
+
+    <ul class="shell__nav-list shell__nav-list--secondary">
+      @for (item of secondaryNav; track item.path) {
+        <li>
+          <a [routerLink]="item.path" routerLinkActive="is-active">{{ item.label }}</a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <main class="shell__content">
+    <router-outlet />
+  </main>
+
+  <nav class="shell__rail shell__rail--mobile" aria-label="Hauptnavigation">
+    <ul class="shell__nav-list shell__nav-list--mobile">
+      @for (item of primaryNav; track item.path) {
+        <li>
+          <a [routerLink]="item.path" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">{{
+            item.label
+          }}</a>
+        </li>
+      }
+    </ul>
+  </nav>
+</div>
