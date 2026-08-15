@@ -8,6 +8,7 @@ import { CanonEvent } from './canon-event.model';
 import { Farm, Season } from './farm.model';
 import { FinanceTransaction } from './finance.model';
 import { WorldEvent, WorldStatus } from './world-status.model';
+import { SocialCalendarEntry } from './social-calendar.model';
 
 /**
  * The single source of truth (§77, §86, A6). No AI model, chat log, or browser
@@ -32,4 +33,7 @@ export interface SimulationState {
   financeLedger: FinanceTransaction[];
   worldStatus: WorldStatus;
   worldEvents: WorldEvent[];
+  /** Index into the active WorldPack's socialLadder (§51/§53) — not an XP bar. */
+  socialAccessLevel: number;
+  socialCalendar: SocialCalendarEntry[];
 }

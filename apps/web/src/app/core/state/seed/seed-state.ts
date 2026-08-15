@@ -5,6 +5,7 @@ import { Location } from '../models/location.model';
 import { Farm } from '../models/farm.model';
 import { FinanceTransaction } from '../models/finance.model';
 import { WorldEvent, WorldStatus } from '../models/world-status.model';
+import { SocialCalendarEntry } from '../models/social-calendar.model';
 
 /**
  * Default player setup per simulation-master-prompt-v3.md §132 (Default-Hof) —
@@ -319,6 +320,17 @@ const worldEvents: WorldEvent[] = [
   },
 ];
 
+const socialCalendar: SocialCalendarEntry[] = [
+  {
+    id: 'social_1',
+    title: "Lady Danbury's Evening",
+    date: '20. April 1813',
+    host: 'Lady Danbury',
+    location: 'Danbury House, London',
+    access: 'not-invited',
+  },
+];
+
 export function createSeedState(): SimulationState {
   return {
     simulationId: 'sim_default',
@@ -342,5 +354,7 @@ export function createSeedState(): SimulationState {
     financeLedger,
     worldStatus,
     worldEvents,
+    socialAccessLevel: 1,
+    socialCalendar,
   };
 }

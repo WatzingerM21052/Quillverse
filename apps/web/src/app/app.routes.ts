@@ -6,6 +6,7 @@ import { CharactersScreen } from './features/characters/characters-screen/charac
 import { RelationshipsScreen } from './features/relationships/relationships-screen/relationships-screen';
 import { EstateScreen } from './features/estate/estate-screen/estate-screen';
 import { WorldScreen } from './features/world/world-screen/world-screen';
+import { SocietyScreen } from './features/society/society-screen/society-screen';
 
 export const routes: Routes = [
   {
@@ -22,11 +23,7 @@ export const routes: Routes = [
         data: { title: 'Map', description: 'Regency-Karte mit Fog of Knowledge — unbekannte Orte werden erst durch Gespräche, Reisen oder Briefe sichtbar.' },
       },
       { path: 'estate', component: EstateScreen },
-      {
-        path: 'society',
-        component: PlaceholderScreen,
-        data: { title: 'Society', description: 'Der Ton: sozialer Zugang, Gesellschaftskalender, Einladungen, Lady Whistledown.' },
-      },
+      { path: 'society', component: SocietyScreen },
       {
         path: 'letters',
         component: PlaceholderScreen,

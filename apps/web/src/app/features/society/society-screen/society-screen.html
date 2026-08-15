@@ -1,0 +1,54 @@
+<div class="society">
+  <h1 class="society__title">Society</h1>
+
+  <section class="ladder-section">
+    <h2>Gesellschaftlicher Zugang</h2>
+    <ol class="ladder">
+      @for (level of ladder(); track $index) {
+        <li [class.is-current]="$index === currentLevel()">
+          <span class="ladder__dot"></span>
+          <span class="ladder__label">{{ level }}</span>
+        </li>
+      }
+    </ol>
+  </section>
+
+  <section class="calendar-section">
+    <h2>Gesellschaftskalender</h2>
+    @if (calendar().length === 0) {
+      <p class="calendar-section__empty">Noch keine Einladungen bekannt.</p>
+    } @else {
+      <div class="invitations">
+        @for (entry of calendar(); track entry.id) {
+          <button type="button" class="invitation" (click)="open(entry.id)">
+            <span class="invitation__seal"></span>
+            <span class="invitation__title">{{ entry.title }}</span>
+            <span class="invitation__date">{{ entry.date }}</span>
+          </button>
+        }
+      </div>
+    }
+  </section>
+
+  @if (selectedEntry(); as entry) {
+    <qv-modal [title]="entry.title" (closed)="close()">
+      <dl class="invitation-detail">
+        <dt>Gastgeber</dt>
+        <dd>{{ entry.host }}</dd>
+        <dt>Ort</dt>
+        <dd>{{ entry.location }}</dd>
+        <dt>Datum</dt>
+        <dd>{{ entry.date }}</dd>
+        <dt>Zugang</dt>
+        <dd>
+          @switch (entry.access) {
+            @case ('invited') { eingeladen }
+            @case ('attended') { bereits besucht }
+            @case ('not-invited') { nicht eingeladen }
+            @default { unbekannt }
+          }
+        </dd>
+      </dl>
+    </qv-modal>
+  }
+</div>

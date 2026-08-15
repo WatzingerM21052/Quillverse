@@ -50,80 +50,41 @@
   }
 }
 
-.character-sheet-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.55);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 10;
+.character-sheet__portrait {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto 1rem;
+  background: rgba(184, 147, 74, 0.2);
+  border: 1px solid var(--qv-gold);
 }
 
-.character-sheet {
-  position: relative;
-  width: min(480px, 90vw);
-  max-height: 85vh;
-  overflow-y: auto;
-  background: var(--qv-regency-blue);
-  border: 1px solid var(--qv-gold);
-  border-radius: 10px;
-  padding: 2rem;
+.character-sheet__section {
+  margin-bottom: 1.5rem;
 
-  &__close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    border: none;
-    color: var(--qv-champagne);
-    font-size: 1.1rem;
-    cursor: pointer;
+  h3 {
+    font-family: var(--qv-font-ui);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--qv-gold);
+    border-bottom: 1px solid rgba(184, 147, 74, 0.4);
+    padding-bottom: 0.4rem;
+    margin-bottom: 0.6rem;
   }
 
-  &__portrait {
-    width: 120px;
-    height: 120px;
-    border-radius: 50%;
-    margin: 0 auto 1rem;
-    background: rgba(184, 147, 74, 0.2);
-    border: 1px solid var(--qv-gold);
-  }
-
-  &__name {
-    font-family: var(--qv-font-display);
-    text-align: center;
-    color: var(--qv-champagne);
-    margin: 0 0 1.5rem;
-  }
-
-  &__section {
-    margin-bottom: 1.5rem;
-
-    h3 {
-      font-family: var(--qv-font-ui);
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 0.08em;
-      color: var(--qv-gold);
-      border-bottom: 1px solid rgba(184, 147, 74, 0.4);
-      padding-bottom: 0.4rem;
-      margin-bottom: 0.6rem;
-    }
-
-    ul {
-      margin: 0;
-      padding-left: 1.2rem;
-      font-family: var(--qv-font-serif);
-    }
-  }
-
-  &__empty {
-    font-family: var(--qv-font-serif);
-    font-style: italic;
-    opacity: 0.7;
+  ul {
     margin: 0;
+    padding-left: 1.2rem;
+    font-family: var(--qv-font-serif);
   }
+}
+
+.character-sheet__empty {
+  font-family: var(--qv-font-serif);
+  font-style: italic;
+  opacity: 0.7;
+  margin: 0;
 }
 
 .relationship-summary {

@@ -2,10 +2,11 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { EntityId } from '../../../core/state/models/entity-id';
 import { describeDimension } from '../../../core/state/relationship-language';
+import { Modal } from '../../../shared/ui/modal/modal';
 
 @Component({
   selector: 'qv-characters-screen',
-  imports: [],
+  imports: [Modal],
   templateUrl: './characters-screen.html',
   styleUrl: './characters-screen.scss',
 })

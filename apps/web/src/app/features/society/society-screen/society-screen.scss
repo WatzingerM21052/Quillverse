@@ -1,0 +1,133 @@
+.society {
+  height: 100%;
+  overflow-y: auto;
+  padding: 2.5rem 3rem;
+  color: var(--qv-ivory);
+}
+
+.society__title {
+  font-family: var(--qv-font-display);
+  font-size: 2rem;
+  color: var(--qv-champagne);
+  margin: 0 0 1.5rem;
+}
+
+h2 {
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--qv-gold);
+  border-bottom: 1px solid rgba(184, 147, 74, 0.4);
+  padding-bottom: 0.4rem;
+  margin: 0 0 1rem;
+}
+
+.ladder-section {
+  margin-bottom: 2.5rem;
+}
+
+.ladder {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 420px;
+
+  li {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    border-left: 1px solid rgba(184, 147, 74, 0.3);
+    padding-left: 1rem;
+    font-family: var(--qv-font-serif);
+    opacity: 0.6;
+
+    &.is-current {
+      opacity: 1;
+      border-left-color: var(--qv-gold);
+    }
+  }
+}
+
+.ladder__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--qv-champagne);
+  flex-shrink: 0;
+  margin-left: -1.45rem;
+  border: 2px solid var(--qv-mahogany);
+}
+
+.is-current .ladder__dot {
+  background: var(--qv-gold);
+}
+
+.calendar-section__empty {
+  font-family: var(--qv-font-serif);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.invitations {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 1rem;
+}
+
+.invitation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 1rem;
+  background: rgba(233, 223, 199, 0.06);
+  border: 1px solid var(--qv-gold);
+  border-radius: 8px;
+  cursor: pointer;
+  color: var(--qv-ivory);
+  font-family: var(--qv-font-ui);
+
+  &:hover {
+    background: rgba(184, 147, 74, 0.15);
+  }
+
+  &__seal {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--qv-oxblood);
+    border: 1px solid var(--qv-gold);
+  }
+
+  &__title {
+    font-family: var(--qv-font-display);
+    font-size: 1rem;
+    text-align: center;
+  }
+
+  &__date {
+    font-size: 0.75rem;
+    opacity: 0.7;
+  }
+}
+
+.invitation-detail {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.5rem 1.5rem;
+  margin: 0;
+  font-family: var(--qv-font-serif);
+
+  dt {
+    color: var(--qv-gold);
+    text-transform: uppercase;
+    font-size: 0.75rem;
+    letter-spacing: 0.04em;
+  }
+
+  dd {
+    margin: 0;
+  }
+}

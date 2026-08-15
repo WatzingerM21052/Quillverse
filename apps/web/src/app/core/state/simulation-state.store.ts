@@ -3,6 +3,7 @@ import { EntityId } from './models/entity-id';
 import { SimulationState } from './models/simulation-state.model';
 import { Relationship } from './models/relationship.model';
 import { createSeedState } from './seed/seed-state';
+import { WORLD_PACKS } from '../world-pack/world-pack-registry';
 
 /**
  * The app's own memory (§76-78, §86): the single place every screen reads
@@ -23,6 +24,11 @@ export class SimulationStateStore {
   readonly currentWorldDate = computed(() => this.state().currentWorldDate);
   readonly worldStatus = computed(() => this.state().worldStatus);
   readonly worldEvents = computed(() => this.state().worldEvents);
+  readonly socialCalendar = computed(() => this.state().socialCalendar);
+
+  readonly worldPack = computed(() => WORLD_PACKS[this.state().worldPackId]);
+  readonly socialAccessLevel = computed(() => this.state().socialAccessLevel);
+  readonly socialLadder = computed(() => this.worldPack().socialLadder);
 
   readonly knownCharacters = computed(() =>
     Object.values(this.state().characters).filter((character) => character.id !== this.state().playerId),
