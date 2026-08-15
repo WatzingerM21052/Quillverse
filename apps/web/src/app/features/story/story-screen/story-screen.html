@@ -1,0 +1,39 @@
+<div class="story-screen">
+  <header class="story-header">
+    <span class="story-header__date">{{ scene().worldDate }}</span>
+    <span class="story-header__location">{{ scene().locationId }}</span>
+    <span class="story-header__weather">{{ scene().weather }}</span>
+    <button class="story-header__menu" type="button" aria-label="Menü">☰</button>
+  </header>
+
+  <section class="story-stage">
+    <div class="story-stage__background"></div>
+    <div class="story-stage__character story-stage__character--left"></div>
+    <div class="story-stage__character story-stage__character--right"></div>
+  </section>
+
+  <section class="story-text">
+    @for (line of scene().dialogue; track $index) {
+      <div class="dialogue-box">
+        <span class="dialogue-box__speaker">{{ line.speakerId }}</span>
+        <p class="dialogue-box__text">{{ line.text }}</p>
+      </div>
+    } @empty {
+      @for (paragraph of scene().narration; track $index) {
+        <p class="narration">{{ paragraph }}</p>
+      }
+    }
+  </section>
+
+  <footer class="player-input">
+    <label class="player-input__label" for="player-action">Was tust oder sagst du?</label>
+    <textarea
+      id="player-action"
+      class="player-input__field"
+      rows="2"
+      [value]="playerInput()"
+      (input)="playerInput.set($any($event.target).value)"
+    ></textarea>
+    <button class="player-input__submit" type="button" (click)="submitAction()">Fortfahren</button>
+  </footer>
+</div>

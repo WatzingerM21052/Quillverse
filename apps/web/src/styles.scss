@@ -1,0 +1,38 @@
+/*
+ * Regency design language (docs/spec/ui-master-prompt-v1.md §3-§6).
+ * Gold is an accent only — never a full surface (§4).
+ */
+:root {
+  --qv-ivory: #f6f1e7;
+  --qv-cream: #efe6d4;
+  --qv-parchment: #e9dfc7;
+  --qv-champagne: #dcc9a3;
+  --qv-gold: #b8934a;
+  --qv-sage: #8a9a7e;
+  --qv-dusty-blue: #6f8ba0;
+  --qv-wisteria: #9f8fc2;
+  --qv-rose: #c98a95;
+  --qv-regency-blue: #1f2a44;
+  --qv-oxblood: #6e2c33;
+  --qv-mahogany: #3a2418;
+
+  --qv-font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --qv-font-serif: 'EB Garamond', 'Georgia', serif;
+  --qv-font-ui: 'Inter', system-ui, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+}
+
+body {
+  background: var(--qv-mahogany);
+  color: var(--qv-ivory);
+  font-family: var(--qv-font-serif);
+}

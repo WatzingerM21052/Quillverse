@@ -1,0 +1,143 @@
+.story-screen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: var(--qv-mahogany);
+}
+
+.story-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid var(--qv-gold);
+  font-family: var(--qv-font-ui);
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  color: var(--qv-champagne);
+
+  &__menu {
+    margin-left: auto;
+    background: none;
+    border: 1px solid var(--qv-gold);
+    color: var(--qv-champagne);
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    cursor: pointer;
+  }
+}
+
+.story-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  background: linear-gradient(180deg, #3a2e22, var(--qv-mahogany));
+  overflow: hidden;
+
+  &__background {
+    position: absolute;
+    inset: 0;
+  }
+
+  &__character {
+    position: absolute;
+    bottom: 0;
+    width: 28%;
+    max-width: 320px;
+    height: 80%;
+    background: rgba(255, 255, 255, 0.04);
+    border-radius: 8px 8px 0 0;
+
+    &--left {
+      left: 6%;
+    }
+
+    &--right {
+      right: 6%;
+    }
+  }
+}
+
+.story-text {
+  max-height: 34vh;
+  overflow-y: auto;
+  padding: 1.25rem 2rem;
+  background: rgba(233, 223, 199, 0.06);
+  border-top: 1px solid var(--qv-gold);
+}
+
+.narration {
+  font-family: var(--qv-font-serif);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--qv-ivory);
+  max-width: 62ch;
+  margin: 0 0 0.75rem;
+}
+
+.dialogue-box {
+  border: 1px solid var(--qv-gold);
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  margin-bottom: 0.75rem;
+  background: rgba(0, 0, 0, 0.2);
+
+  &__speaker {
+    font-family: var(--qv-font-display);
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    color: var(--qv-gold);
+  }
+
+  &__text {
+    margin: 0.35rem 0 0;
+    font-family: var(--qv-font-serif);
+    font-size: 1.1rem;
+    color: var(--qv-ivory);
+  }
+}
+
+.player-input {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 2rem 1.25rem;
+  border-top: 1px solid var(--qv-gold);
+  background: var(--qv-regency-blue);
+
+  &__label {
+    flex-basis: 100%;
+    font-family: var(--qv-font-display);
+    font-style: italic;
+    color: var(--qv-champagne);
+  }
+
+  &__field {
+    flex: 1;
+    min-width: 240px;
+    resize: none;
+    background: var(--qv-ivory);
+    border: 1px solid var(--qv-gold);
+    border-radius: 6px;
+    padding: 0.6rem 0.8rem;
+    font-family: var(--qv-font-serif);
+    font-size: 1rem;
+  }
+
+  &__submit {
+    background: var(--qv-oxblood);
+    color: var(--qv-ivory);
+    border: 1px solid var(--qv-gold);
+    border-radius: 6px;
+    padding: 0.6rem 1.2rem;
+    font-family: var(--qv-font-ui);
+    cursor: pointer;
+
+    &:hover {
+      filter: brightness(1.1);
+    }
+  }
+}
