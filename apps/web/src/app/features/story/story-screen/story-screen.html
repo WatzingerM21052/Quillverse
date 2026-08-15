@@ -34,7 +34,12 @@
       [value]="playerInput()"
       (input)="playerInput.set($any($event.target).value)"
     ></textarea>
-    <button class="player-input__submit" type="button" (click)="submitAction()">Fortfahren</button>
+    <button class="player-input__submit" type="button" [disabled]="generating()" (click)="submitAction()">
+      {{ generating() ? (connectedProvider() ?? '') + ' erzählt …' : 'Fortfahren' }}
+    </button>
+    @if (generateError()) {
+      <p class="relay-error">{{ generateError() }}</p>
+    }
   </footer>
 
   @if (relayOpen()) {

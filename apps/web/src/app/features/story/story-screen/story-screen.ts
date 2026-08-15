@@ -1,8 +1,13 @@
 import { Component, inject, signal } from '@angular/core';
 import { Scene } from '../../../core/state/models/scene.model';
 import { ManualRelayService } from '../../../core/ai/manual-relay.service';
+import { DirectTurnApiService } from '../../../core/ai/direct-turn-api.service';
+import { AiProvidersApiService } from '../../../core/ai/ai-providers-api.service';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { Modal } from '../../../shared/ui/modal/modal';
+
+/** Same priority as Settings' FALLBACK_ORDER — first connected provider wins, else Manual Relay. */
+const PROVIDER_PRIORITY = ['gemini', 'openai', 'anthropic'];
 
 interface ProviderLink {
   name: string;
@@ -23,9 +28,26 @@ const PROVIDER_LINKS: ProviderLink[] = [
 })
 export class StoryScreen {
   private readonly relay = inject(ManualRelayService);
+  private readonly directTurn = inject(DirectTurnApiService);
+  private readonly providersApi = inject(AiProvidersApiService);
   private readonly store = inject(SimulationStateStore);
 
   protected readonly providerLinks = PROVIDER_LINKS;
+
+  /** null until the provider list loads; a provider id once one is connected, so submitAction can skip Manual Relay. */
+  protected readonly connectedProvider = signal<string | null>(null);
+  protected readonly generating = signal(false);
+  protected readonly generateError = signal<string | null>(null);
+
+  constructor() {
+    this.providersApi.list().subscribe({
+      next: (list) => {
+        const connected = PROVIDER_PRIORITY.find((id) => list.some((p) => p.provider === id && p.connected));
+        this.connectedProvider.set(connected ?? null);
+      },
+      error: () => this.connectedProvider.set(null),
+    });
+  }
 
   /**
    * Starting scene until the first turn commits. Shape matches Scene exactly
@@ -54,11 +76,40 @@ export class StoryScreen {
 
   private pendingPlayerAction = '';
 
-  /** Step 1 of Manual Relay (A24): build the context package as soon as the player commits to an action. */
+  /** Phase 2/6: skip Manual Relay entirely when a BYOK provider is connected. */
   protected submitAction(): void {
     const action = this.playerInput().trim();
     if (!action) return;
 
+    const provider = this.connectedProvider();
+    if (provider) {
+      this.generateDirect(action, provider);
+      return;
+    }
+
+    this.startManualRelay(action);
+  }
+
+  private generateDirect(action: string, provider: string): void {
+    this.generating.set(true);
+    this.generateError.set(null);
+
+    this.directTurn.generate(action, provider).subscribe({
+      next: ({ state, scene }) => {
+        this.store.refresh(state);
+        this.scene.set(scene);
+        this.playerInput.set('');
+        this.generating.set(false);
+      },
+      error: (err) => {
+        this.generateError.set(err?.error?.error ?? `${provider} konnte den Zug nicht erzeugen.`);
+        this.generating.set(false);
+      },
+    });
+  }
+
+  /** Step 1 of Manual Relay (A24): build the context package as soon as the player commits to an action. */
+  private startManualRelay(action: string): void {
     this.pendingPlayerAction = action;
     this.relayError.set(null);
     this.copyConfirmed.set(false);
