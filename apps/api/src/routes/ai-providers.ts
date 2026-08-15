@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { PROVIDER_ADAPTERS } from '../providers/registry';
 import { PROVIDER_IDS, type ProviderId } from '../providers/types';
 import { decryptCredential, encryptCredential, keyHint } from '../crypto/credential-encryption';
+import { getTodaysCallCounts } from '../db/ai-calls';
 
 // Single-owner install (addendum-v1.2-byok.md B23) — no account system yet.
 const OWNER_USER_ID = 'owner';
@@ -28,6 +29,7 @@ aiProvidersRoute.get('/', async (c) => {
     .all<CredentialRow>();
 
   const byProvider = new Map(results.map((row) => [row.provider, row]));
+  const requestsToday = await getTodaysCallCounts(c.env.DB);
 
   return c.json(
     PROVIDER_IDS.map((provider) => {
@@ -38,6 +40,7 @@ aiProvidersRoute.get('/', async (c) => {
         status: row?.status ?? 'not-configured',
         keyHint: row?.key_hint ?? null,
         lastVerifiedAt: row?.last_verified_at ?? null,
+        requestsToday: requestsToday[provider] ?? 0,
       };
     }),
   );

@@ -43,6 +43,17 @@
   }
 }
 
+.story-header__provider-indicator {
+  font-family: var(--qv-font-ui);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--qv-gold);
+  opacity: 0.7;
+  text-align: center;
+  margin: 0.4rem 0 0;
+}
+
 .story-header__undo-message {
   font-family: var(--qv-font-serif);
   font-size: 0.8rem;

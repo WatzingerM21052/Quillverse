@@ -9,6 +9,8 @@ import { ActiveSimulationService } from '../state/active-simulation.service';
 export interface GenerateTurnResult {
   state: SimulationState;
   scene: Scene;
+  /** Whichever connected provider actually produced this turn — not necessarily the first choice (A32 automatic fallback). */
+  provider: string;
 }
 
 /** Phase 2/6 gap closed: a turn generated directly via a connected BYOK provider, no copy-paste. */
@@ -17,10 +19,11 @@ export class DirectTurnApiService {
   private readonly http = inject(HttpClient);
   private readonly activeSimulation = inject(ActiveSimulationService);
 
-  generate(playerAction: string, provider: string): Observable<GenerateTurnResult> {
+  /** Backend tries every connected provider in priority order (A32) — no provider choice needed here. */
+  generate(playerAction: string): Observable<GenerateTurnResult> {
     return this.http.post<GenerateTurnResult>(
       `${API_BASE_URL}/api/simulations/${this.activeSimulation.id()}/turn/generate`,
-      { playerAction, provider },
+      { playerAction },
     );
   }
 

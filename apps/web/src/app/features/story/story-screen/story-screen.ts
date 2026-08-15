@@ -38,6 +38,8 @@ export class StoryScreen {
   protected readonly connectedProvider = signal<string | null>(null);
   protected readonly generating = signal(false);
   protected readonly generateError = signal<string | null>(null);
+  /** §98 Provider Change Indicator — whichever provider actually narrated the last turn (A32 fallback may differ from connectedProvider). */
+  protected readonly lastUsedProvider = signal<string | null>(null);
   protected readonly undoing = signal(false);
   protected readonly undoMessage = signal<string | null>(null);
 
@@ -83,29 +85,35 @@ export class StoryScreen {
     const action = this.playerInput().trim();
     if (!action) return;
 
-    const provider = this.connectedProvider();
-    if (provider) {
-      this.generateDirect(action, provider);
+    if (this.connectedProvider()) {
+      this.generateDirect(action);
       return;
     }
 
     this.startManualRelay(action);
   }
 
-  private generateDirect(action: string, provider: string): void {
+  /** A32 automatic fallback lives server-side (tries every connected provider); if all of them fail, fall through to Manual Relay here rather than a dead-end error. */
+  private generateDirect(action: string): void {
     this.generating.set(true);
     this.generateError.set(null);
 
-    this.directTurn.generate(action, provider).subscribe({
-      next: ({ state, scene }) => {
+    this.directTurn.generate(action).subscribe({
+      next: ({ state, scene, provider }) => {
         this.store.refresh(state);
         this.scene.set(scene);
         this.playerInput.set('');
+        this.lastUsedProvider.set(provider);
         this.generating.set(false);
       },
       error: (err) => {
-        this.generateError.set(err?.error?.error ?? `${provider} konnte den Zug nicht erzeugen.`);
         this.generating.set(false);
+        if (err?.error?.allProvidersFailed) {
+          this.generateError.set('Alle verbundenen KI-Anbieter waren nicht erreichbar — wechsle zu Manual Relay.');
+          this.startManualRelay(action);
+          return;
+        }
+        this.generateError.set(err?.error?.error ?? 'Der Zug konnte nicht erzeugt werden.');
       },
     });
   }

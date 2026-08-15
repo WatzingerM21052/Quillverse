@@ -52,9 +52,9 @@ export class SettingsScreen {
   protected readonly displayName = PROVIDER_DISPLAY_NAMES;
 
   protected readonly providers = signal<ProviderStatus[]>([
-    { provider: 'gemini', connected: false, status: 'not-configured', keyHint: null, lastVerifiedAt: null },
-    { provider: 'openai', connected: false, status: 'not-configured', keyHint: null, lastVerifiedAt: null },
-    { provider: 'anthropic', connected: false, status: 'not-configured', keyHint: null, lastVerifiedAt: null },
+    { provider: 'gemini', connected: false, status: 'not-configured', keyHint: null, lastVerifiedAt: null, requestsToday: 0 },
+    { provider: 'openai', connected: false, status: 'not-configured', keyHint: null, lastVerifiedAt: null, requestsToday: 0 },
+    { provider: 'anthropic', connected: false, status: 'not-configured', keyHint: null, lastVerifiedAt: null, requestsToday: 0 },
   ]);
   protected readonly providersLoading = signal(true);
 

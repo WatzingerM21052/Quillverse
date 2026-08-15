@@ -44,12 +44,13 @@
             </ol>
 
             <h2>Usage</h2>
+            <p class="settings__hint">Jeder Versuch zählt, auch fehlgeschlagene — beides zählt gegen das Tageskontingent des Anbieters (§156).</p>
             <table class="usage-table">
               <tbody>
                 @for (provider of providers(); track provider.provider) {
                   <tr>
                     <td>{{ displayName[provider.provider] }}</td>
-                    <td>0 requests</td>
+                    <td>{{ provider.requestsToday }} {{ provider.requestsToday === 1 ? 'Request' : 'Requests' }} heute</td>
                   </tr>
                 }
               </tbody>

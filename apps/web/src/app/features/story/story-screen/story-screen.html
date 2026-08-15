@@ -17,6 +17,9 @@
   @if (undoMessage()) {
     <p class="story-header__undo-message">{{ undoMessage() }}</p>
   }
+  @if (lastUsedProvider(); as provider) {
+    <p class="story-header__provider-indicator">erzählt von {{ provider }}</p>
+  }
 
   <section class="story-stage">
     <div class="story-stage__background"></div>

@@ -9,6 +9,8 @@ export interface ProviderStatus {
   status: string;
   keyHint: string | null;
   lastVerifiedAt: string | null;
+  /** §156 Model Cost/Limit UI — every attempt today, successful or not (both count against the provider's daily quota). */
+  requestsToday: number;
 }
 
 /** Calls the real BYOK endpoints (addendum-v1.2-byok.md B4-B19) — no mock data. */
