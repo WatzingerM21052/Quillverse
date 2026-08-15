@@ -56,12 +56,14 @@ routes/turns.ts                POST /api/simulations/:id/context-package and ...
 services/context-builder.ts   assembles the full context package (master prompt + state + action)
 services/validate-turn-response.ts   rejects malformed pasted responses before they touch D1
 assets/master-prompt.ts       simulation-master-prompt-v3.md embedded whole (scripts/embed-master-prompt.mjs)
-routes/ai-providers.ts        GET/POST/DELETE /api/ai/providers — BYOK Test & Save flow (B4-B19)
+routes/ai-providers.ts        GET/POST/DELETE /api/ai/providers — BYOK Test & Save flow (B4-B19),
+                               called for real by Settings; verified it genuinely rejects a fake key
 crypto/credential-encryption.ts   AES-GCM encrypt/decrypt using the CREDENTIAL_MASTER_KEY secret
 providers/                    one adapter per AI provider (Gemini/OpenAI/Anthropic), each
                                implementing validateCredential/listModels against the real API —
                                structurally complete, untested against a real key (none available),
                                and not yet wired to generateStory
+db/savepoints.ts               create/list/restore named full-state snapshots (§94-96, §153-155)
 ```
 
 D1 (`quillverse-db`) and R2 (`quillverse-storage`) are dedicated Cloudflare resources for this
@@ -90,24 +92,30 @@ core/
                      data to render before the AI Orchestrator exists
   state/simulation-state.store.ts   the single place every screen reads state from (§76-78)
   ai/               provider-independent AiProvider interface + request/response contract
-                     (addendum-v1.2-byok.md B38-B40) — not yet wired to a real backend
+                     (addendum-v1.2-byok.md B38-B40); ManualRelayService + AiProvidersApiService
+                     call the real backend (context-package/commit, BYOK connect/disconnect)
   world-pack/       the engine/content seam (see below) + WORLD_PACKS registry
 shared/
   ui/modal/         the one modal component used everywhere an overlay is needed
+core/gm/          GmModeService (local toggle) + runContinuityCheck() — a real audit, not a badge
 features/
   shell/            AppShell (nav rail/bottom bar) + PlaceholderScreen (unused for now,
                      kept for future nav areas)
-  story/            Story Mode — the primary view (§9)
-  characters/       Character grid + detail sheet (§27-33)
-  relationships/    Relationship web (§34-36)
+  story/            Story Mode — the primary view (§9), Manual Relay modal lives here
+  profile/          Player Profile — appearance, skills, wardrobe, inventory (§69-72)
+  characters/       Character grid + detail sheet (§27-33), GM-only reveal when GM Mode is on
+  relationships/    Relationship web (§34-36), raw dimensions + inner thoughts in GM Mode
   world/            Living-world almanac (§37-39)
   map/              Fog-of-knowledge map + travel info (§40-43)
   estate/           Farm overview, ledger, calendar (§44-49)
-  society/          Social access ladder + invitations (§50-58)
+  society/          Social access ladder, invitations, Lady Whistledown (§50-58)
   letters/          Correspondence desk (§59-63)
   journal/          Chapters + important memories (§64-65)
   timeline/         Chronological events + Canon Divergence view (§66-68)
-  settings/         AI & Models shell — provider cards, Connect flow UI, no live calls
+  settings/         AI & Models (real Connect/Disconnect calls), GM/Debug toggle,
+                     Backup & Export (Save Points — create/list/restore)
+  gm/               GM Dashboard (/gm, only linked from nav when GM Mode is on) — continuity
+                     health, state version, canon drift, every NPC's actual location + goals
 ```
 
 ## The world-pack seam
@@ -129,11 +137,11 @@ packs for other settings, is deliberately deferred — see the roadmap below.
 | 0 — Manual validation of the simulation design | skipped by request |
 | **1 — Core Foundation** (state schema, world-pack seam, AI provider interface, nav shell + all 10 screens) | **done**, now backed by a real D1 database |
 | **2 — Story MVP** | **done via Manual Relay** — the full turn loop (context package → external AI → paste back → validate → commit → every screen updates) works with zero API keys. Direct-API `generateStory` calls still not wired (no key available yet) |
-| 3 — World / 4 — Social | UI complete (Map/Estate/World/Society/Letters/Journal/Timeline/Relationships); now live-updates after each committed turn |
-| 5 — Advanced Memory (retrieval, snapshots, GM dashboard) | not started |
-| 6 — Multi-Provider (OpenAI/Anthropic/Gemini adapters, fallback, Cloudflare Worker backend) | **backend built and deployed** (D1, R2, BYOK credential service, real provider adapters) — frontend Settings screen still not wired to call it |
+| 3 — World / 4 — Social | **done** — Map/Estate/World/Society (incl. Lady Whistledown)/Letters/Journal/Timeline/Relationships, plus the previously-missing Player Profile (§69-72: skills, wardrobe, inventory); all live-update after each committed turn |
+| **5 — Advanced Memory** | **done** — GM Mode toggle + GM Dashboard (real continuity audit, canon drift, NPC actual locations/goals), GM-only reveals in Characters/Relationships, Save Points (create/list/restore) |
+| **6 — Multi-Provider** | backend complete (D1, R2, BYOK credential service, real provider adapters) **and now actually called** by Settings (Connect/Disconnect/status are real, not mocked) — only `generateStory` itself stays unwired, no key available |
 | 7 — Visual Polish (weather, expressions, cinematic artwork, audio, real portraits) | not started — everything is placeholder geometry today |
-| 8 — Multi-World (author additional world packs) | not started |
+| 8 — Multi-World (author additional world packs) | not started — deferred by request, will revisit the Bridgerton starting names/setup together first |
 
 ## Development
 
