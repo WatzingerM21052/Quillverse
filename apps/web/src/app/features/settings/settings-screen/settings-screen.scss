@@ -195,6 +195,16 @@ h2 {
   margin: 0 0 1.5rem;
 }
 
+.api-key-error {
+  font-family: var(--qv-font-serif);
+  font-size: 0.85rem;
+  color: var(--qv-oxblood);
+  background: rgba(110, 44, 51, 0.12);
+  border-left: 2px solid var(--qv-oxblood);
+  padding: 0.6rem 0.9rem;
+  margin: 0 0 1.5rem;
+}
+
 .api-key-actions {
   display: flex;
   justify-content: flex-end;
