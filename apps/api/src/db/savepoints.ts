@@ -16,6 +16,9 @@ interface SavepointRow {
   created_at: string;
 }
 
+/** Reserved label marking the §153 Undo Last Turn buffer — never shown in the player-facing Save Points list. */
+const AUTOSAVE_LABEL = '__autosave__';
+
 export async function createSavepoint(db: D1Database, simulationId: string, label: string): Promise<SavepointSummary | null> {
   const state = await getSimulationState(db, simulationId);
   if (!state) return null;
@@ -37,11 +40,47 @@ export async function createSavepoint(db: D1Database, simulationId: string, labe
 
 export async function listSavepoints(db: D1Database, simulationId: string): Promise<SavepointSummary[]> {
   const { results } = await db
-    .prepare('SELECT id, label, state_version, created_at FROM savepoints WHERE simulation_id = ? ORDER BY created_at DESC')
-    .bind(simulationId)
+    .prepare(
+      'SELECT id, label, state_version, created_at FROM savepoints WHERE simulation_id = ? AND label != ? ORDER BY created_at DESC',
+    )
+    .bind(simulationId, AUTOSAVE_LABEL)
     .all<Omit<SavepointRow, 'snapshot_json'>>();
 
   return results.map((row) => ({ id: row.id, label: row.label, stateVersion: row.state_version, createdAt: row.created_at }));
+}
+
+/**
+ * §153 Undo Last Turn — call right before applying a turn (Manual Relay
+ * commit or a direct-API generate) so there is always exactly one
+ * "pre-turn" snapshot to fall back to. Depth 1: a new turn's autosave
+ * replaces the previous one, this is an undo buffer, not a history.
+ */
+export async function createAutoSnapshot(db: D1Database, simulationId: string): Promise<void> {
+  await db.prepare('DELETE FROM savepoints WHERE simulation_id = ? AND label = ?').bind(simulationId, AUTOSAVE_LABEL).run();
+  await createSavepoint(db, simulationId, AUTOSAVE_LABEL);
+}
+
+/** Restores the pre-turn autosave (if any) and removes both it and the turn log entry it undoes. */
+export async function undoLastTurn(db: D1Database, simulationId: string): Promise<SimulationStateResponse | null> {
+  const autosave = await db
+    .prepare('SELECT id FROM savepoints WHERE simulation_id = ? AND label = ?')
+    .bind(simulationId, AUTOSAVE_LABEL)
+    .first<{ id: string }>();
+  if (!autosave) return null;
+
+  const state = await restoreSavepoint(db, simulationId, autosave.id);
+  if (!state) return null;
+
+  await db.batch([
+    db.prepare('DELETE FROM savepoints WHERE id = ?').bind(autosave.id),
+    db.prepare(
+      `DELETE FROM turns WHERE id = (
+         SELECT id FROM turns WHERE simulation_id = ? ORDER BY turn_number DESC LIMIT 1
+       )`,
+    ).bind(simulationId),
+  ]);
+
+  return state;
 }
 
 const CHILD_TABLES = [

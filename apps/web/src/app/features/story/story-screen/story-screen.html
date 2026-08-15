@@ -3,8 +3,20 @@
     <span class="story-header__date">{{ scene().worldDate }}</span>
     <span class="story-header__location">{{ scene().locationId }}</span>
     <span class="story-header__weather">{{ scene().weather }}</span>
+    <button
+      class="story-header__undo"
+      type="button"
+      [disabled]="undoing()"
+      (click)="undoLastTurn()"
+      title="Undo Last Turn (§153)"
+    >
+      ⟲ Undo
+    </button>
     <button class="story-header__menu" type="button" aria-label="Menü">☰</button>
   </header>
+  @if (undoMessage()) {
+    <p class="story-header__undo-message">{{ undoMessage() }}</p>
+  }
 
   <section class="story-stage">
     <div class="story-stage__background"></div>

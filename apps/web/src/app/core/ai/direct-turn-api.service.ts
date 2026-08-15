@@ -23,4 +23,12 @@ export class DirectTurnApiService {
       { playerAction, provider },
     );
   }
+
+  /** §153 Undo Last Turn. */
+  undoLastTurn(): Observable<{ state: SimulationState }> {
+    return this.http.post<{ state: SimulationState }>(
+      `${API_BASE_URL}/api/simulations/${this.activeSimulation.id()}/undo-last-turn`,
+      {},
+    );
+  }
 }

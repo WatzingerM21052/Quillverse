@@ -2,6 +2,7 @@ import { Hono } from 'hono';
 import { buildContextPackage } from '../services/context-builder';
 import { validateManualTurnResponse } from '../services/validate-turn-response';
 import { applyTurn } from '../db/apply-turn';
+import { createAutoSnapshot, undoLastTurn } from '../db/savepoints';
 import { PROVIDER_ADAPTERS } from '../providers/registry';
 import { PROVIDER_IDS, type ProviderId } from '../providers/types';
 import { getDecryptedCredential } from './ai-providers';
@@ -49,6 +50,7 @@ turnsRoute.post('/:id/commit', async (c) => {
     return c.json({ error: validation.error }, 400);
   }
 
+  await createAutoSnapshot(c.env.DB, c.req.param('id'));
   const result = await applyTurn(c.env.DB, c.req.param('id'), playerAction, baseStateVersion, 'manual-relay', validation.response);
 
   if (!result.ok) {
@@ -95,6 +97,7 @@ turnsRoute.post('/:id/turn/generate', async (c) => {
     return c.json({ error: `${provider} response could not be parsed: ${validation.error}` }, 502);
   }
 
+  await createAutoSnapshot(c.env.DB, c.req.param('id'));
   const result = await applyTurn(
     c.env.DB,
     c.req.param('id'),
@@ -109,4 +112,13 @@ turnsRoute.post('/:id/turn/generate', async (c) => {
   }
 
   return c.json({ state: result.state, scene: validation.response.scene });
+});
+
+/** §153 Undo Last Turn — reverts to the pre-turn autosave and removes the turn log entry it undoes. */
+turnsRoute.post('/:id/undo-last-turn', async (c) => {
+  const state = await undoLastTurn(c.env.DB, c.req.param('id'));
+  if (!state) {
+    return c.json({ error: 'Nothing to undo.' }, 400);
+  }
+  return c.json({ state });
 });

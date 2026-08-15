@@ -16,8 +16,24 @@
   letter-spacing: 0.04em;
   color: var(--qv-champagne);
 
-  &__menu {
+  &__undo {
     margin-left: auto;
+    background: none;
+    border: 1px solid var(--qv-gold);
+    color: var(--qv-champagne);
+    border-radius: 4px;
+    padding: 0.25rem 0.6rem;
+    font-family: var(--qv-font-ui);
+    font-size: 0.75rem;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+
+  &__menu {
     background: none;
     border: 1px solid var(--qv-gold);
     color: var(--qv-champagne);
@@ -25,6 +41,15 @@
     padding: 0.25rem 0.6rem;
     cursor: pointer;
   }
+}
+
+.story-header__undo-message {
+  font-family: var(--qv-font-serif);
+  font-size: 0.8rem;
+  color: var(--qv-champagne);
+  opacity: 0.8;
+  text-align: center;
+  margin: 0.4rem 0 0;
 }
 
 .story-stage {

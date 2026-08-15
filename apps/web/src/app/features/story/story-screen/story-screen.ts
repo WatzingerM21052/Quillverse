@@ -38,6 +38,8 @@ export class StoryScreen {
   protected readonly connectedProvider = signal<string | null>(null);
   protected readonly generating = signal(false);
   protected readonly generateError = signal<string | null>(null);
+  protected readonly undoing = signal(false);
+  protected readonly undoMessage = signal<string | null>(null);
 
   constructor() {
     this.providersApi.list().subscribe({
@@ -160,5 +162,28 @@ export class StoryScreen {
 
   protected closeRelay(): void {
     this.relayOpen.set(false);
+  }
+
+  /**
+   * §153 Undo Last Turn. Restores the pre-turn world state; the displayed
+   * narration text itself isn't part of that snapshot, so it stays on
+   * screen until the next action — the undo message makes that explicit
+   * rather than silently leaving stale narration unexplained.
+   */
+  protected undoLastTurn(): void {
+    this.undoing.set(true);
+    this.undoMessage.set(null);
+
+    this.directTurn.undoLastTurn().subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.undoMessage.set('Letzter Zug rückgängig gemacht.');
+        this.undoing.set(false);
+      },
+      error: (err) => {
+        this.undoMessage.set(err?.error?.error ?? 'Nichts zum Rückgängigmachen.');
+        this.undoing.set(false);
+      },
+    });
   }
 }
