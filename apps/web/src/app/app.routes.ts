@@ -8,6 +8,7 @@ import { EstateScreen } from './features/estate/estate-screen/estate-screen';
 import { WorldScreen } from './features/world/world-screen/world-screen';
 import { SocietyScreen } from './features/society/society-screen/society-screen';
 import { LettersScreen } from './features/letters/letters-screen/letters-screen';
+import { JournalScreen } from './features/journal/journal-screen/journal-screen';
 
 export const routes: Routes = [
   {
@@ -26,11 +27,7 @@ export const routes: Routes = [
       { path: 'estate', component: EstateScreen },
       { path: 'society', component: SocietyScreen },
       { path: 'letters', component: LettersScreen },
-      {
-        path: 'journal',
-        component: PlaceholderScreen,
-        data: { title: 'Journal', description: 'Storymomente, Cinematic Artworks, persönliche Notizen und wichtige Erinnerungen.' },
-      },
+      { path: 'journal', component: JournalScreen },
       {
         path: 'timeline',
         component: PlaceholderScreen,

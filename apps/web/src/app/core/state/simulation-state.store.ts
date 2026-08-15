@@ -34,6 +34,14 @@ export class SimulationStateStore {
     Object.values(this.state().letters).filter((letter) => letter.recipientId === this.state().playerId),
   );
 
+  readonly chapters = computed(() => this.state().chapters);
+
+  private static readonly JOURNAL_WORTHY = new Set(['important', 'major', 'life-changing']);
+
+  readonly journalMemories = computed(() =>
+    Object.values(this.state().memories).filter((memory) => SimulationStateStore.JOURNAL_WORTHY.has(memory.importance)),
+  );
+
   readonly sentLetters = computed(() =>
     Object.values(this.state().letters).filter((letter) => letter.senderId === this.state().playerId),
   );

@@ -1,0 +1,30 @@
+<div class="journal">
+  <h1 class="journal__title">Journal</h1>
+
+  <section class="chapters">
+    @for (chapter of chapters(); track chapter.id) {
+      <article class="chapter-card">
+        <span class="chapter-card__number">Chapter {{ toRoman(chapter.number) }}</span>
+        <h2>{{ chapter.title }}</h2>
+        <p>{{ chapter.summary }}</p>
+        <span class="chapter-card__date">seit {{ chapter.startDate }}</span>
+      </article>
+    }
+  </section>
+
+  <section class="memories">
+    <h2 class="memories__title">Wichtige Erinnerungen</h2>
+    @if (memories().length === 0) {
+      <p class="memories__empty">Noch keine bedeutenden Erinnerungen festgehalten.</p>
+    } @else {
+      <ul>
+        @for (memory of memories(); track memory.id) {
+          <li class="memory-entry">
+            <span class="memory-entry__date">{{ memory.worldDate }}</span>
+            <p>{{ memory.fact }}</p>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+</div>

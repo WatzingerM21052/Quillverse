@@ -7,6 +7,8 @@ import { FinanceTransaction } from '../models/finance.model';
 import { WorldEvent, WorldStatus } from '../models/world-status.model';
 import { SocialCalendarEntry } from '../models/social-calendar.model';
 import { Letter } from '../models/letter.model';
+import { Chapter } from '../models/chapter.model';
+import { Memory } from '../models/memory.model';
 
 /**
  * Default player setup per simulation-master-prompt-v3.md §132 (Default-Hof) —
@@ -395,6 +397,45 @@ const socialCalendar: SocialCalendarEntry[] = [
   },
 ];
 
+const chapters: Chapter[] = [
+  {
+    id: 'chapter_1',
+    number: 1,
+    title: 'A Quiet Spring',
+    summary: 'Der Hof, die Familie und die ersten Nachrichten von der beginnenden London Season.',
+    startDate: '1. April 1813',
+  },
+];
+
+const memories: Memory[] = [
+  {
+    id: 'memory_1',
+    entityIds: [PLAYER_ID, MOTHER_ID, SISTER_ID],
+    worldDate: '1811',
+    type: 'life-event',
+    importance: 'major',
+    fact: 'Matthias’ Vater starb nach kurzer Krankheit; seither trägt Matthias die Hauptverantwortung für den Hof.',
+    interpretation: {},
+    status: 'fact',
+    reach: 'household',
+    fading: 'permanent',
+    tags: ['family', 'loss'],
+  },
+  {
+    id: 'memory_2',
+    entityIds: [PLAYER_ID, UNCLE_ID],
+    worldDate: '9. April 1813',
+    type: 'letter',
+    importance: 'important',
+    fact: 'Onkel Thomas’ erster Brief seit langer Zeit traf ein — ein Zeichen, dass die Familie nicht vergessen ist.',
+    interpretation: {},
+    status: 'fact',
+    reach: 'household',
+    fading: 'slow',
+    tags: ['family', 'letter'],
+  },
+];
+
 export function createSeedState(): SimulationState {
   return {
     simulationId: 'sim_default',
@@ -411,7 +452,7 @@ export function createSeedState(): SimulationState {
     },
     relationships: [playerToMother, playerToSister],
     locations: { [FARM_ID]: farm },
-    memories: {},
+    memories: Object.fromEntries(memories.map((memory) => [memory.id, memory])),
     letters: Object.fromEntries(letters.map((letter) => [letter.id, letter])),
     canonEvents: {},
     openThreads: [],
@@ -421,5 +462,6 @@ export function createSeedState(): SimulationState {
     worldEvents,
     socialAccessLevel: 1,
     socialCalendar,
+    chapters,
   };
 }
