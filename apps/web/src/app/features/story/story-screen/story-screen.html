@@ -36,4 +36,53 @@
     ></textarea>
     <button class="player-input__submit" type="button" (click)="submitAction()">Fortfahren</button>
   </footer>
+
+  @if (relayOpen()) {
+    <qv-modal title="Mit externer KI fortfahren" (closed)="closeRelay()">
+      <ol class="relay-steps">
+        <li>
+          <h3>1. Context Package</h3>
+          @if (relayLoading() && !contextText()) {
+            <p class="relay-hint">Wird erzeugt …</p>
+          } @else {
+            <textarea class="relay-context" readonly rows="6" [value]="contextText()"></textarea>
+            <button type="button" class="relay-button" (click)="copyContext()">
+              {{ copyConfirmed() ? 'Kopiert ✓' : 'In Zwischenablage kopieren' }}
+            </button>
+          }
+        </li>
+
+        <li>
+          <h3>2. Externe KI öffnen</h3>
+          <div class="relay-providers">
+            @for (provider of providerLinks; track provider.url) {
+              <a class="relay-button relay-button--link" [href]="provider.url" target="_blank" rel="noopener">{{
+                provider.name
+              }}</a>
+            }
+          </div>
+          <p class="relay-hint">Text einfügen, absenden, die Antwort dort komplett kopieren.</p>
+        </li>
+
+        <li>
+          <h3>3. Antwort einfügen</h3>
+          <textarea
+            class="relay-response"
+            rows="8"
+            placeholder="Vollständige JSON-Antwort der KI hier einfügen …"
+            [value]="responseDraft()"
+            (input)="responseDraft.set($any($event.target).value)"
+          ></textarea>
+        </li>
+      </ol>
+
+      @if (relayError()) {
+        <p class="relay-error">{{ relayError() }}</p>
+      }
+
+      <button type="button" class="relay-submit" [disabled]="relayLoading()" (click)="submitResponse()">
+        {{ relayLoading() ? 'Wird geprüft …' : 'Validate & Continue' }}
+      </button>
+    </qv-modal>
+  }
 </div>

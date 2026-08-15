@@ -41,6 +41,11 @@ export class SimulationStateStore {
 
   readonly current = this.state.asReadonly();
 
+  /** Called after a turn commits (Manual Relay or, later, the AI Orchestrator) so every screen updates. */
+  refresh(newState: SimulationState): void {
+    this.state.set(newState);
+  }
+
   readonly player = computed(() => this.state().characters[this.state().playerId]);
 
   readonly farm = computed(() => this.state().farm);
