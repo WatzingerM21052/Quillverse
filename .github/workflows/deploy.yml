@@ -6,6 +6,10 @@ on:
     paths:
       - 'apps/web/**'
       - '.github/workflows/deploy.yml'
+  pull_request:
+    paths:
+      - 'apps/web/**'
+      - '.github/workflows/deploy.yml'
   workflow_dispatch:
 
 concurrency:
@@ -29,6 +33,10 @@ jobs:
 
       - run: npm ci
 
+      - run: npx tsc --noEmit -p tsconfig.app.json
+
+      - run: npx ng test --watch=false --browsers=ChromeHeadless
+
       - run: npx ng build --configuration production --base-href /Quillverse/
 
       - uses: actions/upload-pages-artifact@v3
@@ -37,6 +45,7 @@ jobs:
 
   deploy:
     needs: build
+    if: github.event_name != 'pull_request'
     runs-on: ubuntu-latest
     permissions:
       pages: write

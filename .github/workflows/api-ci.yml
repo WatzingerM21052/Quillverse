@@ -1,0 +1,36 @@
+name: API Checks
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'apps/api/**'
+      - '.github/workflows/api-ci.yml'
+  pull_request:
+    paths:
+      - 'apps/api/**'
+      - '.github/workflows/api-ci.yml'
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: apps/api
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: apps/api/package-lock.json
+
+      - run: npm ci
+
+      - run: npx tsc --noEmit -p .
+
+      - run: npx tsc --noEmit -p tsconfig.vitest.json
+
+      - run: npm test

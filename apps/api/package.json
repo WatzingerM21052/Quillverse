@@ -6,6 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "wrangler dev",
+    "test": "vitest run",
     "deploy": "wrangler deploy",
     "types": "wrangler types",
     "db:migrate:local": "wrangler d1 migrations apply quillverse-db --local",
@@ -15,8 +16,10 @@
     "hono": "^4.13.2"
   },
   "devDependencies": {
+    "@cloudflare/vitest-pool-workers": "^0.21.3",
     "@cloudflare/workers-types": "^5.20260815.1",
     "typescript": "^5.7.3",
+    "vitest": "^4.1.10",
     "wrangler": "^4.123.0"
   }
 }
