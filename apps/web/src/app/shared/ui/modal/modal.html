@@ -1,9 +1,17 @@
 <div class="modal-overlay" (click)="close()">
-  <div class="modal" role="dialog" aria-modal="true" (click)="$event.stopPropagation()">
+  <div
+    #dialogEl
+    class="modal"
+    role="dialog"
+    aria-modal="true"
+    [attr.aria-labelledby]="title() ? 'modal-title' : null"
+    tabindex="-1"
+    (click)="$event.stopPropagation()"
+  >
     <button type="button" class="modal__close" (click)="close()" aria-label="Schließen">✕</button>
 
     @if (title()) {
-      <h2 class="modal__title">{{ title() }}</h2>
+      <h2 class="modal__title" id="modal-title">{{ title() }}</h2>
     }
 
     <div class="modal__body">

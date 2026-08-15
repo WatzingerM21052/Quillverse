@@ -38,3 +38,17 @@ body {
   color: var(--qv-ivory);
   font-family: var(--qv-font-serif);
 }
+
+/* §128 Reduced Motion — a baseline for Phase 7's animations before any exist,
+   so nobody has to remember to add this once cinematic transitions/ambient
+   animation (§24-25) actually land. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
