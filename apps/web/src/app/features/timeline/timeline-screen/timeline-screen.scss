@@ -1,0 +1,104 @@
+.timeline {
+  height: 100%;
+  overflow-y: auto;
+  padding: 2.5rem 3rem;
+  color: var(--qv-ivory);
+}
+
+.timeline__title {
+  font-family: var(--qv-font-display);
+  font-size: 2rem;
+  color: var(--qv-champagne);
+  margin: 0 0 1.5rem;
+}
+
+.line {
+  list-style: none;
+  margin: 0 0 2.5rem;
+  padding: 0 0 0 1.5rem;
+  border-left: 2px solid rgba(184, 147, 74, 0.4);
+
+  li {
+    position: relative;
+    margin-bottom: 1.5rem;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: -1.85rem;
+      top: 0.3rem;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--qv-gold);
+    }
+  }
+}
+
+.line__date {
+  display: block;
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  color: var(--qv-gold);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.line__fact {
+  font-family: var(--qv-font-serif);
+  margin: 0.25rem 0 0;
+}
+
+.divergence h2 {
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--qv-gold);
+  border-bottom: 1px solid rgba(184, 147, 74, 0.4);
+  padding-bottom: 0.4rem;
+  margin: 0 0 1rem;
+}
+
+.divergence__empty {
+  font-family: var(--qv-font-serif);
+  font-style: italic;
+  opacity: 0.7;
+}
+
+.divergence__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 1.25rem;
+}
+
+.divergence-card {
+  border: 1px solid var(--qv-gold);
+  border-radius: 8px;
+  padding: 1.25rem;
+  background: rgba(233, 223, 199, 0.05);
+  font-family: var(--qv-font-serif);
+
+  h3 {
+    font-family: var(--qv-font-display);
+    margin: 0 0 0.75rem;
+    color: var(--qv-champagne);
+  }
+
+  &__label {
+    font-family: var(--qv-font-ui);
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--qv-gold);
+    margin: 0.5rem 0 0.15rem;
+  }
+
+  &__status {
+    display: inline-block;
+    margin-top: 0.75rem;
+    font-family: var(--qv-font-ui);
+    font-size: 0.7rem;
+    opacity: 0.6;
+  }
+}

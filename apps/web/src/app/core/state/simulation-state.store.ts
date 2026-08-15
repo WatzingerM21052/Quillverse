@@ -35,6 +35,7 @@ export class SimulationStateStore {
   );
 
   readonly chapters = computed(() => this.state().chapters);
+  readonly canonEvents = computed(() => Object.values(this.state().canonEvents));
 
   private static readonly JOURNAL_WORTHY = new Set(['important', 'major', 'life-changing']);
 

@@ -9,6 +9,7 @@ import { WorldScreen } from './features/world/world-screen/world-screen';
 import { SocietyScreen } from './features/society/society-screen/society-screen';
 import { LettersScreen } from './features/letters/letters-screen/letters-screen';
 import { JournalScreen } from './features/journal/journal-screen/journal-screen';
+import { TimelineScreen } from './features/timeline/timeline-screen/timeline-screen';
 
 export const routes: Routes = [
   {
@@ -28,11 +29,7 @@ export const routes: Routes = [
       { path: 'society', component: SocietyScreen },
       { path: 'letters', component: LettersScreen },
       { path: 'journal', component: JournalScreen },
-      {
-        path: 'timeline',
-        component: PlaceholderScreen,
-        data: { title: 'Timeline', description: 'Die tatsächliche Zeitlinie der Simulation, inklusive Canon-Divergence-Ansicht.' },
-      },
+      { path: 'timeline', component: TimelineScreen },
       {
         path: 'settings',
         component: PlaceholderScreen,

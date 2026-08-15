@@ -1,0 +1,32 @@
+<div class="timeline">
+  <h1 class="timeline__title">Timeline</h1>
+
+  <ol class="line">
+    @for (event of events(); track event.id) {
+      <li>
+        <span class="line__date">{{ event.worldDate }}</span>
+        <p class="line__fact">{{ event.fact }}</p>
+      </li>
+    }
+  </ol>
+
+  <section class="divergence">
+    <h2>Canon Divergence</h2>
+    @if (canonEvents().length === 0) {
+      <p class="divergence__empty">Bisher keine erfassten Abweichungen vom ursprünglichen Staffel-1-Verlauf.</p>
+    } @else {
+      <div class="divergence__grid">
+        @for (event of canonEvents(); track event.id) {
+          <article class="divergence-card">
+            <h3>{{ event.name }}</h3>
+            <p class="divergence-card__label">Original</p>
+            <p>{{ event.originalCourse }}</p>
+            <p class="divergence-card__label">Aktuell</p>
+            <p>{{ event.currentLikelyVariant }}</p>
+            <span class="divergence-card__status">{{ event.status }}</span>
+          </article>
+        }
+      </div>
+    }
+  </section>
+</div>
