@@ -13,6 +13,9 @@ export class PlayerProfileScreen {
   protected readonly player = this.store.player;
   protected readonly inventory = this.store.playerInventory;
   protected readonly origin = this.store.worldPack().defaultPlayerStart.description;
+  protected readonly reputation = this.store.playerReputation;
+  protected readonly influence = this.store.playerInfluence;
+  protected readonly favors = this.store.favors;
 
   protected skillEntries(skills: Record<string, string>): [string, string][] {
     return Object.entries(skills);

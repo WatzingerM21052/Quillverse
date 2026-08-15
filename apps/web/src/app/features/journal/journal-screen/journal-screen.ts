@@ -12,6 +12,7 @@ export class JournalScreen {
 
   protected readonly chapters = this.store.chapters;
   protected readonly memories = this.store.journalMemories;
+  protected readonly obligations = this.store.obligations;
 
   private static readonly ROMAN_NUMERALS: [number, string][] = [
     [10, 'X'],

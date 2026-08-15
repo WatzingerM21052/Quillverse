@@ -11,6 +11,16 @@ import { Chapter } from '../models/chapter.model';
 import { Memory } from '../models/memory.model';
 import { InventoryItem } from '../models/inventory.model';
 import { WhistledownIssue } from '../models/whistledown.model';
+import {
+  CausalityLogEntry,
+  FavorEntry,
+  InfluenceEntry,
+  ObligationEntry,
+  ReputationEntry,
+  RumorEntry,
+  ScandalEntry,
+  SecretEntry,
+} from '../models/society-systems.model';
 
 /**
  * Default player setup per simulation-master-prompt-v3.md §132 (Default-Hof) —
@@ -526,6 +536,24 @@ const whistledownIssues: WhistledownIssue[] = [
   },
 ];
 
+const reputation: ReputationEntry[] = [
+  { characterId: PLAYER_ID, scope: 'local', standing: 'angesehen als verlässlicher, fleißiger Pächtersohn' },
+  { characterId: PLAYER_ID, scope: 'regional', standing: 'praktisch unbekannt' },
+  { characterId: PLAYER_ID, scope: 'ton', standing: 'unbekannt' },
+];
+
+const influence: InfluenceEntry[] = [];
+const favors: FavorEntry[] = [];
+const rumors: RumorEntry[] = [];
+const secrets: SecretEntry[] = [];
+const scandals: ScandalEntry[] = [];
+
+const obligations: ObligationEntry[] = [
+  { id: 'obl_1', description: 'Die Pacht für das nächste Quartal begleichen', owedTo: 'Grundherr', deadline: 'Ende Juni 1813', status: 'open' },
+];
+
+const causalityLog: CausalityLogEntry[] = [];
+
 export function createSeedState(): SimulationState {
   return {
     simulationId: 'sim_default',
@@ -560,5 +588,13 @@ export function createSeedState(): SimulationState {
     chapters,
     inventory,
     whistledownIssues,
+    reputation,
+    influence,
+    favors,
+    rumors,
+    secrets,
+    scandals,
+    obligations,
+    causalityLog,
   };
 }

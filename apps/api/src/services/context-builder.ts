@@ -34,6 +34,12 @@ fence. It must match exactly this shape:
     "newLetters": [],
     "newCharacters": [],
     "newLocations": [],
+    "newInventoryItems": [],
+    "newWhistledownIssues": [],
+    "reputationUpdates": [ { "characterId": "...", "scope": "local|regional|business|servants|gentry|ton|crown", "standing": "..." } ],
+    "newInfluence": [], "newFavors": [], "favorUpdates": [],
+    "newRumors": [ { "id": "...", "content": "...", "truthStatus": "true|false|distorted|unknown", "reach": "private|household|local|regional|gentry|ton|london|widely-known", "knownBy": [], "originDate": "..." } ],
+    "newSecrets": [], "newScandals": [], "newObligations": [], "obligationUpdates": [], "newCausalityEntries": [],
     "openThreadsAdd": [],
     "openThreadsRemove": []
   }
@@ -42,6 +48,8 @@ fence. It must match exactly this shape:
 Only include fields in statePatch that actually changed — omit empty arrays entirely rather
 than sending them empty. dimensions only needs the specific fields that moved, as small,
 plausible adjustments (§116 — no single scene may jump a dimension by dozens of points).
+"newSecrets" is GM-only content the player character does not know (§61) — never invent a
+secret and simultaneously reveal it in narration unless the scene actually discloses it.
 Every id you reference (characters, locations) must already exist in CURRENT STATE below,
 unless you are deliberately introducing it via newCharacters/newLocations.`;
 

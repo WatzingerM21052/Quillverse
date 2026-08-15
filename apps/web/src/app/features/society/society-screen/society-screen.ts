@@ -20,6 +20,8 @@ export class SocietyScreen {
   protected readonly selectedEntry = computed(() => this.calendar().find((entry) => entry.id === this.selectedId()) ?? null);
 
   protected readonly whistledownIssues = this.store.whistledownIssues;
+  protected readonly rumors = this.store.rumors;
+  protected readonly scandals = this.store.scandals;
   protected readonly openIssue = signal<WhistledownIssue | null>(null);
 
   protected open(id: string): void {

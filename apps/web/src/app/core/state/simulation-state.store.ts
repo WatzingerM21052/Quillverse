@@ -68,6 +68,19 @@ export class SimulationStateStore {
   readonly chapters = computed(() => this.state().chapters);
   readonly canonEvents = computed(() => Object.values(this.state().canonEvents));
 
+  readonly playerReputation = computed(() =>
+    this.state().reputation.filter((entry) => entry.characterId === this.state().playerId),
+  );
+  readonly playerInfluence = computed(() =>
+    this.state().influence.filter((entry) => entry.characterId === this.state().playerId),
+  );
+  readonly favors = computed(() => this.state().favors);
+  readonly rumors = computed(() => this.state().rumors);
+  readonly secrets = computed(() => this.state().secrets);
+  readonly scandals = computed(() => this.state().scandals);
+  readonly obligations = computed(() => this.state().obligations);
+  readonly causalityLog = computed(() => this.state().causalityLog);
+
   readonly playerInventory = computed(() =>
     this.state().inventory.filter((item) => item.ownerId === this.state().playerId),
   );

@@ -1,10 +1,18 @@
 import type {
+  CausalityLogEntry,
   CharacterResponse,
+  FavorEntry,
+  InfluenceEntry,
   InventoryItemResponse,
   LetterResponse,
   LocationResponse,
   MemoryResponse,
+  ObligationEntry,
   RelationshipResponse,
+  ReputationEntry,
+  RumorEntry,
+  ScandalEntry,
+  SecretEntry,
   SimulationStateResponse,
   WhistledownIssueResponse,
 } from '../models';
@@ -51,6 +59,72 @@ interface WhistledownRow {
   date: string;
   headline: string;
   body_json: string;
+}
+
+interface ReputationRow {
+  character_id: string;
+  scope: string;
+  standing: string;
+}
+
+interface InfluenceRow {
+  id: string;
+  character_id: string;
+  source: string;
+  description: string;
+}
+
+interface FavorRow {
+  id: string;
+  person_id: string;
+  direction: string;
+  description: string;
+  publicly_known: number;
+  fulfilled: number;
+}
+
+interface RumorRow {
+  id: string;
+  content: string;
+  truth_status: string;
+  reach: string;
+  known_by_json: string;
+  origin_date: string;
+}
+
+interface SecretRow {
+  id: string;
+  description: string;
+  truth: string;
+  known_by_json: string;
+  suspected_by_json: string;
+  player_knows: number;
+}
+
+interface ScandalRow {
+  id: string;
+  description: string;
+  severity: string;
+  date: string;
+  involved_json: string;
+}
+
+interface ObligationRow {
+  id: string;
+  description: string;
+  owed_to: string;
+  deadline: string | null;
+  status: string;
+}
+
+interface CausalityLogRow {
+  id: string;
+  event: string;
+  cause: string;
+  direct_consequences_json: string;
+  secondary_consequences_json: string;
+  long_term_consequences_json: string;
+  date: string;
 }
 
 interface RelationshipRow {
@@ -160,8 +234,28 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
 
   if (!simulation) return null;
 
-  const [characters, relationships, locations, memories, letters, worldEvents, socialCalendar, chapters, canonEvents, financeTransactions, inventory, whistledownIssues] =
-    await Promise.all([
+  const [
+    characters,
+    relationships,
+    locations,
+    memories,
+    letters,
+    worldEvents,
+    socialCalendar,
+    chapters,
+    canonEvents,
+    financeTransactions,
+    inventory,
+    whistledownIssues,
+    reputation,
+    influence,
+    favors,
+    rumors,
+    secrets,
+    scandals,
+    obligations,
+    causalityLog,
+  ] = await Promise.all([
       db.prepare('SELECT * FROM characters WHERE simulation_id = ?').bind(simulationId).all<CharacterRow>(),
       db.prepare('SELECT * FROM relationships WHERE simulation_id = ?').bind(simulationId).all<RelationshipRow>(),
       db.prepare('SELECT * FROM locations WHERE simulation_id = ?').bind(simulationId).all<LocationRow>(),
@@ -192,6 +286,34 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
         .prepare('SELECT id, issue_number, date, headline, body_json FROM whistledown_issues WHERE simulation_id = ? ORDER BY issue_number DESC')
         .bind(simulationId)
         .all<WhistledownRow>(),
+      db.prepare('SELECT character_id, scope, standing FROM reputation WHERE simulation_id = ?').bind(simulationId).all<ReputationRow>(),
+      db.prepare('SELECT id, character_id, source, description FROM influence WHERE simulation_id = ?').bind(simulationId).all<InfluenceRow>(),
+      db
+        .prepare('SELECT id, person_id, direction, description, publicly_known, fulfilled FROM favors WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<FavorRow>(),
+      db
+        .prepare('SELECT id, content, truth_status, reach, known_by_json, origin_date FROM rumors WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<RumorRow>(),
+      db
+        .prepare('SELECT id, description, truth, known_by_json, suspected_by_json, player_knows FROM secrets WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<SecretRow>(),
+      db
+        .prepare('SELECT id, description, severity, date, involved_json FROM scandals WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<ScandalRow>(),
+      db
+        .prepare('SELECT id, description, owed_to, deadline, status FROM obligations WHERE simulation_id = ?')
+        .bind(simulationId)
+        .all<ObligationRow>(),
+      db
+        .prepare(
+          'SELECT id, event, cause, direct_consequences_json, secondary_consequences_json, long_term_consequences_json, date FROM causality_log WHERE simulation_id = ?',
+        )
+        .bind(simulationId)
+        .all<CausalityLogRow>(),
     ]);
 
   const characterMap: Record<string, CharacterResponse> = {};
@@ -331,6 +453,65 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
         date: row.date,
         headline: row.headline,
         body: JSON.parse(row.body_json),
+      }),
+    ),
+    reputation: reputation.results.map(
+      (row): ReputationEntry => ({ characterId: row.character_id, scope: row.scope, standing: row.standing }),
+    ),
+    influence: influence.results.map(
+      (row): InfluenceEntry => ({ id: row.id, characterId: row.character_id, source: row.source, description: row.description }),
+    ),
+    favors: favors.results.map(
+      (row): FavorEntry => ({
+        id: row.id,
+        personId: row.person_id,
+        direction: row.direction as FavorEntry['direction'],
+        description: row.description,
+        publiclyKnown: row.publicly_known === 1,
+        fulfilled: row.fulfilled === 1,
+      }),
+    ),
+    rumors: rumors.results.map(
+      (row): RumorEntry => ({
+        id: row.id,
+        content: row.content,
+        truthStatus: row.truth_status as RumorEntry['truthStatus'],
+        reach: row.reach,
+        knownBy: JSON.parse(row.known_by_json),
+        originDate: row.origin_date,
+      }),
+    ),
+    secrets: secrets.results.map(
+      (row): SecretEntry => ({
+        id: row.id,
+        description: row.description,
+        truth: row.truth,
+        knownBy: JSON.parse(row.known_by_json),
+        suspectedBy: JSON.parse(row.suspected_by_json),
+        playerKnows: row.player_knows === 1,
+      }),
+    ),
+    scandals: scandals.results.map(
+      (row): ScandalEntry => ({
+        id: row.id,
+        description: row.description,
+        severity: row.severity,
+        date: row.date,
+        involved: JSON.parse(row.involved_json),
+      }),
+    ),
+    obligations: obligations.results.map(
+      (row): ObligationEntry => ({ id: row.id, description: row.description, owedTo: row.owed_to, deadline: row.deadline, status: row.status }),
+    ),
+    causalityLog: causalityLog.results.map(
+      (row): CausalityLogEntry => ({
+        id: row.id,
+        event: row.event,
+        cause: row.cause,
+        directConsequences: JSON.parse(row.direct_consequences_json),
+        secondaryConsequences: JSON.parse(row.secondary_consequences_json),
+        longTermConsequences: JSON.parse(row.long_term_consequences_json),
+        date: row.date,
       }),
     ),
   };

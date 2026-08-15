@@ -268,6 +268,110 @@ export async function applyTurn(
     );
   }
 
+  for (const entry of patch.reputationUpdates ?? []) {
+    statements.push(
+      db
+        .prepare(
+          `INSERT INTO reputation (simulation_id, character_id, scope, standing) VALUES (?, ?, ?, ?)
+           ON CONFLICT(simulation_id, character_id, scope) DO UPDATE SET standing = excluded.standing`,
+        )
+        .bind(simulationId, entry.characterId, entry.scope, entry.standing),
+    );
+  }
+
+  for (const entry of patch.newInfluence ?? []) {
+    statements.push(
+      db
+        .prepare('INSERT INTO influence (id, simulation_id, character_id, source, description) VALUES (?, ?, ?, ?, ?)')
+        .bind(entry.id, simulationId, entry.characterId, entry.source, entry.description),
+    );
+  }
+
+  for (const favor of patch.newFavors ?? []) {
+    statements.push(
+      db
+        .prepare(
+          'INSERT INTO favors (id, simulation_id, person_id, direction, description, publicly_known, fulfilled) VALUES (?, ?, ?, ?, ?, ?, 0)',
+        )
+        .bind(favor.id, simulationId, favor.personId, favor.direction, favor.description, favor.publiclyKnown ? 1 : 0),
+    );
+  }
+
+  for (const update of patch.favorUpdates ?? []) {
+    if (update.fulfilled !== undefined) {
+      statements.push(db.prepare('UPDATE favors SET fulfilled = ? WHERE id = ?').bind(update.fulfilled ? 1 : 0, update.id));
+    }
+    if (update.publiclyKnown !== undefined) {
+      statements.push(db.prepare('UPDATE favors SET publicly_known = ? WHERE id = ?').bind(update.publiclyKnown ? 1 : 0, update.id));
+    }
+  }
+
+  for (const rumor of patch.newRumors ?? []) {
+    statements.push(
+      db
+        .prepare('INSERT INTO rumors (id, simulation_id, content, truth_status, reach, known_by_json, origin_date) VALUES (?, ?, ?, ?, ?, ?, ?)')
+        .bind(rumor.id, simulationId, rumor.content, rumor.truthStatus, rumor.reach, JSON.stringify(rumor.knownBy ?? []), rumor.originDate),
+    );
+  }
+
+  for (const secret of patch.newSecrets ?? []) {
+    statements.push(
+      db
+        .prepare(
+          'INSERT INTO secrets (id, simulation_id, description, truth, known_by_json, suspected_by_json, player_knows) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        )
+        .bind(
+          secret.id,
+          simulationId,
+          secret.description,
+          secret.truth,
+          JSON.stringify(secret.knownBy ?? []),
+          JSON.stringify(secret.suspectedBy ?? []),
+          secret.playerKnows ? 1 : 0,
+        ),
+    );
+  }
+
+  for (const scandal of patch.newScandals ?? []) {
+    statements.push(
+      db
+        .prepare('INSERT INTO scandals (id, simulation_id, description, severity, date, involved_json) VALUES (?, ?, ?, ?, ?, ?)')
+        .bind(scandal.id, simulationId, scandal.description, scandal.severity, scandal.date, JSON.stringify(scandal.involved ?? [])),
+    );
+  }
+
+  for (const obligation of patch.newObligations ?? []) {
+    statements.push(
+      db
+        .prepare('INSERT INTO obligations (id, simulation_id, description, owed_to, deadline, status) VALUES (?, ?, ?, ?, ?, ?)')
+        .bind(obligation.id, simulationId, obligation.description, obligation.owedTo, obligation.deadline ?? null, obligation.status ?? 'open'),
+    );
+  }
+
+  for (const update of patch.obligationUpdates ?? []) {
+    statements.push(db.prepare('UPDATE obligations SET status = ? WHERE id = ?').bind(update.status, update.id));
+  }
+
+  for (const entry of patch.newCausalityEntries ?? []) {
+    statements.push(
+      db
+        .prepare(
+          `INSERT INTO causality_log (id, simulation_id, event, cause, direct_consequences_json, secondary_consequences_json, long_term_consequences_json, date)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .bind(
+          entry.id,
+          simulationId,
+          entry.event,
+          entry.cause,
+          JSON.stringify(entry.directConsequences ?? []),
+          JSON.stringify(entry.secondaryConsequences ?? []),
+          JSON.stringify(entry.longTermConsequences ?? []),
+          entry.date,
+        ),
+    );
+  }
+
   for (const location of patch.newLocations ?? []) {
     statements.push(
       db

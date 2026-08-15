@@ -12,6 +12,16 @@ import { SocialCalendarEntry } from './social-calendar.model';
 import { Chapter } from './chapter.model';
 import { InventoryItem } from './inventory.model';
 import { WhistledownIssue } from './whistledown.model';
+import {
+  CausalityLogEntry,
+  FavorEntry,
+  InfluenceEntry,
+  ObligationEntry,
+  ReputationEntry,
+  RumorEntry,
+  ScandalEntry,
+  SecretEntry,
+} from './society-systems.model';
 
 /**
  * The single source of truth (§77, §86, A6). No AI model, chat log, or browser
@@ -42,4 +52,12 @@ export interface SimulationState {
   chapters: Chapter[];
   inventory: InventoryItem[];
   whistledownIssues: WhistledownIssue[];
+  reputation: ReputationEntry[];
+  influence: InfluenceEntry[];
+  favors: FavorEntry[];
+  rumors: RumorEntry[];
+  secrets: SecretEntry[];
+  scandals: ScandalEntry[];
+  obligations: ObligationEntry[];
+  causalityLog: CausalityLogEntry[];
 }

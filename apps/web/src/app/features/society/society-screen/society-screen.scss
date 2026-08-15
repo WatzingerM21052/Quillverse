@@ -113,6 +113,26 @@ h2 {
   }
 }
 
+.rumor-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 60ch;
+  font-family: var(--qv-font-serif);
+
+  li {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid rgba(184, 147, 74, 0.2);
+  }
+}
+
+.rumor-list__severity {
+  color: var(--qv-oxblood);
+  font-family: var(--qv-font-ui);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+}
+
 .whistledown-section {
   margin-top: 2.5rem;
 }

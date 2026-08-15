@@ -57,6 +57,14 @@ const CHILD_TABLES = [
   'chapters',
   'inventory',
   'whistledown_issues',
+  'reputation',
+  'influence',
+  'favors',
+  'rumors',
+  'secrets',
+  'scandals',
+  'obligations',
+  'causality_log',
 ] as const;
 
 /** Wholesale replace — a restore is a rollback, not a merge (§153-155 Undo/Branching). */
@@ -255,6 +263,92 @@ export async function restoreSavepoint(
       db
         .prepare('INSERT INTO whistledown_issues (id, simulation_id, issue_number, date, headline, body_json) VALUES (?, ?, ?, ?, ?, ?)')
         .bind(issue.id, simulationId, issue.issueNumber, issue.date, issue.headline, JSON.stringify(issue.body)),
+    );
+  }
+
+  for (const entry of snapshot.reputation) {
+    statements.push(
+      db
+        .prepare('INSERT INTO reputation (simulation_id, character_id, scope, standing) VALUES (?, ?, ?, ?)')
+        .bind(simulationId, entry.characterId, entry.scope, entry.standing),
+    );
+  }
+
+  for (const entry of snapshot.influence) {
+    statements.push(
+      db
+        .prepare('INSERT INTO influence (id, simulation_id, character_id, source, description) VALUES (?, ?, ?, ?, ?)')
+        .bind(entry.id, simulationId, entry.characterId, entry.source, entry.description),
+    );
+  }
+
+  for (const favor of snapshot.favors) {
+    statements.push(
+      db
+        .prepare('INSERT INTO favors (id, simulation_id, person_id, direction, description, publicly_known, fulfilled) VALUES (?, ?, ?, ?, ?, ?, ?)')
+        .bind(favor.id, simulationId, favor.personId, favor.direction, favor.description, favor.publiclyKnown ? 1 : 0, favor.fulfilled ? 1 : 0),
+    );
+  }
+
+  for (const rumor of snapshot.rumors) {
+    statements.push(
+      db
+        .prepare('INSERT INTO rumors (id, simulation_id, content, truth_status, reach, known_by_json, origin_date) VALUES (?, ?, ?, ?, ?, ?, ?)')
+        .bind(rumor.id, simulationId, rumor.content, rumor.truthStatus, rumor.reach, JSON.stringify(rumor.knownBy), rumor.originDate),
+    );
+  }
+
+  for (const secret of snapshot.secrets) {
+    statements.push(
+      db
+        .prepare(
+          'INSERT INTO secrets (id, simulation_id, description, truth, known_by_json, suspected_by_json, player_knows) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        )
+        .bind(
+          secret.id,
+          simulationId,
+          secret.description,
+          secret.truth,
+          JSON.stringify(secret.knownBy),
+          JSON.stringify(secret.suspectedBy),
+          secret.playerKnows ? 1 : 0,
+        ),
+    );
+  }
+
+  for (const scandal of snapshot.scandals) {
+    statements.push(
+      db
+        .prepare('INSERT INTO scandals (id, simulation_id, description, severity, date, involved_json) VALUES (?, ?, ?, ?, ?, ?)')
+        .bind(scandal.id, simulationId, scandal.description, scandal.severity, scandal.date, JSON.stringify(scandal.involved)),
+    );
+  }
+
+  for (const obligation of snapshot.obligations) {
+    statements.push(
+      db
+        .prepare('INSERT INTO obligations (id, simulation_id, description, owed_to, deadline, status) VALUES (?, ?, ?, ?, ?, ?)')
+        .bind(obligation.id, simulationId, obligation.description, obligation.owedTo, obligation.deadline, obligation.status),
+    );
+  }
+
+  for (const entry of snapshot.causalityLog) {
+    statements.push(
+      db
+        .prepare(
+          `INSERT INTO causality_log (id, simulation_id, event, cause, direct_consequences_json, secondary_consequences_json, long_term_consequences_json, date)
+           VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .bind(
+          entry.id,
+          simulationId,
+          entry.event,
+          entry.cause,
+          JSON.stringify(entry.directConsequences),
+          JSON.stringify(entry.secondaryConsequences),
+          JSON.stringify(entry.longTermConsequences),
+          entry.date,
+        ),
     );
   }
 

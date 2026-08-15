@@ -38,6 +38,27 @@
     </section>
 
     <section class="profile-card">
+      <h2>Ruf</h2>
+      <dl>
+        @for (entry of reputation(); track entry.scope) {
+          <dt>{{ entry.scope }}</dt>
+          <dd>{{ entry.standing }}</dd>
+        }
+      </dl>
+    </section>
+
+    @if (influence().length > 0) {
+      <section class="profile-card">
+        <h2>Einfluss</h2>
+        <ul>
+          @for (entry of influence(); track entry.id) {
+            <li><strong>{{ entry.source }}:</strong> {{ entry.description }}</li>
+          }
+        </ul>
+      </section>
+    }
+
+    <section class="profile-card">
       <h2>Persönliche Ziele</h2>
       <ul>
         @for (goal of player().goals.midTerm; track $index) {
@@ -77,4 +98,21 @@
       </div>
     }
   </section>
+
+  @if (favors().length > 0) {
+    <section class="profile-section">
+      <h2>Gefälligkeiten</h2>
+      <ul class="favors-list">
+        @for (favor of favors(); track favor.id) {
+          <li [class.is-fulfilled]="favor.fulfilled">
+            <span class="favors-list__direction">{{ favor.direction === 'owed-to-player' ? 'schuldet dir' : 'du schuldest' }}</span>
+            {{ favor.description }}
+            @if (favor.fulfilled) {
+              <span class="favors-list__status">(erledigt)</span>
+            }
+          </li>
+        }
+      </ul>
+    </section>
+  }
 </div>

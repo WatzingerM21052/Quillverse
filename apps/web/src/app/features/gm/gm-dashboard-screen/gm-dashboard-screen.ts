@@ -15,6 +15,8 @@ export class GmDashboardScreen {
   protected readonly openThreads = computed(() => this.store.current().openThreads);
   protected readonly allCharacters = computed(() => Object.values(this.store.current().characters));
   protected readonly canonEvents = this.store.canonEvents;
+  protected readonly secrets = this.store.secrets;
+  protected readonly causalityLog = this.store.causalityLog;
 
   protected readonly issues = computed(() => runContinuityCheck(this.store.current()));
 

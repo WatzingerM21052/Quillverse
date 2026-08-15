@@ -24,6 +24,14 @@ export interface SimulationStateResponse {
   chapters: unknown[];
   inventory: InventoryItemResponse[];
   whistledownIssues: WhistledownIssueResponse[];
+  reputation: ReputationEntry[];
+  influence: InfluenceEntry[];
+  favors: FavorEntry[];
+  rumors: RumorEntry[];
+  secrets: SecretEntry[];
+  scandals: ScandalEntry[];
+  obligations: ObligationEntry[];
+  causalityLog: CausalityLogEntry[];
 }
 
 export interface WardrobeItem {
@@ -54,6 +62,72 @@ export interface WhistledownIssueResponse {
   date: string;
   headline: string;
   body: string[];
+}
+
+export interface ReputationEntry {
+  characterId: string;
+  scope: string;
+  standing: string;
+}
+
+export interface InfluenceEntry {
+  id: string;
+  characterId: string;
+  source: string;
+  description: string;
+}
+
+export interface FavorEntry {
+  id: string;
+  personId: string;
+  direction: 'owed-to-player' | 'player-owes';
+  description: string;
+  publiclyKnown: boolean;
+  fulfilled: boolean;
+}
+
+export interface RumorEntry {
+  id: string;
+  content: string;
+  truthStatus: 'true' | 'false' | 'distorted' | 'unknown';
+  reach: string;
+  knownBy: string[];
+  originDate: string;
+}
+
+export interface SecretEntry {
+  id: string;
+  description: string;
+  truth: string;
+  knownBy: string[];
+  suspectedBy: string[];
+  playerKnows: boolean;
+}
+
+export interface ScandalEntry {
+  id: string;
+  description: string;
+  severity: string;
+  date: string;
+  involved: string[];
+}
+
+export interface ObligationEntry {
+  id: string;
+  description: string;
+  owedTo: string;
+  deadline: string | null;
+  status: string;
+}
+
+export interface CausalityLogEntry {
+  id: string;
+  event: string;
+  cause: string;
+  directConsequences: string[];
+  secondaryConsequences: string[];
+  longTermConsequences: string[];
+  date: string;
 }
 
 export interface InventoryItemResponse {
@@ -162,6 +236,16 @@ export interface ManualTurnPatch {
   newLocations?: LocationResponse[];
   newInventoryItems?: InventoryItemResponse[];
   newWhistledownIssues?: WhistledownIssueResponse[];
+  reputationUpdates?: ReputationEntry[];
+  newInfluence?: InfluenceEntry[];
+  newFavors?: FavorEntry[];
+  favorUpdates?: Array<{ id: string; fulfilled?: boolean; publiclyKnown?: boolean }>;
+  newRumors?: RumorEntry[];
+  newSecrets?: SecretEntry[];
+  newScandals?: ScandalEntry[];
+  newObligations?: ObligationEntry[];
+  obligationUpdates?: Array<{ id: string; status: string }>;
+  newCausalityEntries?: CausalityLogEntry[];
   openThreadsAdd?: string[];
   openThreadsRemove?: string[];
 }

@@ -37,6 +37,56 @@
     </section>
   </div>
 
+  @if (secrets().length > 0) {
+    <section class="gm-npcs">
+      <h2>Secrets (GM ONLY)</h2>
+      <table class="gm-npc-table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Truth</th>
+            <th>Known by</th>
+            <th>Player knows</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (secret of secrets(); track secret.id) {
+            <tr>
+              <td>{{ secret.description }}</td>
+              <td>{{ secret.truth }}</td>
+              <td>{{ secret.knownBy.join(', ') || '—' }}</td>
+              <td>{{ secret.playerKnows ? 'ja' : 'nein' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
+
+  @if (causalityLog().length > 0) {
+    <section class="gm-npcs">
+      <h2>Causality Log</h2>
+      <table class="gm-npc-table">
+        <thead>
+          <tr>
+            <th>Event</th>
+            <th>Cause</th>
+            <th>Direct Consequences</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (entry of causalityLog(); track entry.id) {
+            <tr>
+              <td>{{ entry.event }}</td>
+              <td>{{ entry.cause }}</td>
+              <td>{{ entry.directConsequences.join(', ') || '—' }}</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </section>
+  }
+
   <section class="gm-npcs">
     <h2>NPC Locations &amp; Goals</h2>
     <table class="gm-npc-table">

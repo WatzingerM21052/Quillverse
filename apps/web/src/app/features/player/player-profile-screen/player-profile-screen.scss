@@ -103,6 +103,36 @@
   opacity: 0.7;
 }
 
+.favors-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-width: 60ch;
+  font-family: var(--qv-font-serif);
+
+  li {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid rgba(184, 147, 74, 0.2);
+
+    &.is-fulfilled {
+      opacity: 0.5;
+    }
+  }
+}
+
+.favors-list__direction {
+  color: var(--qv-gold);
+  text-transform: uppercase;
+  font-family: var(--qv-font-ui);
+  font-size: 0.7rem;
+  margin-right: 0.5rem;
+}
+
+.favors-list__status {
+  opacity: 0.6;
+  font-size: 0.85rem;
+}
+
 .wardrobe,
 .inventory {
   display: grid;

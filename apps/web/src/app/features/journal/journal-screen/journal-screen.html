@@ -12,6 +12,20 @@
     }
   </section>
 
+  @if (obligations().length > 0) {
+    <section class="memories">
+      <h2 class="memories__title">Verpflichtungen</h2>
+      <ul>
+        @for (obligation of obligations(); track obligation.id) {
+          <li class="memory-entry" [class.is-fulfilled]="obligation.status !== 'open'">
+            <span class="memory-entry__date">{{ obligation.owedTo }}{{ obligation.deadline ? ' · Frist: ' + obligation.deadline : '' }}</span>
+            <p>{{ obligation.description }} <em>({{ obligation.status }})</em></p>
+          </li>
+        }
+      </ul>
+    </section>
+  }
+
   <section class="memories">
     <h2 class="memories__title">Wichtige Erinnerungen</h2>
     @if (memories().length === 0) {

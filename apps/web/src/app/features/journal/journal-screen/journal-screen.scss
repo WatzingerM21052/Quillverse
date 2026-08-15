@@ -83,6 +83,11 @@
   border-left: 2px solid var(--qv-gold);
   padding-left: 1rem;
 
+  &.is-fulfilled {
+    opacity: 0.5;
+    border-left-color: var(--qv-sage);
+  }
+
   &__date {
     display: block;
     font-family: var(--qv-font-ui);

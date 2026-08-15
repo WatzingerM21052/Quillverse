@@ -361,6 +361,16 @@ const worldEvents = [
   { id: 'event_3', category: 'economic', title: 'Getreidepreise ziehen an', description: 'Auf dem Wochenmarkt wird über steigende Preise für Weizen gesprochen.', date: '11. April 1813' },
 ];
 
+const reputation = [
+  { characterId: PLAYER_ID, scope: 'local', standing: 'angesehen als verlässlicher, fleißiger Pächtersohn' },
+  { characterId: PLAYER_ID, scope: 'regional', standing: 'praktisch unbekannt' },
+  { characterId: PLAYER_ID, scope: 'ton', standing: 'unbekannt' },
+];
+
+const obligations = [
+  { id: 'obl_1', description: 'Die Pacht für das nächste Quartal begleichen', owedTo: 'Grundherr', deadline: 'Ende Juni 1813', status: 'open' },
+];
+
 const whistledownIssues = [
   {
     id: 'whistledown_1',
@@ -448,6 +458,20 @@ lines.push('');
 for (const issue of whistledownIssues) {
   lines.push(`INSERT INTO whistledown_issues (id, simulation_id, issue_number, date, headline, body_json) VALUES (
   ${sql(issue.id)}, ${sql(SIM_ID)}, ${sql(issue.issueNumber)}, ${sql(issue.date)}, ${sql(issue.headline)}, ${sqlJson(issue.body)}
+);`);
+}
+lines.push('');
+
+for (const entry of reputation) {
+  lines.push(`INSERT INTO reputation (simulation_id, character_id, scope, standing) VALUES (
+  ${sql(SIM_ID)}, ${sql(entry.characterId)}, ${sql(entry.scope)}, ${sql(entry.standing)}
+);`);
+}
+lines.push('');
+
+for (const obligation of obligations) {
+  lines.push(`INSERT INTO obligations (id, simulation_id, description, owed_to, deadline, status) VALUES (
+  ${sql(obligation.id)}, ${sql(SIM_ID)}, ${sql(obligation.description)}, ${sql(obligation.owedTo)}, ${sql(obligation.deadline)}, ${sql(obligation.status)}
 );`);
 }
 lines.push('');

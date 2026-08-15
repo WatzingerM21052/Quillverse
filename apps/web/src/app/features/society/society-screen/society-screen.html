@@ -77,6 +77,28 @@
     </qv-modal>
   }
 
+  @if (rumors().length > 0) {
+    <section class="calendar-section">
+      <h2>Gerüchte</h2>
+      <ul class="rumor-list">
+        @for (rumor of rumors(); track rumor.id) {
+          <li>{{ rumor.content }}</li>
+        }
+      </ul>
+    </section>
+  }
+
+  @if (scandals().length > 0) {
+    <section class="calendar-section">
+      <h2>Skandale</h2>
+      <ul class="rumor-list">
+        @for (scandal of scandals(); track scandal.id) {
+          <li><span class="rumor-list__severity">[{{ scandal.severity }}]</span> {{ scandal.description }} — {{ scandal.date }}</li>
+        }
+      </ul>
+    </section>
+  }
+
   @if (selectedEntry(); as entry) {
     <qv-modal [title]="entry.title" (closed)="close()">
       <dl class="invitation-detail">
