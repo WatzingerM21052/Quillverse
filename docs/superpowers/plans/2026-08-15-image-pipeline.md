@@ -52,13 +52,42 @@ accepted, later variants should stay recognizably the same character
 
 ## Todo
 
-- [ ] `GET /api/assets/:key` — R2 read route.
-- [ ] `services/image-generation.ts` — Pollinations (build+verify first),
-      Gemini behind the same interface (structural, unverified).
-- [ ] `POST /api/simulations/:id/characters/:characterId/portrait` — scoped
+- [x] `GET /api/assets/:key` — R2 read route.
+- [x] `services/image-generation.ts` — Pollinations (build+verify first),
+      Gemini behind the same interface.
+- [x] `POST /api/simulations/:id/characters/:characterId/portrait` — scoped
       by `(id, simulation_id)`, merges `basePortrait`, returns full state.
-- [ ] Frontend: prompt builder, "Portrait generieren" button + `<img>` in
+- [x] Frontend: prompt builder, "Portrait generieren" button + `<img>` in
       `characters-screen` (grid card + sheet).
+
+## Verified live, 2026-08-15 (real Gemini key connected)
+
+- **Gemini adapter code is correct** — auth, model discovery
+  (`gemini-2.5-flash-image` found via the live models list, not hardcoded),
+  request/response shape all worked: the call reached Gemini and got back a
+  well-formed, structured error.
+- **But the free tier has a hard 0 quota for this model on this account**:
+  `RESOURCE_EXHAUSTED`, `limit: 0` for
+  `generate_content_free_tier_requests` / `..._input_token_count` on
+  `gemini-2.5-flash-preview-image`. Image generation via Gemini needs a
+  billing-enabled Google Cloud project — it is not actually free the way
+  Gemini's *text* free tier is. Don't re-promise "free Gemini images" to the
+  user without that caveat.
+- **Pollinations works but is unreliable in two ways**: (1) transient
+  failures — one request 502'd, the identical retry succeeded; (2) prompt
+  adherence is weak — a prompt explicitly describing a male farmer character
+  ("Matthias", rugged, work clothes) produced a portrait of a young woman in
+  an evening gown. Fine as a zero-cost fallback that keeps the feature from
+  hard-failing, not good enough as the primary path for character
+  consistency (§166 will need this fixed or a better fallback — Imagen via
+  the same Gemini billing, or a different keyless service — before it's
+  worth relying on).
+- Cleaned up after testing: reset `char_player_matthias.basePortrait` back
+  to its placeholder and deleted the generated R2 object. One earlier test
+  object from before debug logging was added may still be orphaned in R2 —
+  wrangler's CLI has no bucket-listing command to find it by; harmless
+  (a few KB, non-sensitive image), not worth building a listing endpoint
+  just to chase it down.
 
 ## Deliberately deferred
 

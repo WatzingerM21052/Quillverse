@@ -45,13 +45,22 @@ interface GeminiGenerateContentResponse {
 async function tryGemini(apiKey: string, prompt: string): Promise<GeneratedImage | null> {
   try {
     const modelsResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-    if (!modelsResponse.ok) return null;
+    if (!modelsResponse.ok) {
+      console.error('Gemini image: models list failed', modelsResponse.status, await modelsResponse.text());
+      return null;
+    }
 
     const modelsBody = (await modelsResponse.json()) as GeminiModelsResponse;
     const imageModel = (modelsBody.models ?? []).find(
       (model) => /image/i.test(model.name) && (model.supportedGenerationMethods ?? []).includes('generateContent'),
     );
-    if (!imageModel) return null;
+    if (!imageModel) {
+      console.error(
+        'Gemini image: no image-capable model found among',
+        (modelsBody.models ?? []).map((m) => m.name),
+      );
+      return null;
+    }
 
     const modelId = imageModel.name.replace(/^models\//, '');
     const response = await fetch(
@@ -65,18 +74,25 @@ async function tryGemini(apiKey: string, prompt: string): Promise<GeneratedImage
         }),
       },
     );
-    if (!response.ok) return null;
+    if (!response.ok) {
+      console.error('Gemini image: generateContent failed', modelId, response.status, await response.text());
+      return null;
+    }
 
     const body = (await response.json()) as GeminiGenerateContentResponse;
     const inlineData = body.candidates?.[0]?.content?.parts?.find((part) => part.inlineData)?.inlineData;
-    if (!inlineData) return null;
+    if (!inlineData) {
+      console.error('Gemini image: no inlineData in response', JSON.stringify(body).slice(0, 500));
+      return null;
+    }
 
     return {
       bytes: base64ToArrayBuffer(inlineData.data),
       contentType: inlineData.mimeType,
       provider: 'gemini',
     };
-  } catch {
+  } catch (err) {
+    console.error('Gemini image: threw', err);
     return null;
   }
 }
