@@ -10,6 +10,7 @@ import { SocietyScreen } from './features/society/society-screen/society-screen'
 import { LettersScreen } from './features/letters/letters-screen/letters-screen';
 import { JournalScreen } from './features/journal/journal-screen/journal-screen';
 import { TimelineScreen } from './features/timeline/timeline-screen/timeline-screen';
+import { SettingsScreen } from './features/settings/settings-screen/settings-screen';
 
 export const routes: Routes = [
   {
@@ -30,11 +31,7 @@ export const routes: Routes = [
       { path: 'letters', component: LettersScreen },
       { path: 'journal', component: JournalScreen },
       { path: 'timeline', component: TimelineScreen },
-      {
-        path: 'settings',
-        component: PlaceholderScreen,
-        data: { title: 'Settings', description: 'Simulation, Appearance, Story, AI & Models, Backup & Export, Privacy.' },
-      },
+      { path: 'settings', component: SettingsScreen },
     ],
   },
 ];

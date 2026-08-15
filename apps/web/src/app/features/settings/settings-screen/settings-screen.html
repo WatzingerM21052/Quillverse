@@ -1,0 +1,81 @@
+<div class="settings">
+  <h1 class="settings__title">Settings</h1>
+
+  <div class="settings__layout">
+    <nav class="settings__nav">
+      @for (item of nav; track item.id) {
+        <button type="button" [class.is-active]="activeSection() === item.id" (click)="selectSection(item.id)">
+          {{ item.label }}
+        </button>
+      }
+    </nav>
+
+    <div class="settings__content">
+      @switch (activeSection()) {
+        @case ('ai') {
+          <section class="ai-settings">
+            <div class="narrator-simple">
+              <span class="narrator-simple__label">AI Narrator</span>
+              <span class="narrator-simple__value">Nicht verbunden</span>
+            </div>
+
+            <h2>Providers</h2>
+            <div class="providers">
+              @for (provider of providers(); track provider.id) {
+                <div class="provider-card">
+                  <span class="provider-card__name">{{ provider.name }}</span>
+                  <span class="provider-card__status" [class.is-connected]="provider.status === 'connected'">
+                    {{ provider.status === 'connected' ? '✓ Connected' : 'Not connected' }}
+                  </span>
+                  <button type="button" class="provider-card__action" (click)="startConnect(provider.id)">
+                    {{ provider.status === 'connected' ? 'Configure' : 'Connect' }}
+                  </button>
+                </div>
+              }
+            </div>
+
+            <h2>Fallback</h2>
+            <ol class="fallback-order">
+              @for (name of fallbackOrder; track name) {
+                <li>{{ name }}</li>
+              }
+            </ol>
+
+            <h2>Usage</h2>
+            <table class="usage-table">
+              <tbody>
+                @for (provider of providers(); track provider.id) {
+                  <tr>
+                    <td>{{ provider.name }}</td>
+                    <td>0 requests</td>
+                  </tr>
+                }
+              </tbody>
+            </table>
+          </section>
+        }
+        @default {
+          <p class="settings__placeholder">Dieser Bereich folgt in einer späteren Phase.</p>
+        }
+      }
+    </div>
+  </div>
+
+  @if (connectingProvider; as provider) {
+    <qv-modal [title]="'Connect ' + provider.name" (closed)="closeConnect()">
+      <label class="api-key-field">
+        <span>API Key</span>
+        <input type="password" [value]="apiKeyDraft()" (input)="apiKeyDraft.set($any($event.target).value)" />
+      </label>
+      <p class="api-key-note">Your key is sent securely to the backend and is never stored in your browser.</p>
+      <p class="api-key-status">
+        Provider-Anbindung ist technisch noch nicht verdrahtet — dieser Screen zeigt bereits den finalen Ablauf
+        (Addendum V1.2, B5–B8), das Cloudflare-Worker-Backend dafür folgt in einer späteren Phase.
+      </p>
+      <div class="api-key-actions">
+        <button type="button" (click)="closeConnect()">Cancel</button>
+        <button type="button" class="is-primary" disabled>Test &amp; Save</button>
+      </div>
+    </qv-modal>
+  }
+</div>
