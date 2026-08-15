@@ -1,14 +1,73 @@
 import { Hono } from 'hono';
 import { buildContextPackage } from '../services/context-builder';
-import { validateManualTurnResponse } from '../services/validate-turn-response';
+import { validateManualTurnResponse, type ValidationOutcome } from '../services/validate-turn-response';
 import { applyTurn } from '../db/apply-turn';
 import { createAutoSnapshot, undoLastTurn } from '../db/savepoints';
 import { logAiCall } from '../db/ai-calls';
 import { PROVIDER_ADAPTERS } from '../providers/registry';
-import { PROVIDER_IDS } from '../providers/types';
+import { PROVIDER_IDS, type ProviderId } from '../providers/types';
 import { getDecryptedCredential } from './ai-providers';
 
 export const turnsRoute = new Hono<{ Bindings: Env }>();
+
+const REPAIR_INSTRUCTION =
+  '\n\n=== FORMAT CORRECTION ===\n\nYour previous response could not be parsed as the required JSON object ' +
+  '(schemaVersion, scene.worldDate, scene.narration, statePatch). Respond again with ONLY that one JSON object — ' +
+  'no prose, no markdown code fence, nothing before or after it.';
+
+interface GenerateAttempt {
+  ok: true;
+  responseText: string;
+  validation: Extract<ValidationOutcome, { ok: true }>;
+}
+interface GenerateFailure {
+  ok: false;
+  error: string;
+}
+
+/**
+ * §188 Response Repair — one retry with an explicit format-correction
+ * instruction before giving up on this provider and falling through to the
+ * next one. Each attempt is a real request against the provider's quota, so
+ * each gets its own ai_calls log entry.
+ */
+async function generateWithRepair(
+  db: D1Database,
+  simulationId: string,
+  provider: ProviderId,
+  apiKey: string,
+  contextText: string,
+): Promise<GenerateAttempt | GenerateFailure> {
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const prompt = attempt === 0 ? contextText : contextText + REPAIR_INSTRUCTION;
+    const startedAt = Date.now();
+
+    let responseText: string;
+    try {
+      responseText = await PROVIDER_ADAPTERS[provider].generateStory(apiKey, prompt);
+    } catch (err) {
+      const error = err instanceof Error ? err.message : `${provider} request failed.`;
+      await logAiCall(db, simulationId, provider, false, Date.now() - startedAt, 'generation_failed');
+      if (attempt === 1) return { ok: false, error };
+      continue;
+    }
+
+    const validation = validateManualTurnResponse(responseText);
+    if (!validation.ok) {
+      await logAiCall(db, simulationId, provider, false, Date.now() - startedAt, 'invalid_response');
+      if (attempt === 1) {
+        return { ok: false, error: `${provider} response could not be parsed: ${validation.error}` };
+      }
+      continue;
+    }
+
+    await logAiCall(db, simulationId, provider, true, Date.now() - startedAt, null);
+    return { ok: true, responseText, validation };
+  }
+
+  // Unreachable — the loop always returns on attempt 1 — but keeps TS happy.
+  return { ok: false, error: `${provider}: exhausted retries.` };
+}
 
 // Step 1 of Manual Relay (addendum-v1.1-architecture.md A23-A26): generate the
 // text the player copies into an external AI chat.
@@ -93,31 +152,26 @@ turnsRoute.post('/:id/turn/generate', async (c) => {
     if (!apiKey) continue;
     anyProviderConnected = true;
 
-    const startedAt = Date.now();
-    let responseText: string;
-    try {
-      responseText = await PROVIDER_ADAPTERS[provider].generateStory(apiKey, context.contextText);
-    } catch (err) {
-      lastError = err instanceof Error ? err.message : `${provider} request failed.`;
-      await logAiCall(c.env.DB, simulationId, provider, false, Date.now() - startedAt, 'generation_failed');
+    const attempt = await generateWithRepair(c.env.DB, simulationId, provider, apiKey, context.contextText);
+    if (!attempt.ok) {
+      lastError = attempt.error;
       continue;
     }
 
-    const validation = validateManualTurnResponse(responseText);
-    if (!validation.ok) {
-      lastError = `${provider} response could not be parsed: ${validation.error}`;
-      await logAiCall(c.env.DB, simulationId, provider, false, Date.now() - startedAt, 'invalid_response');
-      continue;
-    }
-
-    await logAiCall(c.env.DB, simulationId, provider, true, Date.now() - startedAt, null);
     await createAutoSnapshot(c.env.DB, simulationId);
-    const result = await applyTurn(c.env.DB, simulationId, playerAction, context.baseStateVersion, provider, validation.response);
+    const result = await applyTurn(
+      c.env.DB,
+      simulationId,
+      playerAction,
+      context.baseStateVersion,
+      provider,
+      attempt.validation.response,
+    );
 
     if (!result.ok) {
       return c.json({ error: result.error }, result.status as 404 | 409);
     }
-    return c.json({ state: result.state, scene: validation.response.scene, provider });
+    return c.json({ state: result.state, scene: attempt.validation.response.scene, provider });
   }
 
   return c.json(
