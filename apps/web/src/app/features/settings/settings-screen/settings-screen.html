@@ -89,6 +89,38 @@
               }
             </ol>
 
+            <h2>Kontinuitäts-Check (§106)</h2>
+            <p class="settings__hint">
+              Optionaler, kostengünstiger zweiter KI-Check vor wichtigen Szenen: widerspricht die
+              vorgeschlagene Antwort dem bisherigen Stand der Simulation? Standardmäßig aus.
+            </p>
+            <label class="provider-card__model-picker">
+              <span>Anbieter</span>
+              <select [value]="continuityProvider() ?? ''" (change)="setContinuityProvider($any($event.target).value)">
+                <option value="">Aus</option>
+                @for (provider of providers(); track provider.provider) {
+                  @if (provider.connected) {
+                    <option [value]="provider.provider">{{ displayName[provider.provider] }}</option>
+                  }
+                }
+              </select>
+            </label>
+            @if (continuityProvider(); as cp) {
+              @if (modelsLoading()[cp]) {
+                <p class="provider-card__models-hint">Modelle werden geladen …</p>
+              } @else if (models()[cp]?.length) {
+                <label class="provider-card__model-picker">
+                  <span>Modell</span>
+                  <select [value]="continuityModelId() ?? ''" (change)="setContinuityModelId($any($event.target).value)">
+                    <option value="">Automatisch</option>
+                    @for (model of models()[cp]; track model.id) {
+                      <option [value]="model.id">{{ model.displayName }}</option>
+                    }
+                  </select>
+                </label>
+              }
+            }
+
             <h2>Nutzung</h2>
             <p class="settings__hint">Jeder Versuch zählt, auch fehlgeschlagene — beides zählt gegen das Tageskontingent des Anbieters (§156).</p>
             <table class="usage-table">

@@ -150,6 +150,10 @@ export class SettingsScreen {
   protected readonly selectedModels = signal<Record<string, string | null>>({});
   protected readonly modelsLoading = signal<Record<string, boolean>>({});
 
+  /** §106 Continuity Guard — null provider means the feature is off (default). */
+  protected readonly continuityProvider = signal<string | null>(null);
+  protected readonly continuityModelId = signal<string | null>(null);
+
   protected readonly savepoints = signal<SavepointSummary[]>([]);
   protected readonly savepointsLoading = signal(true);
   protected readonly newSavepointLabel = signal('');
@@ -196,6 +200,14 @@ export class SettingsScreen {
         }
       },
       error: () => this.providersLoading.set(false),
+    });
+
+    this.api.getContinuityModel().subscribe({
+      next: ({ provider, modelId }) => {
+        this.continuityProvider.set(provider);
+        this.continuityModelId.set(modelId);
+        if (provider) this.loadModels(provider);
+      },
     });
 
     this.refreshSavepoints();
@@ -373,6 +385,20 @@ export class SettingsScreen {
     const value = modelId || null;
     this.selectedModels.update((m) => ({ ...m, [providerId]: value }));
     this.api.setModel(providerId, value).subscribe();
+  }
+
+  protected setContinuityProvider(provider: string): void {
+    const value = provider || null;
+    this.continuityProvider.set(value);
+    this.continuityModelId.set(null);
+    if (value) this.loadModels(value);
+    this.api.setContinuityModel(value, null).subscribe();
+  }
+
+  protected setContinuityModelId(modelId: string): void {
+    const value = modelId || null;
+    this.continuityModelId.set(value);
+    this.api.setContinuityModel(this.continuityProvider(), value).subscribe();
   }
 
   protected readonly exporting = signal(false);

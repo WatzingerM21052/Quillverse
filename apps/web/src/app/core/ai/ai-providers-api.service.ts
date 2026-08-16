@@ -24,6 +24,11 @@ export interface ModelsResult {
   selectedModel: string | null;
 }
 
+export interface ContinuityModel {
+  provider: string | null;
+  modelId: string | null;
+}
+
 /** Calls the real BYOK endpoints (addendum-v1.2-byok.md B4-B19) — no mock data. */
 @Injectable({ providedIn: 'root' })
 export class AiProvidersApiService {
@@ -54,5 +59,14 @@ export class AiProvidersApiService {
       `${API_BASE_URL}/api/ai/providers/${provider}/model`,
       { modelId },
     );
+  }
+
+  /** §106 Continuity Guard — the configured provider+model for the second-pass check. */
+  getContinuityModel(): Observable<ContinuityModel> {
+    return this.http.get<ContinuityModel>(`${API_BASE_URL}/api/ai/providers/continuity-model`);
+  }
+
+  setContinuityModel(provider: string | null, modelId: string | null): Observable<ContinuityModel> {
+    return this.http.put<ContinuityModel>(`${API_BASE_URL}/api/ai/providers/continuity-model`, { provider, modelId });
   }
 }
