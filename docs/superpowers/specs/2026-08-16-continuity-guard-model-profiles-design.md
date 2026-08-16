@@ -30,9 +30,11 @@ added later with no new migration — but nothing in this batch's code assumes t
 New handlers in `apps/api/src/routes/ai-providers.ts` (same file as the existing per-provider model
 routes, since this is conceptually the same "which model for which purpose" surface):
 
-- `GET /api/ai/continuity-model` → `{ provider: ProviderId | null, modelId: string | null }` (both null
-  if unset — feature is off).
-- `PUT /api/ai/continuity-model` → body `{ provider: ProviderId | null, modelId: string | null }`.
+- `GET /api/ai/providers/continuity-model` → `{ provider: ProviderId | null, modelId: string | null }`
+  (both null if unset — feature is off). Path confirmed against `aiProvidersRoute`'s actual mount point
+  (`app.route('/api/ai/providers', aiProvidersRoute)` in `apps/api/src/index.ts`) — registered as
+  `aiProvidersRoute.get('/continuity-model', ...)`, same as the existing `/:provider/models` routes.
+- `PUT /api/ai/providers/continuity-model` → body `{ provider: ProviderId | null, modelId: string | null }`.
   `provider: null` clears the row (turns the feature off). Upserts via
   `INSERT ... ON CONFLICT(user_id, profile) DO UPDATE`, same pattern as `selected_model`.
 - Exported helper `getContinuityModel(env): Promise<{ provider: ProviderId; modelId: string | null } | null>`
