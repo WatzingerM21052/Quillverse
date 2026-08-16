@@ -85,10 +85,13 @@ async function generateWithRepair(
  * §106 Continuity Guard — optional, cheap second AI call before commit, only
  * for scenes isImportantScene() judges significant (avoids a second call
  * after every trivial turn, per spec: "nicht nach jedem Frühstück"). Skipped
- * entirely when no Continuity model profile is configured (opt-in) or the
- * check itself errors — this must never turn a working turn into a failed
- * one, only add one bounded retry when it finds a real contradiction (same
- * one-retry-then-accept shape as generateWithRepair's §188 repair retry).
+ * entirely when no Continuity model profile is configured (opt-in). Once a
+ * profile is configured, every subsequent step — including decrypting that
+ * profile's own credential — runs inside the same try/catch: a failure at
+ * any point (bad credential, network error, malformed response) must never
+ * turn a working turn into a failed one, only add one bounded retry when it
+ * finds a real contradiction (same one-retry-then-accept shape as
+ * generateWithRepair's §188 repair retry).
  */
 async function maybeRunContinuityGuard(
   env: Env,
@@ -108,13 +111,13 @@ async function maybeRunContinuityGuard(
     return { attempt, continuityRetried: false };
   }
 
-  const continuityApiKey = await getDecryptedCredential(env, continuityProfile.provider);
-  if (!continuityApiKey) {
-    return { attempt, continuityRetried: false };
-  }
-
   const startedAt = Date.now();
   try {
+    const continuityApiKey = await getDecryptedCredential(env, continuityProfile.provider);
+    if (!continuityApiKey) {
+      return { attempt, continuityRetried: false };
+    }
+
     const currentState = await getSimulationState(env.DB, simulationId);
     if (!currentState) {
       return { attempt, continuityRetried: false };
