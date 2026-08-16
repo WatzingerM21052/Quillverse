@@ -19,5 +19,8 @@
       "binding": "ASSETS",
       "bucket_name": "quillverse-storage"
     }
-  ]
+  ],
+  "ai": {
+    "binding": "AI"
+  }
 }

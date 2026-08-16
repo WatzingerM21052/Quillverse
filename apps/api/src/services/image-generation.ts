@@ -3,7 +3,7 @@ import { getDecryptedCredential } from '../routes/ai-providers';
 export interface GeneratedImage {
   bytes: ArrayBuffer;
   contentType: string;
-  provider: 'imagen' | 'gemini' | 'pollinations';
+  provider: 'imagen' | 'gemini' | 'pollinations' | 'cloudflare';
 }
 
 /**
@@ -17,8 +17,13 @@ export interface GeneratedImage {
  * models ("Nano Banana") showed 0/0/0 quota live on this account — kept as
  * a second attempt since that's account-specific and may differ for other
  * users, not because it's expected to work here. Pollinations (keyless) is
- * the final fallback so portraits work with zero API keys either way, same
- * principle as Manual Relay.
+ * the primary always-available fallback so portraits work with zero API
+ * keys. Cloudflare Workers AI is a last-resort fourth attempt — same
+ * Cloudflare account this Worker already runs on (no separate signup), free
+ * daily neuron allowance, kept behind Pollinations since Pollinations'
+ * keyless flux endpoint has never actually failed in practice; this exists
+ * as extra resilience if that ever changes, not because it's expected to
+ * fire under normal operation.
  */
 export async function generatePortraitImage(env: Env, prompt: string): Promise<GeneratedImage | null> {
   const geminiKey = await getDecryptedCredential(env, 'gemini');
@@ -30,7 +35,10 @@ export async function generatePortraitImage(env: Env, prompt: string): Promise<G
     if (viaGemini) return viaGemini;
   }
 
-  return tryPollinations(prompt);
+  const viaPollinations = await tryPollinations(prompt);
+  if (viaPollinations) return viaPollinations;
+
+  return tryCloudflareWorkersAI(env, prompt);
 }
 
 interface ImagenPredictResponse {
@@ -208,6 +216,31 @@ async function tryPollinations(prompt: string): Promise<GeneratedImage | null> {
       provider: 'pollinations',
     };
   } catch {
+    return null;
+  }
+}
+
+/**
+ * Doc-verified request/response shape (developers.cloudflare.com/workers-ai,
+ * fetched live via context7 rather than recalled): `env.AI.run()` with the
+ * flux-1-schnell model id, returns `{ image: <base64 JPEG> }` directly (no
+ * candidates/predictions wrapper like the Gemini-family calls above).
+ */
+async function tryCloudflareWorkersAI(env: Env, prompt: string): Promise<GeneratedImage | null> {
+  try {
+    const response = await env.AI.run('@cf/black-forest-labs/flux-1-schnell', { prompt, steps: 8 });
+    if (!response.image) {
+      console.error('Cloudflare Workers AI: no image in response', JSON.stringify(response).slice(0, 500));
+      return null;
+    }
+
+    return {
+      bytes: base64ToArrayBuffer(response.image),
+      contentType: 'image/jpeg',
+      provider: 'cloudflare',
+    };
+  } catch (err) {
+    console.error('Cloudflare Workers AI: threw', err);
     return null;
   }
 }
