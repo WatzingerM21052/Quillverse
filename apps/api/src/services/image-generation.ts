@@ -25,7 +25,26 @@ export interface GeneratedImage {
  * as extra resilience if that ever changes, not because it's expected to
  * fire under normal operation.
  */
-export async function generatePortraitImage(env: Env, prompt: string): Promise<GeneratedImage | null> {
+/**
+ * §166 Character Reference Lock — when a reference image is supplied (the
+ * character's previously locked portrait), img2img conditioning is the
+ * whole point of the call, so it's tried first and alone: falling through
+ * to a plain txt2img provider on failure would silently drop the identity
+ * lock the caller specifically asked for. Only Cloudflare Workers AI's
+ * stable-diffusion-v1-5-img2img can honor a reference image in this
+ * pipeline (Imagen/Gemini-native/Pollinations are all txt2img-only here),
+ * so if it fails there is genuinely no conditioned path left — the caller
+ * decides whether to retry, not this function.
+ */
+export async function generatePortraitImage(
+  env: Env,
+  prompt: string,
+  referenceImage?: ArrayBuffer,
+): Promise<GeneratedImage | null> {
+  if (referenceImage) {
+    return tryCloudflareImg2Img(env, prompt, referenceImage);
+  }
+
   const geminiKey = await getDecryptedCredential(env, 'gemini');
   if (geminiKey) {
     const viaImagen = await tryImagen(geminiKey, prompt);
@@ -243,6 +262,58 @@ async function tryCloudflareWorkersAI(env: Env, prompt: string): Promise<Generat
     console.error('Cloudflare Workers AI: threw', err);
     return null;
   }
+}
+
+/**
+ * Doc-verified request/response shape (developers.cloudflare.com/workers-ai,
+ * fetched live via context7 rather than recalled): `image_b64` (not raw
+ * bytes) for the reference image, `strength` controls how much of the
+ * reference survives (0 = unchanged, 1 = ignored) — 0.5 chosen as a
+ * middle ground that keeps the face/composition recognizable while still
+ * letting the new prompt (different pose/expression/outfit) actually show
+ * up; needs live-quality judgement, not a value derived from docs. Response
+ * is a raw ReadableStream (PNG bytes), not a base64-wrapped JSON object
+ * like flux-1-schnell above — a different shape per model, not a mistake.
+ */
+async function tryCloudflareImg2Img(env: Env, prompt: string, referenceImage: ArrayBuffer): Promise<GeneratedImage | null> {
+  const image_b64 = arrayBufferToBase64(referenceImage);
+
+  // Live-observed: this model's shared Cloudflare capacity genuinely runs
+  // out under normal load ("3040: Capacity temporarily exceeded, please try
+  // again" -- the API's own wording, not a code error), unlike flux-1-schnell
+  // above which has never shown this. A few short retries follow that
+  // literal instruction rather than giving up on the first transient 503.
+  const attempts = 3;
+  for (let attempt = 1; attempt <= attempts; attempt++) {
+    try {
+      const stream = await env.AI.run('@cf/runwayml/stable-diffusion-v1-5-img2img', {
+        prompt,
+        image_b64,
+        strength: 0.5,
+        guidance: 7.5,
+      });
+
+      const bytes = await new Response(stream as ReadableStream).arrayBuffer();
+      if (bytes.byteLength === 0) {
+        console.error('Cloudflare img2img: empty response body');
+        continue;
+      }
+
+      return { bytes, contentType: 'image/png', provider: 'cloudflare' };
+    } catch (err) {
+      console.error(`Cloudflare img2img: threw (attempt ${attempt}/${attempts})`, err);
+      if (attempt < attempts) await new Promise((resolve) => setTimeout(resolve, attempt * 1500));
+    }
+  }
+
+  return null;
+}
+
+function arrayBufferToBase64(buffer: ArrayBuffer): string {
+  const bytes = new Uint8Array(buffer);
+  let binary = '';
+  for (let i = 0; i < bytes.byteLength; i++) binary += String.fromCharCode(bytes[i]!);
+  return btoa(binary);
 }
 
 function base64ToArrayBuffer(base64: string): ArrayBuffer {

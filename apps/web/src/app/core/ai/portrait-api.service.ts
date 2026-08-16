@@ -8,10 +8,14 @@ import { EntityId } from '../state/models/entity-id';
 
 export interface PortraitResult {
   state: SimulationState;
-  provider: 'gemini' | 'pollinations';
+  provider: 'imagen' | 'gemini' | 'pollinations' | 'cloudflare';
 }
 
-/** §163-164 — image generation is a separate concern from the story provider. */
+export interface LockResult {
+  state: SimulationState;
+}
+
+/** §163-164, §166 — image generation is a separate concern from the story provider. */
 @Injectable({ providedIn: 'root' })
 export class PortraitApiService {
   private readonly http = inject(HttpClient);
@@ -21,6 +25,20 @@ export class PortraitApiService {
     return this.http.post<PortraitResult>(
       `${API_BASE_URL}/api/simulations/${this.activeSimulation.id()}/characters/${characterId}/portrait`,
       { prompt },
+    );
+  }
+
+  /** §166 — makes the character's current portrait the reference for future variants. */
+  lock(characterId: EntityId): Observable<LockResult> {
+    return this.http.post<LockResult>(
+      `${API_BASE_URL}/api/simulations/${this.activeSimulation.id()}/characters/${characterId}/portrait/lock`,
+      {},
+    );
+  }
+
+  unlock(characterId: EntityId): Observable<LockResult> {
+    return this.http.delete<LockResult>(
+      `${API_BASE_URL}/api/simulations/${this.activeSimulation.id()}/characters/${characterId}/portrait/lock`,
     );
   }
 }

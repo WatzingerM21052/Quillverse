@@ -22,14 +22,46 @@
         }
       </div>
 
-      <button
-        type="button"
-        class="portrait-generate"
-        [disabled]="generatingPortraitId() === character.id"
-        (click)="generatePortrait(character.id)"
-      >
-        {{ generatingPortraitId() === character.id ? 'Erzeuge Portrait …' : 'Portrait generieren' }}
-      </button>
+      <div class="portrait-actions">
+        <button
+          type="button"
+          class="portrait-generate"
+          [disabled]="generatingPortraitId() === character.id"
+          (click)="generatePortrait(character.id)"
+        >
+          {{
+            generatingPortraitId() === character.id
+              ? character.visualState.portraitLocked
+                ? 'Erzeuge mit gesperrtem Aussehen …'
+                : 'Erzeuge Portrait …'
+              : 'Portrait generieren'
+          }}
+        </button>
+
+        @if (portraitUrl(character.visualState.basePortrait)) {
+          @if (character.visualState.portraitLocked) {
+            <button
+              type="button"
+              class="portrait-lock portrait-lock--active"
+              [disabled]="lockBusyId() === character.id"
+              (click)="unlockPortrait(character.id)"
+              title="§166 — neue Portraits orientieren sich am gesperrten Aussehen"
+            >
+              🔒 Aussehen gesperrt
+            </button>
+          } @else {
+            <button
+              type="button"
+              class="portrait-lock"
+              [disabled]="lockBusyId() === character.id"
+              (click)="lockPortrait(character.id)"
+              title="§166 — macht dieses Portrait zur Referenz für künftige Varianten"
+            >
+              Aussehen sperren
+            </button>
+          }
+        }
+      </div>
       @if (portraitError()) {
         <p class="api-key-error">{{ portraitError() }}</p>
       }

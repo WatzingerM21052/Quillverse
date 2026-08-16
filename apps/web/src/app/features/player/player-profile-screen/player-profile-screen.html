@@ -9,9 +9,41 @@
       <h1>{{ player().name }}</h1>
       <p class="profile-header__age">{{ player().visualState.currentAge }} Jahre</p>
       <p class="profile-header__origin">{{ origin }}</p>
-      <button type="button" class="profile-header__generate" [disabled]="generatingPortrait()" (click)="generatePortrait()">
-        {{ generatingPortrait() ? 'Erzeuge Portrait …' : 'Portrait generieren' }}
-      </button>
+      <div class="portrait-actions">
+        <button type="button" class="profile-header__generate" [disabled]="generatingPortrait()" (click)="generatePortrait()">
+          {{
+            generatingPortrait()
+              ? player().visualState.portraitLocked
+                ? 'Erzeuge mit gesperrtem Aussehen …'
+                : 'Erzeuge Portrait …'
+              : 'Portrait generieren'
+          }}
+        </button>
+
+        @if (portraitUrl(player().visualState.basePortrait)) {
+          @if (player().visualState.portraitLocked) {
+            <button
+              type="button"
+              class="portrait-lock portrait-lock--active"
+              [disabled]="lockBusy()"
+              (click)="unlockPortrait()"
+              title="§166 — neue Portraits orientieren sich am gesperrten Aussehen"
+            >
+              🔒 Aussehen gesperrt
+            </button>
+          } @else {
+            <button
+              type="button"
+              class="portrait-lock"
+              [disabled]="lockBusy()"
+              (click)="lockPortrait()"
+              title="§166 — macht dieses Portrait zur Referenz für künftige Varianten"
+            >
+              Aussehen sperren
+            </button>
+          }
+        }
+      </div>
       @if (portraitError()) {
         <p class="profile-header__error">{{ portraitError() }}</p>
       }

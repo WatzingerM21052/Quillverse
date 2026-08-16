@@ -73,9 +73,16 @@
   }
 }
 
+.portrait-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 auto 1.5rem;
+}
+
 .portrait-generate {
   display: block;
-  margin: 0 auto 1.5rem;
   background: var(--qv-oxblood);
   border: 1px solid var(--qv-gold);
   color: var(--qv-ivory);
@@ -88,6 +95,27 @@
   &:disabled {
     opacity: 0.5;
     cursor: not-allowed;
+  }
+}
+
+.portrait-lock {
+  background: none;
+  border: 1px solid var(--qv-gold);
+  color: var(--qv-champagne);
+  border-radius: 6px;
+  padding: 0.35rem 0.9rem;
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--active {
+    background: rgba(184, 147, 74, 0.2);
+    color: var(--qv-gold);
   }
 }
 

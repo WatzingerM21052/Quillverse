@@ -26,6 +26,7 @@ export class PlayerProfileScreen {
 
   protected readonly generatingPortrait = signal(false);
   protected readonly portraitError = signal<string | null>(null);
+  protected readonly lockBusy = signal(false);
 
   protected skillEntries(skills: Record<string, string>): [string, string][] {
     return Object.entries(skills);
@@ -49,6 +50,39 @@ export class PlayerProfileScreen {
       error: (err) => {
         this.portraitError.set(err?.error?.error ?? 'Portrait konnte nicht erzeugt werden.');
         this.generatingPortrait.set(false);
+      },
+    });
+  }
+
+  /** §166 — locks the player's current portrait as the reference for future variants. */
+  protected lockPortrait(): void {
+    this.lockBusy.set(true);
+    this.portraitError.set(null);
+
+    this.portraitApi.lock(this.player().id).subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.lockBusy.set(false);
+      },
+      error: (err) => {
+        this.portraitError.set(err?.error?.error ?? 'Aussehen konnte nicht gesperrt werden.');
+        this.lockBusy.set(false);
+      },
+    });
+  }
+
+  protected unlockPortrait(): void {
+    this.lockBusy.set(true);
+    this.portraitError.set(null);
+
+    this.portraitApi.unlock(this.player().id).subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.lockBusy.set(false);
+      },
+      error: (err) => {
+        this.portraitError.set(err?.error?.error ?? 'Sperre konnte nicht aufgehoben werden.');
+        this.lockBusy.set(false);
       },
     });
   }

@@ -28,6 +28,7 @@ export class CharactersScreen {
 
   protected readonly generatingPortraitId = signal<EntityId | null>(null);
   protected readonly portraitError = signal<string | null>(null);
+  protected readonly lockBusyId = signal<EntityId | null>(null);
 
   protected readonly selectedCharacter = computed(() => {
     const id = this.selectedId();
@@ -67,6 +68,39 @@ export class CharactersScreen {
       error: (err) => {
         this.portraitError.set(err?.error?.error ?? 'Portrait konnte nicht erzeugt werden.');
         this.generatingPortraitId.set(null);
+      },
+    });
+  }
+
+  /** §166 — locks the character's current portrait as the reference for future variants. */
+  protected lockPortrait(characterId: EntityId): void {
+    this.lockBusyId.set(characterId);
+    this.portraitError.set(null);
+
+    this.portraitApi.lock(characterId).subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.lockBusyId.set(null);
+      },
+      error: (err) => {
+        this.portraitError.set(err?.error?.error ?? 'Aussehen konnte nicht gesperrt werden.');
+        this.lockBusyId.set(null);
+      },
+    });
+  }
+
+  protected unlockPortrait(characterId: EntityId): void {
+    this.lockBusyId.set(characterId);
+    this.portraitError.set(null);
+
+    this.portraitApi.unlock(characterId).subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.lockBusyId.set(null);
+      },
+      error: (err) => {
+        this.portraitError.set(err?.error?.error ?? 'Sperre konnte nicht aufgehoben werden.');
+        this.lockBusyId.set(null);
       },
     });
   }

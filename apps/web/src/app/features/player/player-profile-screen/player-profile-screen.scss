@@ -72,6 +72,33 @@
   }
 }
 
+.portrait-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.portrait-lock {
+  background: none;
+  border: 1px solid var(--qv-gold);
+  color: var(--qv-champagne);
+  border-radius: 6px;
+  padding: 0.3rem 0.8rem;
+  font-family: var(--qv-font-ui);
+  font-size: 0.7rem;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &--active {
+    background: rgba(184, 147, 74, 0.2);
+    color: var(--qv-gold);
+  }
+}
+
 .profile-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));

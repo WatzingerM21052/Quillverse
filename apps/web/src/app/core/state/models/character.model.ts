@@ -24,6 +24,8 @@ export interface CharacterVisualState {
   currentAge: string;
   currentCondition: string;
   availableExpressions: string[];
+  /** §166 Character Reference Lock — when true, new generations use basePortrait as an img2img reference instead of a plain prompt. */
+  portraitLocked?: boolean;
 }
 
 export interface CharacterGoals {
