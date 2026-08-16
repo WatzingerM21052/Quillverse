@@ -97,6 +97,8 @@ export class StoryScreen {
   protected readonly generateError = signal<string | null>(null);
   /** §98 Provider Change Indicator — whichever provider actually narrated the last turn (A32 fallback may differ from connectedProvider). */
   protected readonly lastUsedProvider = signal<string | null>(null);
+  /** §106 Continuity Guard — true only for the turn just committed, not sticky across turns. */
+  protected readonly continuityRetried = signal(false);
   protected readonly undoing = signal(false);
   protected readonly undoMessage = signal<string | null>(null);
 
@@ -162,11 +164,12 @@ export class StoryScreen {
     this.generateError.set(null);
 
     this.directTurn.generate(action, this.selectedProvider() ?? undefined).subscribe({
-      next: ({ state, scene, provider }) => {
+      next: ({ state, scene, provider, continuityRetried }) => {
         this.store.refresh(state);
         this.scene.set(scene);
         this.playerInput.set('');
         this.lastUsedProvider.set(provider);
+        this.continuityRetried.set(continuityRetried);
         this.generating.set(false);
       },
       error: (err) => {

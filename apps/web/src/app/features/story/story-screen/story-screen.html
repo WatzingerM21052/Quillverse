@@ -38,7 +38,9 @@
       <p class="story-header__undo-message">{{ undoMessage() }}</p>
     }
     @if (lastUsedProvider(); as provider) {
-      <p class="story-header__provider-indicator">erzählt von {{ provider }}</p>
+      <p class="story-header__provider-indicator">
+        erzählt von {{ provider }}{{ continuityRetried() ? ' · Kontinuität geprüft, Korrektur angefordert' : '' }}
+      </p>
     }
   }
 

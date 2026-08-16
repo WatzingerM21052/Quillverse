@@ -11,6 +11,8 @@ export interface GenerateTurnResult {
   scene: Scene;
   /** Whichever connected provider actually produced this turn — not necessarily the first choice (A32 automatic fallback). */
   provider: string;
+  /** §106 Continuity Guard — true only when a flagged contradiction triggered one corrective retry. */
+  continuityRetried: boolean;
 }
 
 /** Phase 2/6 gap closed: a turn generated directly via a connected BYOK provider, no copy-paste. */
