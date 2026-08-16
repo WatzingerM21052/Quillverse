@@ -164,6 +164,59 @@ UI-doc sections the issues below actually cite.
   GitHub issues via periodic docs-vs-implementation audits, not inline code comments. Keep using that
   pattern rather than starting to sprinkle TODOs.
 
+## Execution roadmap (optimal order, decided 2026-08-16)
+
+Sequencing logic: quick+independent wins first (momentum, low risk) → feature batches grouped by
+*screen* (matches this project's own history — Letters/Map/Model-Selector/Tone-Prefs bundled together
+in one earlier pass, same for Recap/Bookmarks/Quotes/Notes — less context-switching per pass) →
+the one architecturally significant item (`#27` Module System) placed *before* the item that
+conceptually depends on it (`§189` Story Quality Controls plausibly needs to hook into whichever
+module/instruction-selection scaffolding `#27` builds) → the two broad cross-cutting passes (Mobile,
+Visual Polish) placed *last* so each only has to happen once, over the final UI surface, instead of
+being partially redone after every batch that adds new screens/elements.
+
+Each batch below should get its own brainstorm → spec → plan → subagent-driven-development cycle (same
+process as the Quick Wins batch), not one giant plan — that pattern worked well and caught real bugs a
+single-pass implementation likely would have missed.
+
+1. **Continuity Guard + Model Profiles** — `#25` (§106 second-pass AI contradiction check, reuses the
+   §188 repair-retry pattern) + `§160` Model Profiles (small presets on top of the already-shipped model
+   selector, #23). Independent of everything else, small, high correctness value — good next batch.
+2. **Story Mode interaction UX** — `§20` Action Mode chips + `§22-23` scene/time transition cards. Same
+   screen as Focus Mode (just shipped), same file family (`story-screen.*`) — bundle to minimize
+   re-orientation cost.
+3. **Settings/BYOK depth** — `B17` Provider Detail Page + `B20` session-only key + `B33` configurable
+   fallback order + `B46` token-usage dashboard. Same screen (Settings), same underlying BYOK
+   infrastructure (`ai-providers.ts`, `ai-providers-api.service.ts`) touched by all four.
+3.5. **Society + Save/Backup features** — `§54` Dance Card (Society screen) + `A38` Full Archive backup
+   (adds `/assets/` to Compact Save) + `§124` Timeline Identity (Save Selection — natural fit alongside
+   the backup work since both touch save/timeline surfacing). Independent of 1-3 and of the
+   architecture batch below; can freely swap order with 2/3 if something there turns out blocked.
+4. **`#27` Module System / selective context loading + memory summarization (§108-110).** The big one —
+   needs its own design pass (per the issue's own framing), touches `context-builder.ts` at its core.
+   Deliberately placed after the smaller batches (1-3.5) are done and the codebase is quiet, and before
+   Story Quality Controls (next) so that feature can build on whatever module-selection shape this
+   produces rather than needing rework.
+5. **`§189` Story Quality Controls** — "More Dialogue/More Atmosphere/Faster Pace/Less Description"
+   toggles that feed into prompt construction. Sequenced right after `#27` since it's the one remaining
+   item that plausibly needs to hook into the module system rather than the raw always-everything prompt.
+6. **`#20` Mobile optimization pass.** Broad, cross-cutting, unverified how bad the current state
+   actually is. Deliberately last among the feature work so it only needs to happen once, covering every
+   screen/element added in batches 1-5, instead of needing a partial re-pass after each.
+7. **`#19` Location art + visual polish (rest of Phase 7)** + `§167` Location Reference Lock (bundled in,
+   per the existing note that it's the location-entity analogue of the already-built Character Reference
+   Lock). Mostly art-direction/asset-generation work, largely independent of the rest — could in
+   principle run in parallel with any other batch, but sequenced last here since it's the most
+   "polish, not mechanics" item and benefits from the app's final UI shape being settled first.
+
+**Opportunistic, not scheduled into a batch** — revisit when the external blocker clears, don't force a
+session around these: retest Character Reference Lock's img2img call when Cloudflare's shared capacity
+isn't exhausted (`3040: Capacity temporarily exceeded` throughout every attempt so far); test the
+OpenAI/Anthropic provider adapters end-to-end if a real API key for either ever becomes available.
+
+Phase 8 (Multi-World — additional world packs beyond Bridgerton) stays out of this roadmap entirely,
+deferred by explicit prior request until Bridgerton's own starting setup gets revisited together first.
+
 ## Conventions worth remembering (so future sessions don't repeat this mistake)
 
 - `migrations/0002_seed_default_simulation.sql` is **frozen in shape** — it already ran against
