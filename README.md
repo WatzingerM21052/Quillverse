@@ -28,7 +28,8 @@ Frontend live at **https://watzingerm21052.github.io/Quillverse/** — redeploys
 via GitHub Actions on every push to `main`.
 
 Backend live at **https://quillverse-api.svhofkirchen-api.workers.dev** — deploy manually with
-`cd apps/api && npm run deploy` (no CI wiring yet). The frontend fetches
+`cd apps/api && npm run deploy` (`.github/workflows/api-ci.yml` runs `wrangler types` + `tsc`
++ `vitest` on every push, but does not deploy — that stays a manual step). The frontend fetches
 `GET /api/simulations/sim_default` on startup (`simulation-state.store.ts`) and falls back to
 its local seed only if that request fails.
 
@@ -69,7 +70,19 @@ db/savepoints.ts               create/list/restore named full-state snapshots (�
                                Timelines) — every entity table has a composite (id, simulation_id)
                                primary key so the same entity ids can exist in both timelines
 routes/simulations.ts          GET /api/simulations lists every timeline for Save Selection (§123)
+routes/backup.ts               GET /:id/export and POST /import — ZIP Compact Save (§A34-A45),
+                                content assembled server-side, zipped client-side
+routes/characters.ts           POST .../portrait (§163-166, tries Imagen/Gemini/Pollinations/
+                                Cloudflare in order) and POST/DELETE .../portrait/lock (§166
+                                Character Reference Lock — img2img reference for future variants)
+services/image-generation.ts   the actual four-provider fallback chain + Cloudflare img2img call
 ```
+
+`env.AI` (Cloudflare Workers AI) is bound in `wrangler.jsonc` for the portrait fallback/img2img
+paths above. `apps/api/vitest.config.ts` deliberately points at `wrangler.test.jsonc` (same
+D1/R2 bindings, no `ai`) instead of the main config — Miniflare can't emulate the AI binding
+locally, so including it in the test pool would require a `CLOUDFLARE_API_TOKEN` in CI for
+something no test actually exercises.
 
 D1 (`quillverse-db`) and R2 (`quillverse-storage`) are dedicated Cloudflare resources for this
 project only — created after checking the account's existing resources to avoid any collision
@@ -108,7 +121,8 @@ features/
                      kept for future nav areas)
   story/            Story Mode — the primary view (§9), Manual Relay modal lives here
   profile/          Player Profile — appearance, skills, wardrobe, inventory (§69-72)
-  characters/       Character grid + detail sheet (§27-33), GM-only reveal when GM Mode is on
+  characters/       Character grid + detail sheet (§27-33), GM-only reveal when GM Mode is on,
+                     portrait generation + "Aussehen sperren" Character Reference Lock (§166)
   relationships/    Relationship web (§34-36), raw dimensions + inner thoughts in GM Mode
   world/            Living-world almanac (§37-39)
   map/              Fog-of-knowledge map + travel info (§40-43)
@@ -118,9 +132,13 @@ features/
   journal/          Chapters + important memories (§64-65)
   timeline/         Chronological events + Canon Divergence view (§66-68)
   settings/         AI & Models (real Connect/Disconnect calls), GM/Debug toggle,
-                     Backup & Export (Save Points — create/list/restore)
+                     Backup & Export (Save Points — create/list/restore; ZIP Compact Save
+                     export/download + import-as-new-timeline, §A34-A45), Save Selection /
+                     Timeline Tree
   gm/               GM Dashboard (/gm, only linked from nav when GM Mode is on) — continuity
                      health, state version, canon drift, every NPC's actual location + goals
+  character-creator/  /new-character (linked from Settings → Backup & Export) — AI-conducted
+                     interview (§131), creates a brand-new timeline from scratch
 ```
 
 ## The world-pack seam
@@ -143,9 +161,9 @@ packs for other settings, is deliberately deferred — see the roadmap below.
 | **1 — Core Foundation** (state schema, world-pack seam, AI provider interface, nav shell + all 10 screens) | **done**, now backed by a real D1 database |
 | **2 — Story MVP** | **done** — Manual Relay still works with zero API keys, and direct-API turns are now wired too: when a BYOK provider is connected, the Story screen calls it directly (`POST /api/simulations/:id/turn/generate`, reusing the same context-builder/validate/apply-turn pipeline), no copy-paste needed. Verified live against a real connected Gemini key — coherent, in-character, world-consistent narration |
 | 3 — World / 4 — Social | **done** — Map/Estate/World/Society (incl. Lady Whistledown)/Letters/Journal/Timeline/Relationships, plus the previously-missing Player Profile (§69-72: skills, wardrobe, inventory); all live-update after each committed turn |
-| **5 — Advanced Memory** | **done** — GM Mode toggle + GM Dashboard, GM-only reveals in Characters/Relationships, Save Points (create/list/restore), **Branching Timelines** (§123-124, §154) with a **Timeline Tree** (§155, nested/indented list in Save Selection showing which timeline each fork branched from), and **Undo Last Turn** (§153) — an autosave taken right before every applied turn, restorable once, filtered out of the player-facing Save Points list. Only remaining gap: Timeline Identity (§124) portrait/location/summary/last-image fields, blocked on a working image pipeline |
+| **5 — Advanced Memory** | **done** — GM Mode toggle + GM Dashboard, GM-only reveals in Characters/Relationships, Save Points (create/list/restore), ZIP Compact Save export/import (§A34-A45 — manifest + full state JSON + human-readable markdown, built client-side with fflate; import always creates a brand-new timeline, never overwrites the active save), **Branching Timelines** (§123-124, §154) with a **Timeline Tree** (§155, nested/indented list in Save Selection showing which timeline each fork branched from), and **Undo Last Turn** (§153) — an autosave taken right before every applied turn, restorable once, filtered out of the player-facing Save Points list. Only remaining gap: Timeline Identity (§124) portrait/location/summary/last-image fields |
 | **6 — Multi-Provider** | **done** — BYOK credential service, real provider adapters, and `generateStory` is now wired end-to-end for Gemini (verified live) and structurally complete for OpenAI/Anthropic (unverified — no key available for either) |
-| 7 — Visual Polish (weather, expressions, cinematic artwork, audio, real portraits) | **started**: character portrait generation (§163-166) — "Portrait generieren" in the Characters screen, backend tries Imagen 4, then native Gemini image, then falls back to the keyless Pollinations API, stores to R2. Verified live: **no free image path works on this Google account yet** — all three Imagen 4 variants and the native Gemini image model return "no longer available to new users" / 0-quota errors despite the account's own dashboard showing entitlement; needs a billing-enabled project or an account Google grants broader access to. Pollinations is therefore the only working path today, and it's unreliable (occasional transient failures, weak prompt adherence on gender/context). §166 Character Reference Lock and everything else in this phase (location art, weather, expressions, cinematic scene art, audio) not started |
+| 7 — Visual Polish (weather, expressions, cinematic artwork, audio, real portraits) | **in progress**: portrait generation (§163-166) now tries four providers in order — Imagen 4, native Gemini image, Pollinations (keyless flux, unlimited/free), Cloudflare Workers AI (`flux-1-schnell`, same account this Worker already runs on, free daily neuron allowance). Live-verified: Imagen 4 and native Gemini image are account-gated on this Google account ("no longer available to new users" despite entitled quota showing in the dashboard) — **Pollinations and Cloudflare Workers AI are the two paths that actually work**, both genuinely free with no trial/credit-card gimmick (researched and live-tested against several other "free" APIs — Pollinations' own authenticated tier turned out to require paid Pollen despite marketing claims, same lesson as the Google account). §166 Character Reference Lock is built — "Aussehen sperren" on Characters/Player Profile locks the current portrait as an img2img reference (`stable-diffusion-v1-5-img2img`) for future generations, with an automatic fallback to a plain (unreferenced) generation if the reference call fails, so a locked character is never a dead end. **Not yet verified**: whether the img2img call actually preserves identity well — Cloudflare's shared capacity for that specific model was exhausted throughout live testing (`3040: Capacity temporarily exceeded`), so no successful reference-conditioned generation has been observed yet; worth retesting later. Location art, weather, expressions, cinematic scene art, audio, and the recap/bookmarks/quotes/story-card group (§190-197) not started. A dedicated mobile/responsive pass is also tracked but not started (issue #20) |
 | 8 — Multi-World (author additional world packs) | not started — deferred by request, will revisit the Bridgerton starting names/setup together first |
 | **Character Creator** (§131, §170-176 — not part of the phase numbering above, but closes a real gap: the player was permanently hardcoded to the seeded Matthias Hale) | **done** — AI-conducted interview at `/new-character` (Settings → Backup & Export → Save Selection): the player answers what they want, blank fields get filled with plausible defaults, the AI proposes a full character+family+farm+opening-summary draft, the player reviews and confirms (or regenerates). Creates a brand-new timeline from scratch (not a fork). Verified live end-to-end including a real turn played on the newly created character, referencing details only that character has. `tone_preferences_json` is captured at creation but not yet threaded into turn generation — a real follow-up, not yet done |
 
