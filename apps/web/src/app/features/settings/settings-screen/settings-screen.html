@@ -1,5 +1,5 @@
 <div class="settings">
-  <h1 class="settings__title">Settings</h1>
+  <h1 class="settings__title">Einstellungen</h1>
 
   <div class="settings__layout">
     <nav class="settings__nav">
@@ -44,20 +44,20 @@
         @case ('ai') {
           <section class="ai-settings">
             <div class="narrator-simple">
-              <span class="narrator-simple__label">AI Narrator</span>
+              <span class="narrator-simple__label">KI-Erzähler</span>
               <span class="narrator-simple__value">{{ narratorLabel() }}</span>
             </div>
 
-            <h2>Providers</h2>
+            <h2>Anbieter</h2>
             <div class="providers">
               @for (provider of providers(); track provider.provider) {
                 <div class="provider-card qv-document-frame">
                   <span class="provider-card__name">{{ displayName[provider.provider] }}</span>
                   <span class="provider-card__status" [class.is-connected]="provider.connected">
-                    {{ provider.connected ? '✓ Connected (' + provider.keyHint + ')' : 'Not connected' }}
+                    {{ provider.connected ? '✓ Verbunden (' + provider.keyHint + ')' : 'Nicht verbunden' }}
                   </span>
                   @if (provider.connected) {
-                    <button type="button" class="provider-card__action" (click)="disconnect(provider.provider)">Disconnect</button>
+                    <button type="button" class="provider-card__action" (click)="disconnect(provider.provider)">Trennen</button>
 
                     @if (modelsLoading()[provider.provider]) {
                       <p class="provider-card__models-hint">Modelle werden geladen …</p>
@@ -76,27 +76,27 @@
                       </label>
                     }
                   } @else {
-                    <button type="button" class="provider-card__action" (click)="startConnect(provider.provider)">Connect</button>
+                    <button type="button" class="provider-card__action" (click)="startConnect(provider.provider)">Verbinden</button>
                   }
                 </div>
               }
             </div>
 
-            <h2>Fallback</h2>
+            <h2>Fallback-Reihenfolge</h2>
             <ol class="fallback-order">
               @for (name of fallbackOrder; track name) {
                 <li>{{ name }}</li>
               }
             </ol>
 
-            <h2>Usage</h2>
+            <h2>Nutzung</h2>
             <p class="settings__hint">Jeder Versuch zählt, auch fehlgeschlagene — beides zählt gegen das Tageskontingent des Anbieters (§156).</p>
             <table class="usage-table">
               <tbody>
                 @for (provider of providers(); track provider.provider) {
                   <tr>
                     <td>{{ displayName[provider.provider] }}</td>
-                    <td>{{ provider.requestsToday }} {{ provider.requestsToday === 1 ? 'Request' : 'Requests' }} heute</td>
+                    <td>{{ provider.requestsToday }} {{ provider.requestsToday === 1 ? 'Anfrage' : 'Anfragen' }} heute</td>
                   </tr>
                 }
               </tbody>
@@ -121,7 +121,7 @@
         }
         @case ('backup') {
           <section class="savepoints-settings">
-            <h2>Save Points</h2>
+            <h2>Speicherpunkte</h2>
             <p class="settings__hint">
               Ein Save Point sichert den kompletten aktuellen Stand unter einem Namen. Wiederherstellen
               ersetzt den aktuellen Stand vollständig (§94-96, §153).
@@ -135,7 +135,7 @@
                 (input)="newSavepointLabel.set($any($event.target).value)"
               />
               <button type="button" [disabled]="savepointBusy() || !newSavepointLabel().trim()" (click)="createSavepoint()">
-                Create Save Point
+                Speicherpunkt erstellen
               </button>
             </div>
 
@@ -146,15 +146,15 @@
             @if (savepointsLoading()) {
               <p class="settings__hint">Lädt …</p>
             } @else if (savepoints().length === 0) {
-              <p class="settings__hint">Noch keine Save Points vorhanden.</p>
+              <p class="settings__hint">Noch keine Speicherpunkte vorhanden.</p>
             } @else {
               <ul class="savepoint-list">
                 @for (sp of savepoints(); track sp.id) {
                   <li>
                     <span class="savepoint-list__label">{{ sp.label }}</span>
                     <span class="savepoint-list__meta">v{{ sp.stateVersion }} · {{ sp.createdAt }}</span>
-                    <button type="button" [disabled]="savepointBusy()" (click)="restoreSavepoint(sp.id)">Restore</button>
-                    <button type="button" [disabled]="savepointBusy()" (click)="startFork(sp.id)">Create Alternate Timeline</button>
+                    <button type="button" [disabled]="savepointBusy()" (click)="restoreSavepoint(sp.id)">Wiederherstellen</button>
+                    <button type="button" [disabled]="savepointBusy()" (click)="startFork(sp.id)">Alternative Zeitlinie erstellen</button>
                   </li>
                   @if (forkingSavepointId() === sp.id) {
                     <li class="fork-create">
@@ -214,7 +214,7 @@
               <p class="api-key-error">{{ importError() }}</p>
             }
 
-            <h2>Save Selection</h2>
+            <h2>Spielstand-Auswahl</h2>
             <p class="settings__hint">
               Mehrere alternative Zeitlinien derselben Geschichte (§123-124, §154). "Aktiv" ist die
               Zeitlinie, die gerade in allen Screens angezeigt wird. Eingerückte Einträge sind aus der
@@ -251,6 +251,20 @@
             }
           </section>
         }
+        @case ('language') {
+          <section class="language-settings">
+            <h2>Sprache</h2>
+            <p class="settings__hint">Legt die Sprache der Bedienoberfläche fest.</p>
+            <div class="language-options">
+              <button type="button" [class.is-active]="lang.language() === 'de'" (click)="lang.setLanguage('de')">
+                Deutsch
+              </button>
+              <button type="button" [class.is-active]="lang.language() === 'en'" (click)="lang.setLanguage('en')">
+                English
+              </button>
+            </div>
+          </section>
+        }
         @default {
           <p class="settings__placeholder">Dieser Bereich folgt in einer späteren Phase.</p>
         }
@@ -259,21 +273,21 @@
   </div>
 
   @if (connectingProvider; as provider) {
-    <qv-modal [title]="'Connect ' + displayName[provider.provider]" (closed)="closeConnect()">
+    <qv-modal [title]="'Verbinden: ' + displayName[provider.provider]" (closed)="closeConnect()">
       <label class="api-key-field">
-        <span>API Key</span>
+        <span>API-Schlüssel</span>
         <input type="password" [value]="apiKeyDraft()" (input)="apiKeyDraft.set($any($event.target).value)" />
       </label>
-      <p class="api-key-note">Your key is sent securely to the backend and is never stored in your browser.</p>
+      <p class="api-key-note">Dein Schlüssel wird sicher an den Server übertragen und niemals im Browser gespeichert.</p>
 
       @if (connectError()) {
         <p class="api-key-error">{{ connectError() }}</p>
       }
 
       <div class="api-key-actions">
-        <button type="button" (click)="closeConnect()">Cancel</button>
+        <button type="button" (click)="closeConnect()">Abbrechen</button>
         <button type="button" class="is-primary" [disabled]="connecting() || !apiKeyDraft().trim()" (click)="testAndSave()">
-          {{ connecting() ? 'Testing …' : 'Test & Save' }}
+          {{ connecting() ? 'Wird geprüft …' : 'Prüfen & speichern' }}
         </button>
       </div>
     </qv-modal>

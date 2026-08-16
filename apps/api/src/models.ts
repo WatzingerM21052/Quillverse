@@ -54,6 +54,8 @@ export interface SimulationStateResponse {
   recap: RecapInfo | null;
   /** §174 Simulation Settings — narrative/simulation weighting only, never success odds (§175). */
   tonePreferences: TonePreferences;
+  /** Generated terrain-only map artwork; pins/labels are always rendered by the client on top, never baked into this image. */
+  mapBackgroundAsset: string | null;
 }
 
 /** §174 — each axis is optional and free-text on purpose (Character Creator's own "natural choice" wording, or a Settings slider's preset label); absent means "no preference stated". */

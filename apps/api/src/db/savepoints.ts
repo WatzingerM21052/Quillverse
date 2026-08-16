@@ -68,8 +68,39 @@ export async function undoLastTurn(db: D1Database, simulationId: string): Promis
     .first<{ id: string }>();
   if (!autosave) return null;
 
-  const state = await restoreSavepoint(db, simulationId, autosave.id);
-  if (!state) return null;
+  /**
+   * Generated art (location images, character portraits) can be created
+   * between turns — e.g. via the Map screen — outside the autosave that
+   * Undo rolls back to. restoreSavepoint below wholesale-replaces locations
+   * and characters, which would silently discard that art even though the
+   * player only asked to undo the last narrative turn. Capture the current
+   * asset fields first and reapply them after the rollback.
+   */
+  const currentAssets = await db
+    .prepare('SELECT id, base_asset FROM locations WHERE simulation_id = ?')
+    .bind(simulationId)
+    .all<{ id: string; base_asset: string }>();
+  const currentPortraits = await db
+    .prepare('SELECT id, visual_state_json FROM characters WHERE simulation_id = ?')
+    .bind(simulationId)
+    .all<{ id: string; visual_state_json: string }>();
+
+  const restored = await restoreSavepoint(db, simulationId, autosave.id);
+  if (!restored) return null;
+
+  const reapply: D1PreparedStatement[] = [
+    ...currentAssets.results.map((row) =>
+      db
+        .prepare('UPDATE locations SET base_asset = ? WHERE id = ? AND simulation_id = ?')
+        .bind(row.base_asset, row.id, simulationId),
+    ),
+    ...currentPortraits.results.map((row) =>
+      db
+        .prepare('UPDATE characters SET visual_state_json = ? WHERE id = ? AND simulation_id = ?')
+        .bind(row.visual_state_json, row.id, simulationId),
+    ),
+  ];
+  if (reapply.length > 0) await db.batch(reapply);
 
   await db.batch([
     db.prepare('DELETE FROM savepoints WHERE id = ?').bind(autosave.id),
@@ -80,7 +111,7 @@ export async function undoLastTurn(db: D1Database, simulationId: string): Promis
     ).bind(simulationId),
   ]);
 
-  return state;
+  return reapply.length > 0 ? await getSimulationState(db, simulationId) : restored;
 }
 
 const CHILD_TABLES = [

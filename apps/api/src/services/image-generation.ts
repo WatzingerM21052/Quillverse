@@ -40,21 +40,24 @@ export async function generatePortraitImage(
   env: Env,
   prompt: string,
   referenceImage?: ArrayBuffer,
+  options?: { landscape?: boolean },
 ): Promise<GeneratedImage | null> {
   if (referenceImage) {
     return tryCloudflareImg2Img(env, prompt, referenceImage);
   }
 
+  const landscape = options?.landscape ?? false;
+
   const geminiKey = await getDecryptedCredential(env, 'gemini');
   if (geminiKey) {
-    const viaImagen = await tryImagen(geminiKey, prompt);
+    const viaImagen = await tryImagen(geminiKey, prompt, landscape);
     if (viaImagen) return viaImagen;
 
     const viaGemini = await tryGeminiNative(geminiKey, prompt);
     if (viaGemini) return viaGemini;
   }
 
-  const viaPollinations = await tryPollinations(prompt);
+  const viaPollinations = await tryPollinations(prompt, landscape);
   if (viaPollinations) return viaPollinations;
 
   return tryCloudflareWorkersAI(env, prompt);
@@ -81,7 +84,7 @@ interface ImagenPredictResponse {
  * preference order (standard quality first, then whatever else is listed)
  * until one actually succeeds, rather than picking one and giving up.
  */
-async function tryImagen(apiKey: string, prompt: string): Promise<GeneratedImage | null> {
+async function tryImagen(apiKey: string, prompt: string, landscape: boolean): Promise<GeneratedImage | null> {
   const modelsResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`).catch(
     () => null,
   );
@@ -117,7 +120,7 @@ async function tryImagen(apiKey: string, prompt: string): Promise<GeneratedImage
         headers: { 'x-goog-api-key': apiKey, 'Content-Type': 'application/json' },
         body: JSON.stringify({
           instances: [{ prompt }],
-          parameters: { sampleCount: 1 },
+          parameters: landscape ? { sampleCount: 1, aspectRatio: '16:9' } : { sampleCount: 1 },
         }),
       });
 
@@ -223,18 +226,23 @@ async function tryGeminiNative(apiKey: string, prompt: string): Promise<Generate
   }
 }
 
-async function tryPollinations(prompt: string): Promise<GeneratedImage | null> {
+async function tryPollinations(prompt: string, landscape: boolean): Promise<GeneratedImage | null> {
   try {
-    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?width=768&height=1024&nologo=true`;
+    const size = landscape ? 'width=1024&height=512' : 'width=768&height=1024';
+    const url = `https://image.pollinations.ai/prompt/${encodeURIComponent(prompt)}?${size}&nologo=true&seed=${Date.now()}`;
     const response = await fetch(url);
-    if (!response.ok) return null;
+    if (!response.ok) {
+      console.error('Pollinations: request failed', response.status, await response.text());
+      return null;
+    }
 
     return {
       bytes: await response.arrayBuffer(),
       contentType: response.headers.get('content-type') ?? 'image/jpeg',
       provider: 'pollinations',
     };
-  } catch {
+  } catch (err) {
+    console.error('Pollinations: threw', err);
     return null;
   }
 }
@@ -247,6 +255,10 @@ async function tryPollinations(prompt: string): Promise<GeneratedImage | null> {
  */
 async function tryCloudflareWorkersAI(env: Env, prompt: string): Promise<GeneratedImage | null> {
   try {
+    // This model binding's schema rejects width/height ("Additional or
+    // unevaluated properties '/width, /height' at '/' not allowed", live
+    // response) — square output only, cropped client-side when a wider
+    // aspect ratio is needed (e.g. the Map background).
     const response = await env.AI.run('@cf/black-forest-labs/flux-1-schnell', { prompt, steps: 8 });
     if (!response.image) {
       console.error('Cloudflare Workers AI: no image in response', JSON.stringify(response).slice(0, 500));

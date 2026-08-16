@@ -37,6 +37,7 @@ interface SimulationRow {
   player_notes_json: string;
   favorite_quotes_json: string;
   tone_preferences_json: string;
+  map_background_asset: string | null;
 }
 
 interface CharacterRow {
@@ -528,6 +529,7 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
     favoriteQuotes: JSON.parse(simulation.favorite_quotes_json),
     tonePreferences: JSON.parse(simulation.tone_preferences_json || '{}'),
     recap: null,
+    mapBackgroundAsset: simulation.map_background_asset,
   };
 }
 

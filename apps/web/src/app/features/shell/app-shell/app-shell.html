@@ -9,7 +9,7 @@
     }
 
     <ul class="shell__nav-list">
-      @for (item of primaryNav; track item.path) {
+      @for (item of primaryNav(); track item.path) {
         <li>
           <a [routerLink]="item.path" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">{{
             item.label
@@ -19,14 +19,14 @@
     </ul>
 
     <ul class="shell__nav-list shell__nav-list--secondary">
-      @for (item of secondaryNav; track item.path) {
+      @for (item of secondaryNav(); track item.path) {
         <li>
           <a [routerLink]="item.path" routerLinkActive="is-active">{{ item.label }}</a>
         </li>
       }
       @if (gmMode.enabled()) {
         <li>
-          <a routerLink="gm" routerLinkActive="is-active" class="shell__gm-link">GM Dashboard</a>
+          <a routerLink="gm" routerLinkActive="is-active" class="shell__gm-link">{{ lang.t('GM-Übersicht', 'GM Dashboard') }}</a>
         </li>
       }
     </ul>
@@ -38,7 +38,7 @@
 
   <nav class="shell__rail shell__rail--mobile" aria-label="Hauptnavigation">
     <ul class="shell__nav-list shell__nav-list--mobile">
-      @for (item of primaryNav; track item.path) {
+      @for (item of primaryNav(); track item.path) {
         <li>
           <a [routerLink]="item.path" routerLinkActive="is-active" [routerLinkActiveOptions]="{ exact: true }">{{
             item.label

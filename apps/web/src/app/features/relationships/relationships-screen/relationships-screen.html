@@ -1,88 +1,203 @@
 <div class="relationships">
-  <h1 class="relationships__title">Relationships</h1>
+  <h1 class="relationships__title">Beziehungen</h1>
 
-  <div class="web">
-    <svg class="web__lines" viewBox="0 0 100 100" preserveAspectRatio="none">
-      @for (node of nodes(); track node.character.id) {
-        <line x1="50" y1="50" [attr.x2]="node.x" [attr.y2]="node.y" />
-      }
-    </svg>
-
-    <div class="web__player" style="left: 50%; top: 50%">
-      <div class="web__player-portrait">
-        @if (portraitUrl(player().visualState.basePortrait); as url) {
-          <img [src]="url" [alt]="player().name" />
-        }
+  <div class="relationships__body">
+    <div class="relationships__main">
+      <div class="tabs">
+        <button
+          type="button"
+          class="tabs__button"
+          [class.is-active]="activeTab() === 'family'"
+          (click)="selectTab('family')"
+        >
+          Stammbaum
+        </button>
+        <button
+          type="button"
+          class="tabs__button"
+          [class.is-active]="activeTab() === 'relationships'"
+          (click)="selectTab('relationships')"
+        >
+          Beziehungen
+        </button>
       </div>
-      <span>{{ player().name }}</span>
+
+      @if (activeTab() === 'family') {
+        <div class="tree">
+          <div class="tree__generation tree__generation--parents">
+            @for (unit of paternalUnits(); track unit.character.id) {
+              <div class="tree__unit">
+                <button
+                  type="button"
+                  class="tree__node"
+                  [class.is-selected]="selectedId() === unit.character.id"
+                  (click)="select(unit.character.id)"
+                >
+                  <span class="tree__node-portrait">
+                    @if (portraitUrl(unit.character.visualState.basePortrait); as url) {
+                      <img [src]="url" [alt]="unit.character.name" />
+                    }
+                  </span>
+                  <span class="tree__node-name">{{ unit.character.name }}</span>
+                </button>
+                @if (unit.layout.caption) {
+                  <span class="tree__caption">{{ unit.layout.caption }}</span>
+                }
+              </div>
+            }
+
+            <div class="tree__unit tree__unit--couple">
+              <div class="tree__couple">
+                @if (showFatherPlaceholder()) {
+                  <div class="tree__node tree__node--placeholder">
+                    <span class="tree__node-portrait tree__node-portrait--placeholder">†</span>
+                    <span class="tree__node-name">Vater</span>
+                  </div>
+                  <span class="tree__union-mark">⚭</span>
+                }
+                @if (motherUnit(); as unit) {
+                  <button
+                    type="button"
+                    class="tree__node"
+                    [class.is-selected]="selectedId() === unit.character.id"
+                    (click)="select(unit.character.id)"
+                  >
+                    <span class="tree__node-portrait">
+                      @if (portraitUrl(unit.character.visualState.basePortrait); as url) {
+                        <img [src]="url" [alt]="unit.character.name" />
+                      }
+                    </span>
+                    <span class="tree__node-name">{{ unit.character.name }}</span>
+                  </button>
+                }
+              </div>
+              <span class="tree__caption">Eltern</span>
+            </div>
+          </div>
+
+          <div class="tree__descent"></div>
+
+          <div class="tree__generation tree__generation--children">
+            <div class="tree__children-inner" [class.tree__children-inner--single]="siblingUnits().length === 0">
+              <button
+                type="button"
+                class="tree__node tree__node--player"
+                [class.is-selected]="selectedId() === player().id"
+                (click)="select(player().id)"
+              >
+                <span class="tree__node-portrait">
+                  @if (portraitUrl(player().visualState.basePortrait); as url) {
+                    <img [src]="url" [alt]="player().name" />
+                  }
+                </span>
+                <span class="tree__node-name">{{ player().name }}</span>
+                <span class="tree__caption">Du</span>
+              </button>
+              @for (unit of siblingUnits(); track unit.character.id) {
+                <button
+                  type="button"
+                  class="tree__node"
+                  [class.is-selected]="selectedId() === unit.character.id"
+                  (click)="select(unit.character.id)"
+                >
+                  <span class="tree__node-portrait">
+                    @if (portraitUrl(unit.character.visualState.basePortrait); as url) {
+                      <img [src]="url" [alt]="unit.character.name" />
+                    }
+                  </span>
+                  <span class="tree__node-name">{{ unit.character.name }}</span>
+                  <span class="tree__caption">{{ unit.relationship.type }}</span>
+                </button>
+              }
+            </div>
+          </div>
+        </div>
+      } @else {
+        <div class="connections">
+          @if (otherUnits().length === 0) {
+            <div class="connections__empty qv-document-frame">
+              <p>
+                Du hast in dieser ersten Woche der Saison noch niemanden außerhalb der Familie näher kennengelernt.
+                Neue Bekanntschaften erscheinen hier, sobald sie sich ergeben.
+              </p>
+            </div>
+          } @else {
+            <div class="connections__list">
+              @for (unit of otherUnits(); track unit.character.id) {
+                <button
+                  type="button"
+                  class="connection-card qv-document-frame"
+                  [class.is-selected]="selectedId() === unit.character.id"
+                  (click)="select(unit.character.id)"
+                >
+                  <span class="connection-card__portrait">
+                    @if (portraitUrl(unit.character.visualState.basePortrait); as url) {
+                      <img [src]="url" [alt]="unit.character.name" />
+                    }
+                  </span>
+                  <span class="connection-card__info">
+                    <span class="connection-card__name">{{ unit.character.name }}</span>
+                    <span class="connection-card__type">{{ unit.relationship.type }}</span>
+                    <span class="connection-card__momentum">{{ describeMomentum(unit.relationship.momentum) }}</span>
+                  </span>
+                </button>
+              }
+            </div>
+          }
+        </div>
+      }
     </div>
 
-    @for (node of nodes(); track node.character.id) {
-      <button
-        type="button"
-        class="web__node"
-        [class.is-selected]="selectedId() === node.character.id"
-        [style.left.%]="node.x"
-        [style.top.%]="node.y"
-        (click)="select(node.character.id)"
-      >
-        <div class="web__node-portrait">
-          @if (portraitUrl(node.character.visualState.basePortrait); as url) {
-            <img [src]="url" [alt]="node.character.name" />
+    @if (selectedUnit(); as unit) {
+      <aside class="detail qv-document-frame">
+        <h2>{{ unit.character.name }}</h2>
+        <p class="detail__type">{{ unit.relationship.type }}</p>
+        <p class="detail__stance"><strong>Öffentlich:</strong> {{ unit.relationship.publicStance }}</p>
+        <p class="detail__stance"><strong>Privat:</strong> {{ unit.relationship.privateStance }}</p>
+        <p class="detail__meta">
+          <strong>Dynamik:</strong> {{ describeMomentum(unit.relationship.momentum) }}
+          · <strong>Aufmerksamkeit:</strong> {{ describeAttention(unit.relationship.attention) }}
+          @if (unit.relationship.lastContact) {
+            · <strong>Letzter Kontakt:</strong> {{ unit.relationship.lastContact }}
           }
-        </div>
-        <span>{{ node.character.name }}</span>
-      </button>
+        </p>
+
+        <dl class="detail__dimensions">
+          <dt>Vertrautheit</dt>
+          <dd>{{ describeDimension(unit.relationship.dimensions.familiarity) }}</dd>
+          <dt>Vertrauen</dt>
+          <dd>{{ describeDimension(unit.relationship.dimensions.trust) }}</dd>
+          <dt>Humor</dt>
+          <dd>{{ describeDimension(unit.relationship.dimensions.sharedHumor) }}</dd>
+          <dt>Nähe</dt>
+          <dd>{{ describeDimension(unit.relationship.dimensions.emotionalCloseness) }}</dd>
+          <dt>Loyalität</dt>
+          <dd>{{ describeDimension(unit.relationship.dimensions.loyalty) }}</dd>
+        </dl>
+
+        @if (gmMode.enabled()) {
+          <div class="detail__gm">
+            <h3>GM ONLY — exakte Werte</h3>
+            <dl class="detail__raw-dimensions">
+              @for (entry of dimensionEntries(unit.relationship.dimensions); track entry[0]) {
+                <dt>{{ entry[0] }}</dt>
+                <dd>{{ entry[1] }}</dd>
+              }
+            </dl>
+            @if (unit.relationship.innerThoughts.length > 0) {
+              <h3>Innere Gedanken</h3>
+              <ul>
+                @for (thought of unit.relationship.innerThoughts; track $index) {
+                  <li><em>„{{ thought.text }}"</em> — {{ thought.worldDate }} (Bewusstheit: {{ thought.awareness }})</li>
+                }
+              </ul>
+            }
+            @if (unit.relationship.denial) {
+              <p><strong>Verdrängung:</strong> {{ unit.relationship.denial }}</p>
+            }
+          </div>
+        }
+      </aside>
     }
   </div>
-
-  @if (selectedNode(); as node) {
-    <aside class="detail qv-document-frame">
-      <h2>{{ node.character.name }}</h2>
-      <p class="detail__stance"><strong>Öffentlich:</strong> {{ node.relationship.publicStance }}</p>
-      <p class="detail__stance"><strong>Privat:</strong> {{ node.relationship.privateStance }}</p>
-      <p class="detail__meta">
-        <strong>Dynamik:</strong> {{ node.relationship.momentum }}
-        @if (node.relationship.lastContact) {
-          · <strong>Letzter Kontakt:</strong> {{ node.relationship.lastContact }}
-        }
-      </p>
-
-      <dl class="detail__dimensions">
-        <dt>Vertrautheit</dt>
-        <dd>{{ describeDimension(node.relationship.dimensions.familiarity) }}</dd>
-        <dt>Vertrauen</dt>
-        <dd>{{ describeDimension(node.relationship.dimensions.trust) }}</dd>
-        <dt>Humor</dt>
-        <dd>{{ describeDimension(node.relationship.dimensions.sharedHumor) }}</dd>
-        <dt>Nähe</dt>
-        <dd>{{ describeDimension(node.relationship.dimensions.emotionalCloseness) }}</dd>
-        <dt>Loyalität</dt>
-        <dd>{{ describeDimension(node.relationship.dimensions.loyalty) }}</dd>
-      </dl>
-
-      @if (gmMode.enabled()) {
-        <div class="detail__gm">
-          <h3>GM ONLY — exakte Werte</h3>
-          <dl class="detail__raw-dimensions">
-            @for (entry of dimensionEntries(node.relationship.dimensions); track entry[0]) {
-              <dt>{{ entry[0] }}</dt>
-              <dd>{{ entry[1] }}</dd>
-            }
-          </dl>
-          @if (node.relationship.innerThoughts.length > 0) {
-            <h3>Innere Gedanken</h3>
-            <ul>
-              @for (thought of node.relationship.innerThoughts; track $index) {
-                <li><em>„{{ thought.text }}"</em> — {{ thought.worldDate }} (Bewusstheit: {{ thought.awareness }})</li>
-              }
-            </ul>
-          }
-          @if (node.relationship.denial) {
-            <p><strong>Verdrängung:</strong> {{ node.relationship.denial }}</p>
-          }
-        </div>
-      }
-    </aside>
-  }
 </div>

@@ -10,8 +10,9 @@ import { BackupApiService } from '../../../core/state/backup-api.service';
 import { buildBackupZip, backupFilename, parseBackupZip } from '../../../core/state/backup-zip.util';
 import { TonePreferencesApiService } from '../../../core/state/tone-preferences-api.service';
 import { TonePreferences } from '../../../core/state/models/simulation-state.model';
+import { LanguageService } from '../../../core/i18n/language.service';
 
-type SettingsSection = 'simulation' | 'appearance' | 'story' | 'ai' | 'gm' | 'backup' | 'privacy';
+type SettingsSection = 'simulation' | 'appearance' | 'story' | 'ai' | 'gm' | 'backup' | 'privacy' | 'language';
 
 interface SettingsNavItem {
   id: SettingsSection;
@@ -31,37 +32,37 @@ interface ToneAxis {
 const TONE_AXES: ToneAxis[] = [
   {
     key: 'romanceIntensity',
-    label: 'Romance',
-    lowLabel: 'Low',
-    highLabel: 'High',
+    label: 'Romantik',
+    lowLabel: 'Gering',
+    highLabel: 'Hoch',
     levels: ['sehr gering', 'eher gering', 'ausgeglichen', 'eher hoch', 'sehr hoch'],
   },
   {
     key: 'socialIntrigueDepth',
-    label: 'Society',
-    lowLabel: 'Low',
-    highLabel: 'High',
+    label: 'Gesellschaft',
+    lowLabel: 'Gering',
+    highLabel: 'Hoch',
     levels: ['sehr gering', 'eher gering', 'ausgeglichen', 'eher hoch', 'sehr hoch'],
   },
   {
     key: 'farmEconomyDepth',
-    label: 'Farm Management',
-    lowLabel: 'Light',
-    highLabel: 'Detailed',
+    label: 'Hofverwaltung',
+    lowLabel: 'Knapp',
+    highLabel: 'Ausführlich',
     levels: ['sehr oberflächlich', 'eher oberflächlich', 'ausgeglichen', 'eher detailliert', 'sehr detailliert'],
   },
   {
     key: 'historicalAccuracy',
-    label: 'Historical Detail',
-    lowLabel: 'Loose',
-    highLabel: 'Strong',
+    label: 'Historische Genauigkeit',
+    lowLabel: 'Locker',
+    highLabel: 'Streng',
     levels: ['sehr locker', 'eher locker', 'ausgeglichen', 'eher strikt', 'sehr strikt'],
   },
   {
     key: 'narrativePace',
-    label: 'Story Pace',
-    lowLabel: 'Slow',
-    highLabel: 'Fast',
+    label: 'Erzähltempo',
+    lowLabel: 'Langsam',
+    highLabel: 'Schnell',
     levels: ['sehr langsam', 'eher langsam', 'ausgeglichen', 'eher schnell', 'sehr schnell'],
   },
 ];
@@ -75,12 +76,13 @@ const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
 /** Layout per addendum-v1.2-byok.md B76. Only "AI & Models" has real content so far. */
 const SETTINGS_NAV: SettingsNavItem[] = [
   { id: 'simulation', label: 'Simulation' },
-  { id: 'appearance', label: 'Appearance' },
-  { id: 'story', label: 'Story' },
-  { id: 'ai', label: 'AI & Models' },
+  { id: 'appearance', label: 'Erscheinungsbild' },
+  { id: 'story', label: 'Geschichte' },
+  { id: 'ai', label: 'KI & Modelle' },
   { id: 'gm', label: 'GM / Debug' },
-  { id: 'backup', label: 'Backup & Export' },
-  { id: 'privacy', label: 'Privacy' },
+  { id: 'backup', label: 'Sicherung & Export' },
+  { id: 'language', label: 'Sprache' },
+  { id: 'privacy', label: 'Datenschutz' },
 ];
 
 const FALLBACK_ORDER = ['Gemini', 'OpenAI', 'Claude', 'Manual Relay'];
@@ -99,6 +101,7 @@ export class SettingsScreen {
   private readonly store = inject(SimulationStateStore);
   protected readonly activeSimulation = inject(ActiveSimulationService);
   protected readonly gmMode = inject(GmModeService);
+  protected readonly lang = inject(LanguageService);
 
   protected readonly nav = SETTINGS_NAV;
   protected readonly activeSection = signal<SettingsSection>('ai');

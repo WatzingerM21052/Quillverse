@@ -53,6 +53,34 @@
   min-width: 0;
 }
 
+.language-options {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 1rem;
+
+  button {
+    background: none;
+    border: 1px solid var(--qv-gold);
+    color: var(--qv-ivory);
+    border-radius: 6px;
+    padding: 0.5rem 1.25rem;
+    font-family: var(--qv-font-ui);
+    font-size: 0.85rem;
+    cursor: pointer;
+    opacity: 0.75;
+
+    &:hover {
+      opacity: 1;
+    }
+
+    &.is-active {
+      opacity: 1;
+      background: rgba(184, 147, 74, 0.18);
+      color: var(--qv-champagne);
+    }
+  }
+}
+
 .settings__placeholder {
   font-family: var(--qv-font-serif);
   font-style: italic;

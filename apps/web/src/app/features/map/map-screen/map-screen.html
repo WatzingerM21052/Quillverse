@@ -1,7 +1,30 @@
 <div class="map-screen">
-  <h1 class="map-screen__title">Map</h1>
+  <div class="map-screen__header">
+    <h1 class="map-screen__title">Landkarte</h1>
+    @if (mapBackgroundUrl()) {
+      <button type="button" class="map-screen__regenerate" [disabled]="generatingMapImage()" (click)="generateMapImage()">
+        {{ generatingMapImage() ? 'Erzeuge …' : 'Landkarte neu generieren' }}
+      </button>
+    }
+  </div>
+  @if (mapBackgroundUrl() && mapImageError()) {
+    <p class="map__generate-error map__generate-error--header">{{ mapImageError() }}</p>
+  }
 
-  <div class="map">
+  <div class="map" [class.map--illustrated]="mapBackgroundUrl()">
+    @if (mapBackgroundUrl(); as url) {
+      <img class="map__background" [src]="url" alt="" />
+    } @else {
+      <div class="map__generate">
+        <button type="button" [disabled]="generatingMapImage()" (click)="generateMapImage()">
+          {{ generatingMapImage() ? 'Erzeuge Landkarte …' : 'Landkarte generieren' }}
+        </button>
+        @if (mapImageError()) {
+          <p class="map__generate-error">{{ mapImageError() }}</p>
+        }
+      </div>
+    }
+
     <qv-compass-rose class="map__compass" />
     @for (location of locations(); track location.id) {
       <button

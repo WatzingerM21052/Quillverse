@@ -252,7 +252,7 @@ const relationships = [
   {
     from: PLAYER_ID,
     to: MOTHER_ID,
-    type: 'family',
+    type: 'Mutter',
     dimensions: { ...zeroDimensions(), acquaintance: 100, liking: 85, trust: 90, respect: 85, familiarity: 95, loyalty: 95, protectiveness: 80 },
     momentum: 'stable',
     attention: 'high',
@@ -262,12 +262,23 @@ const relationships = [
   {
     from: PLAYER_ID,
     to: SISTER_ID,
-    type: 'family',
+    type: 'Schwester',
     dimensions: { ...zeroDimensions(), acquaintance: 100, liking: 80, trust: 75, respect: 60, familiarity: 90, sharedHumor: 55, loyalty: 90, protectiveness: 85 },
     momentum: 'stable',
     attention: 'medium',
     publicStance: 'beschützender großer Bruder',
     privateStance: 'liebevoll genervt',
+  },
+  {
+    from: PLAYER_ID,
+    to: UNCLE_ID,
+    type: 'Onkel',
+    dimensions: { ...zeroDimensions(), acquaintance: 70, liking: 65, trust: 60, respect: 65, familiarity: 40, loyalty: 55, protectiveness: 20 },
+    momentum: 'slightly-positive',
+    attention: 'low',
+    lastContact: '9. April 1813',
+    publicStance: 'dankbarer Neffe',
+    privateStance: 'distanziert, aber respektvoll',
   },
 ];
 

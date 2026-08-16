@@ -7,6 +7,8 @@ import { Modal } from '../../../shared/ui/modal/modal';
 import { CompassRose } from '../../../shared/ui/compass-rose/compass-rose';
 import { LocationImageApiService } from '../../../core/ai/location-image-api.service';
 import { buildLocationPrompt } from '../../../core/ai/location-prompt';
+import { MapImageApiService } from '../../../core/ai/map-image-api.service';
+import { buildMapPrompt } from '../../../core/ai/map-prompt';
 import { API_BASE_URL } from '../../../core/config/api.config';
 import { PendingStoryActionService } from '../../../core/state/pending-story-action.service';
 
@@ -21,11 +23,37 @@ const PLACEHOLDER_SCHEME = 'asset://';
 export class MapScreen {
   private readonly store = inject(SimulationStateStore);
   private readonly locationImageApi = inject(LocationImageApiService);
+  private readonly mapImageApi = inject(MapImageApiService);
   private readonly pendingAction = inject(PendingStoryActionService);
   private readonly router = inject(Router);
 
   /** Fog of knowledge (§41) — only discovered locations ever reach the template. */
   protected readonly locations = this.store.discoveredLocations;
+
+  protected readonly mapBackgroundUrl = computed(() => {
+    const asset = this.store.mapBackgroundAsset();
+    return asset ? `${API_BASE_URL}${asset}` : null;
+  });
+
+  protected readonly generatingMapImage = signal(false);
+  protected readonly mapImageError = signal<string | null>(null);
+
+  protected generateMapImage(): void {
+    this.generatingMapImage.set(true);
+    this.mapImageError.set(null);
+
+    const prompt = buildMapPrompt(this.locations());
+    this.mapImageApi.generate(prompt).subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.generatingMapImage.set(false);
+      },
+      error: (err) => {
+        this.mapImageError.set(err?.error?.error ?? 'Landkarte konnte nicht erzeugt werden.');
+        this.generatingMapImage.set(false);
+      },
+    });
+  }
 
   protected readonly selectedId = signal<EntityId | null>(null);
   protected readonly selectedLocation = computed(() =>

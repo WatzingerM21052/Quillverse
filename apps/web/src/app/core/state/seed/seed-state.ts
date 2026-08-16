@@ -340,7 +340,7 @@ const aubreyHall: Location = {
 const playerToMother: Relationship = {
   from: PLAYER_ID,
   to: MOTHER_ID,
-  type: 'family',
+  type: 'Mutter',
   dimensions: {
     ...zeroDimensions(),
     acquaintance: 100,
@@ -367,7 +367,7 @@ const playerToMother: Relationship = {
 const playerToSister: Relationship = {
   from: PLAYER_ID,
   to: SISTER_ID,
-  type: 'family',
+  type: 'Schwester',
   dimensions: {
     ...zeroDimensions(),
     acquaintance: 100,
@@ -384,6 +384,33 @@ const playerToSister: Relationship = {
   lastContact: null,
   publicStance: 'beschützender großer Bruder',
   privateStance: 'liebevoll genervt',
+  innerThoughts: [],
+  selfInterpretation: null,
+  denial: null,
+  misconceptions: [],
+  personalBoundaries: [],
+  memoryIds: [],
+};
+
+const playerToUncle: Relationship = {
+  from: PLAYER_ID,
+  to: UNCLE_ID,
+  type: 'Onkel',
+  dimensions: {
+    ...zeroDimensions(),
+    acquaintance: 70,
+    liking: 65,
+    trust: 60,
+    respect: 65,
+    familiarity: 40,
+    loyalty: 55,
+    protectiveness: 20,
+  },
+  momentum: 'slightly-positive',
+  attention: 'low',
+  lastContact: '9. April 1813',
+  publicStance: 'dankbarer Neffe',
+  privateStance: 'distanziert, aber respektvoll',
   innerThoughts: [],
   selfInterpretation: null,
   denial: null,
@@ -569,7 +596,7 @@ export function createSeedState(): SimulationState {
       [SISTER_ID]: sister,
       [UNCLE_ID]: uncle,
     },
-    relationships: [playerToMother, playerToSister],
+    relationships: [playerToMother, playerToSister, playerToUncle],
     locations: {
       [FARM_ID]: farm,
       [villageMarket.id]: villageMarket,
@@ -601,5 +628,6 @@ export function createSeedState(): SimulationState {
     favoriteQuotes: [],
     recap: null,
     tonePreferences: {},
+    mapBackgroundAsset: null,
   };
 }
