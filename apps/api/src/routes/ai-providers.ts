@@ -14,6 +14,11 @@ interface CredentialRow {
   last_verified_at: string | null;
 }
 
+interface ModelProfileRow {
+  provider: ProviderId;
+  model_id: string | null;
+}
+
 function isProviderId(value: string): value is ProviderId {
   return (PROVIDER_IDS as string[]).includes(value);
 }
@@ -121,6 +126,40 @@ aiProvidersRoute.put('/:provider/model', async (c) => {
   return c.json({ provider, selectedModel: body?.modelId ?? null });
 });
 
+/** §106 Continuity Guard — the configured provider+model for the second-pass check, or both null if unset (feature off). */
+aiProvidersRoute.get('/continuity-model', async (c) => {
+  const row = await c.env.DB.prepare('SELECT provider, model_id FROM model_profiles WHERE user_id = ? AND profile = ?')
+    .bind(OWNER_USER_ID, 'continuity')
+    .first<ModelProfileRow>();
+
+  return c.json({ provider: row?.provider ?? null, modelId: row?.model_id ?? null });
+});
+
+aiProvidersRoute.put('/continuity-model', async (c) => {
+  const body = await c.req.json<{ provider?: ProviderId | null; modelId?: string | null }>().catch(() => null);
+  const provider = body?.provider ?? null;
+
+  if (provider === null) {
+    await c.env.DB.prepare('DELETE FROM model_profiles WHERE user_id = ? AND profile = ?')
+      .bind(OWNER_USER_ID, 'continuity')
+      .run();
+    return c.json({ provider: null, modelId: null });
+  }
+
+  if (!isProviderId(provider)) {
+    return c.json({ error: 'Unknown provider.' }, 400);
+  }
+
+  await c.env.DB.prepare(
+    `INSERT INTO model_profiles (user_id, profile, provider, model_id) VALUES (?, 'continuity', ?, ?)
+     ON CONFLICT(user_id, profile) DO UPDATE SET provider = excluded.provider, model_id = excluded.model_id`,
+  )
+    .bind(OWNER_USER_ID, provider, body?.modelId ?? null)
+    .run();
+
+  return c.json({ provider, modelId: body?.modelId ?? null });
+});
+
 aiProvidersRoute.delete('/:provider', async (c) => {
   const provider = c.req.param('provider');
   if (!isProviderId(provider)) {
@@ -152,4 +191,12 @@ export async function getDecryptedCredential(env: Env, provider: ProviderId): Pr
 
   if (!row) return null;
   return decryptCredential(env, row.encrypted_api_key, row.encryption_iv);
+}
+
+/** §106 Continuity Guard — null means no profile configured (feature off). */
+export async function getContinuityModel(env: Env): Promise<{ provider: ProviderId; modelId: string | null } | null> {
+  const row = await env.DB.prepare('SELECT provider, model_id FROM model_profiles WHERE user_id = ? AND profile = ?')
+    .bind(OWNER_USER_ID, 'continuity')
+    .first<ModelProfileRow>();
+  return row ? { provider: row.provider, modelId: row.model_id } : null;
 }
