@@ -25,6 +25,14 @@ export class GmDashboardScreen {
 
   protected readonly issues = computed(() => runContinuityCheck(this.store.current()));
 
+  protected characterName(id: EntityId): string {
+    return this.store.current().characters[id]?.name ?? id;
+  }
+
+  protected memoryReferencedBy(entityIds: EntityId[]): string {
+    return entityIds.map((id) => this.characterName(id)).join(', ');
+  }
+
   protected readonly canonDrift = computed(() => {
     const events = this.canonEvents();
     if (events.length === 0) return 'Nicht anwendbar — keine Canon-Ereignisse erfasst';

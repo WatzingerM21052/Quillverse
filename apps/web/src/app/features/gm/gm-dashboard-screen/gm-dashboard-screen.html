@@ -154,6 +154,7 @@
             <th>Reach</th>
             <th>Fading</th>
             <th>Involves</th>
+            <th>Created</th>
           </tr>
         </thead>
         <tbody>
@@ -164,7 +165,8 @@
               <td>{{ memory.status }}</td>
               <td>{{ memory.reach }}</td>
               <td>{{ memory.fading }}</td>
-              <td>{{ memory.entityIds.join(', ') }}</td>
+              <td>{{ memoryReferencedBy(memory.entityIds) }}</td>
+              <td>{{ memory.worldDate }}</td>
             </tr>
           }
         </tbody>
