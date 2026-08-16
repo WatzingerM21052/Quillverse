@@ -9,7 +9,7 @@
           Narrator
           <select [value]="selectedProvider()" (change)="selectedProvider.set($any($event.target).value)">
             @for (provider of connectedProviders(); track provider) {
-              <option [value]="provider">{{ provider }}</option>
+              <option [value]="provider" [selected]="provider === selectedProvider()">{{ provider }}</option>
             }
           </select>
         </label>
