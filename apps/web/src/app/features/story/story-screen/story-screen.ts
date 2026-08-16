@@ -9,6 +9,7 @@ import { PendingStoryActionService } from '../../../core/state/pending-story-act
 import { Modal } from '../../../shared/ui/modal/modal';
 import { WaxSeal } from '../../../shared/ui/wax-seal/wax-seal';
 import { API_BASE_URL } from '../../../core/config/api.config';
+import { FocusModeService } from '../../../core/ui/focus-mode.service';
 
 const PLACEHOLDER_SCHEME = 'asset://';
 
@@ -39,6 +40,7 @@ export class StoryScreen {
   private readonly store = inject(SimulationStateStore);
   private readonly journalApi = inject(JournalApiService);
   private readonly pendingAction = inject(PendingStoryActionService);
+  protected readonly focusMode = inject(FocusModeService);
 
   protected readonly providerLinks = PROVIDER_LINKS;
   protected readonly recap = this.store.recap;

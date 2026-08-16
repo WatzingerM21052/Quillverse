@@ -33,6 +33,26 @@
     }
   }
 
+  &__focus-toggle {
+    margin-left: 0.5rem;
+    background: none;
+    border: 1px solid var(--qv-gold);
+    color: var(--qv-champagne);
+    border-radius: 4px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+    cursor: pointer;
+
+    /* When Focus Mode is active, the @if block above removes date/location/
+       weather/Undo from the DOM entirely, leaving this button as the header's
+       only child. Without this, it would fall back to flex-start and jump to
+       the left edge; :first-child pins it to the same right-aligned spot it
+       occupies (via &__undo's margin-left: auto) when the rest is present. */
+    &:first-child {
+      margin-left: auto;
+    }
+  }
+
 }
 
 .story-header__provider-indicator {

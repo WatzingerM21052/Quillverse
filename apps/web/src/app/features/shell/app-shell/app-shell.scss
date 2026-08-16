@@ -4,6 +4,13 @@
   background: var(--qv-mahogany);
 }
 
+.shell.shell--focus {
+  .shell__rail--desktop,
+  .shell__rail--mobile {
+    display: none;
+  }
+}
+
 .shell__content {
   flex: 1;
   min-width: 0;

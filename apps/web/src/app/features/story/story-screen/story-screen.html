@@ -1,23 +1,35 @@
 <div class="story-screen">
   <header class="story-header">
-    <span class="story-header__date">{{ scene().worldDate }}</span>
-    <span class="story-header__location">{{ locationName(scene().locationId) }}</span>
-    <span class="story-header__weather">{{ scene().weather }}</span>
+    @if (!focusMode.active()) {
+      <span class="story-header__date">{{ scene().worldDate }}</span>
+      <span class="story-header__location">{{ locationName(scene().locationId) }}</span>
+      <span class="story-header__weather">{{ scene().weather }}</span>
+      <button
+        class="story-header__undo"
+        type="button"
+        [disabled]="undoing()"
+        (click)="undoLastTurn()"
+        title="Undo Last Turn (§153)"
+      >
+        ⟲ Undo
+      </button>
+    }
     <button
-      class="story-header__undo"
+      class="story-header__focus-toggle"
       type="button"
-      [disabled]="undoing()"
-      (click)="undoLastTurn()"
-      title="Undo Last Turn (§153)"
+      (click)="focusMode.toggle()"
+      [title]="focusMode.active() ? 'Fokus-Modus verlassen' : 'Fokus-Modus (§26)'"
     >
-      ⟲ Undo
+      {{ focusMode.active() ? '⤢' : '⤡' }}
     </button>
   </header>
-  @if (undoMessage()) {
-    <p class="story-header__undo-message">{{ undoMessage() }}</p>
-  }
-  @if (lastUsedProvider(); as provider) {
-    <p class="story-header__provider-indicator">erzählt von {{ provider }}</p>
+  @if (!focusMode.active()) {
+    @if (undoMessage()) {
+      <p class="story-header__undo-message">{{ undoMessage() }}</p>
+    }
+    @if (lastUsedProvider(); as provider) {
+      <p class="story-header__provider-indicator">erzählt von {{ provider }}</p>
+    }
   }
 
   @if (recap(); as r) {

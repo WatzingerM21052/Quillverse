@@ -3,6 +3,7 @@ import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { GmModeService } from '../../../core/gm/gm-mode.service';
 import { LanguageService } from '../../../core/i18n/language.service';
+import { FocusModeService } from '../../../core/ui/focus-mode.service';
 
 interface NavItem {
   path: string;
@@ -42,6 +43,7 @@ export class AppShell {
   private readonly store = inject(SimulationStateStore);
   protected readonly gmMode = inject(GmModeService);
   protected readonly lang = inject(LanguageService);
+  protected readonly focusMode = inject(FocusModeService);
 
   protected readonly primaryNav = computed<NavItem[]>(() =>
     PRIMARY_NAV.map((item) => ({ path: item.path, label: this.lang.t(item.de, item.en) })),
