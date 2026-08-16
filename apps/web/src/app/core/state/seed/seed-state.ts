@@ -600,5 +600,6 @@ export function createSeedState(): SimulationState {
     playerNotes: [],
     favoriteQuotes: [],
     recap: null,
+    tonePreferences: {},
   };
 }

@@ -14,6 +14,12 @@ export const openaiAdapter: AiProviderAdapter = {
     return { ok: false, message: 'The API key could not be authenticated.' };
   },
 
+  /**
+   * B25-28 — `/v1/models` has no capability metadata, so this is a heuristic
+   * id-pattern filter down to chat-capable gpt models, excluding
+   * whisper/tts/dall-e/embedding/moderation ids that would otherwise clutter
+   * a "pick a story model" dropdown with models that can't do this job.
+   */
   async listModels(apiKey: string): Promise<ModelInfo[]> {
     const response = await fetch('https://api.openai.com/v1/models', {
       headers: { Authorization: `Bearer ${apiKey}` },
@@ -21,20 +27,22 @@ export const openaiAdapter: AiProviderAdapter = {
     if (!response.ok) return [];
 
     const body = (await response.json()) as { data?: Array<{ id: string }> };
-    return (body.data ?? []).map((model) => ({
-      provider: 'openai',
-      id: model.id,
-      displayName: model.id,
-    }));
+    return (body.data ?? [])
+      .filter((model) => /^gpt-/i.test(model.id) && !/whisper|tts|embedding|moderation|realtime|audio|search|transcribe/i.test(model.id))
+      .map((model) => ({
+        provider: 'openai',
+        id: model.id,
+        displayName: model.id,
+      }));
   },
 
   /** Structurally complete, unverified against a real key (none available). */
-  async generateStory(apiKey: string, contextText: string): Promise<string> {
+  async generateStory(apiKey: string, contextText: string, modelId?: string): Promise<string> {
     const response = await fetch('https://api.openai.com/v1/chat/completions', {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: TEXT_MODEL,
+        model: modelId ?? TEXT_MODEL,
         messages: [{ role: 'user', content: contextText }],
         response_format: { type: 'json_object' },
       }),

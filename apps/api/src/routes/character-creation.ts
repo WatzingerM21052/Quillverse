@@ -1,11 +1,12 @@
 import { Hono } from 'hono';
 import { buildCharacterCreationPrompt } from '../services/character-creation-prompt';
 import { validateCharacterCreationDraft } from '../services/validate-character-creation-draft';
-import { createSimulationFromDraft, type ToneReferences } from '../db/create-simulation';
+import { createSimulationFromDraft } from '../db/create-simulation';
+import type { TonePreferences as ToneReferences } from '../models';
 import { logAiCall } from '../db/ai-calls';
 import { PROVIDER_ADAPTERS } from '../providers/registry';
 import { PROVIDER_IDS } from '../providers/types';
-import { getDecryptedCredential } from './ai-providers';
+import { getDecryptedCredential, getSelectedModel } from './ai-providers';
 import type { CharacterCreationAnswers, CharacterCreationDraft } from '../models/character-creation';
 
 export const characterCreationRoute = new Hono<{ Bindings: Env }>();
@@ -37,6 +38,7 @@ characterCreationRoute.post('/draft', async (c) => {
     const apiKey = await getDecryptedCredential(c.env, provider);
     if (!apiKey) continue;
     anyProviderConnected = true;
+    const modelId = await getSelectedModel(c.env, provider);
 
     for (let attempt = 0; attempt < 2; attempt++) {
       const attemptPrompt = attempt === 0 ? prompt : prompt + REPAIR_INSTRUCTION;
@@ -44,7 +46,7 @@ characterCreationRoute.post('/draft', async (c) => {
 
       let responseText: string;
       try {
-        responseText = await PROVIDER_ADAPTERS[provider].generateStory(apiKey, attemptPrompt);
+        responseText = await PROVIDER_ADAPTERS[provider].generateStory(apiKey, attemptPrompt, modelId ?? undefined);
       } catch (err) {
         lastError = err instanceof Error ? err.message : `${provider} request failed.`;
         await logAiCall(c.env.DB, DRAFT_LOG_ID, provider, false, Date.now() - startedAt, 'generation_failed');

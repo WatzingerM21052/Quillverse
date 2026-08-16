@@ -49,6 +49,12 @@ export class CharactersScreen {
     this.selectedId.set(null);
   }
 
+  /** §29 Character Sheet — the player-facing known whereabouts, distinct from the GM-only "actual location" block below. */
+  protected locationName(locationId: string | null): string {
+    if (!locationId) return 'unbekannt';
+    return this.store.current().locations[locationId]?.name ?? locationId;
+  }
+
   protected portraitUrl(basePortrait: string): string | null {
     return basePortrait.startsWith(PLACEHOLDER_SCHEME) ? null : `${API_BASE_URL}${basePortrait}`;
   }

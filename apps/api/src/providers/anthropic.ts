@@ -35,12 +35,12 @@ export const anthropicAdapter: AiProviderAdapter = {
    * own "respond with ONE JSON object" instruction plus stripToJsonObject()
    * as a safety net.
    */
-  async generateStory(apiKey: string, contextText: string): Promise<string> {
+  async generateStory(apiKey: string, contextText: string, modelId?: string): Promise<string> {
     const response = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'x-api-key': apiKey, 'anthropic-version': ANTHROPIC_VERSION, 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        model: TEXT_MODEL,
+        model: modelId ?? TEXT_MODEL,
         max_tokens: 4096,
         messages: [{ role: 'user', content: contextText }],
       }),

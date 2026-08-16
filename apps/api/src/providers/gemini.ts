@@ -3,6 +3,7 @@ import { stripToJsonObject } from './response-text';
 
 interface GeminiModelListEntry {
   name: string;
+  displayName?: string;
   supportedGenerationMethods?: string[];
 }
 
@@ -12,16 +13,20 @@ interface GeminiModelListEntry {
  * users") — pick a current text-capable model from the live list instead of
  * trusting a hardcoded id to stay valid, same reasoning as the image adapter.
  */
-async function findTextModel(apiKey: string): Promise<string | null> {
+async function textCapableModels(apiKey: string): Promise<GeminiModelListEntry[]> {
   const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-  if (!response.ok) return null;
+  if (!response.ok) return [];
 
   const body = (await response.json()) as { models?: GeminiModelListEntry[] };
-  const candidates = (body.models ?? []).filter(
+  return (body.models ?? []).filter(
     (model) =>
-      (model.supportedGenerationMethods ?? []).includes('generateContent') && !/image|embed|vision|tts|aqa/i.test(model.name),
+      (model.supportedGenerationMethods ?? []).includes('generateContent') &&
+      !/image|embed|vision|tts|aqa|robotics|lyria|computer-use|deep-research|antigravity|gemma/i.test(model.name),
   );
+}
 
+async function findTextModel(apiKey: string): Promise<string | null> {
+  const candidates = await textCapableModels(apiKey);
   if (candidates.length === 0) return null;
 
   // Prefer the "-latest" alias Google publishes specifically so callers don't
@@ -46,20 +51,18 @@ export const geminiAdapter: AiProviderAdapter = {
     return { ok: false, message: 'The API key could not be authenticated.' };
   },
 
+  /** B25-28 — filtered to the same text-capable candidates generateStory() would pick from, not every model Gemini hosts. */
   async listModels(apiKey: string): Promise<ModelInfo[]> {
-    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models?key=${apiKey}`);
-    if (!response.ok) return [];
-
-    const body = (await response.json()) as { models?: Array<{ name: string; displayName?: string }> };
-    return (body.models ?? []).map((model) => ({
+    const candidates = await textCapableModels(apiKey);
+    return candidates.map((model) => ({
       provider: 'gemini',
       id: model.name.replace(/^models\//, ''),
-      displayName: model.displayName ?? model.name,
+      displayName: model.displayName ?? model.name.replace(/^models\//, ''),
     }));
   },
 
-  async generateStory(apiKey: string, contextText: string): Promise<string> {
-    const model = await findTextModel(apiKey);
+  async generateStory(apiKey: string, contextText: string, modelId?: string): Promise<string> {
+    const model = modelId ?? (await findTextModel(apiKey));
     if (!model) {
       throw new Error('Gemini generateStory: no text-capable model found.');
     }

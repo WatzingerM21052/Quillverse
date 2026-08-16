@@ -207,6 +207,30 @@
   font-size: 0.85rem;
 }
 
+.character-sheet__appearance {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0 0 0.75rem;
+  font-family: var(--qv-font-serif);
+  font-size: 0.9rem;
+
+  dt {
+    color: var(--qv-champagne);
+  }
+
+  dd {
+    margin: 0;
+  }
+}
+
+.character-sheet__whereabouts {
+  font-family: var(--qv-font-serif);
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin: 0;
+}
+
 .relationship-summary {
   display: grid;
   grid-template-columns: auto 1fr;

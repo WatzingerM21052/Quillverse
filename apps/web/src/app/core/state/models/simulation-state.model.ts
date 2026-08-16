@@ -67,6 +67,16 @@ export interface SimulationState {
   favoriteQuotes: FavoriteQuote[];
   /** §190/§193 — computed fresh per GET from the real-time gap since the last visit, never persisted. */
   recap: RecapInfo | null;
+  /** §174 Simulation Settings — narrative/simulation weighting only, never success odds (§175). */
+  tonePreferences: TonePreferences;
+}
+
+export interface TonePreferences {
+  romanceIntensity?: string;
+  socialIntrigueDepth?: string;
+  farmEconomyDepth?: string;
+  historicalAccuracy?: string;
+  narrativePace?: string;
 }
 
 export interface PlayerNote {

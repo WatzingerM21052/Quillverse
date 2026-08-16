@@ -105,6 +105,7 @@ export class SimulationStateStore {
   readonly playerNotes = computed(() => this.state().playerNotes);
   readonly favoriteQuotes = computed(() => this.state().favoriteQuotes);
   readonly recap = computed(() => this.state().recap);
+  readonly tonePreferences = computed(() => this.state().tonePreferences);
 
   readonly sentLetters = computed(() =>
     Object.values(this.state().letters).filter((letter) => letter.senderId === this.state().playerId),

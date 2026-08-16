@@ -13,6 +13,17 @@ export interface ProviderStatus {
   requestsToday: number;
 }
 
+export interface ModelInfo {
+  provider: string;
+  id: string;
+  displayName: string;
+}
+
+export interface ModelsResult {
+  models: ModelInfo[];
+  selectedModel: string | null;
+}
+
 /** Calls the real BYOK endpoints (addendum-v1.2-byok.md B4-B19) — no mock data. */
 @Injectable({ providedIn: 'root' })
 export class AiProvidersApiService {
@@ -31,5 +42,17 @@ export class AiProvidersApiService {
 
   disconnect(provider: string): Observable<{ provider: string; connected: boolean }> {
     return this.http.delete<{ provider: string; connected: boolean }>(`${API_BASE_URL}/api/ai/providers/${provider}`);
+  }
+
+  /** B25-28 Model Discovery / Selector UI. */
+  listModels(provider: string): Observable<ModelsResult> {
+    return this.http.get<ModelsResult>(`${API_BASE_URL}/api/ai/providers/${provider}/models`);
+  }
+
+  setModel(provider: string, modelId: string | null): Observable<{ provider: string; selectedModel: string | null }> {
+    return this.http.put<{ provider: string; selectedModel: string | null }>(
+      `${API_BASE_URL}/api/ai/providers/${provider}/model`,
+      { modelId },
+    );
   }
 }

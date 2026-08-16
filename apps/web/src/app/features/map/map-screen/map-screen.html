@@ -46,9 +46,7 @@
           <dt>Kosten</dt>
           <dd>{{ travel.cost }}</dd>
         </dl>
-        <button type="button" class="travel-start" disabled title="Reisen benötigen die AI-Anbindung, die noch folgt">
-          Reise beginnen
-        </button>
+        <button type="button" class="travel-start" (click)="startJourney(location)">Reise beginnen</button>
       } @else {
         <p class="travel-info__home">Du bist hier zuhause.</p>
       }

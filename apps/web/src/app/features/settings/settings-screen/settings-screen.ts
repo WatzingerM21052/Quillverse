@@ -1,13 +1,15 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { Modal } from '../../../shared/ui/modal/modal';
-import { AiProvidersApiService, ProviderStatus } from '../../../core/ai/ai-providers-api.service';
+import { AiProvidersApiService, ProviderStatus, ModelInfo } from '../../../core/ai/ai-providers-api.service';
 import { GmModeService } from '../../../core/gm/gm-mode.service';
 import { SavepointsApiService, SavepointSummary, SimulationSummary } from '../../../core/state/savepoints-api.service';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { ActiveSimulationService } from '../../../core/state/active-simulation.service';
 import { BackupApiService } from '../../../core/state/backup-api.service';
 import { buildBackupZip, backupFilename, parseBackupZip } from '../../../core/state/backup-zip.util';
+import { TonePreferencesApiService } from '../../../core/state/tone-preferences-api.service';
+import { TonePreferences } from '../../../core/state/models/simulation-state.model';
 
 type SettingsSection = 'simulation' | 'appearance' | 'story' | 'ai' | 'gm' | 'backup' | 'privacy';
 
@@ -15,6 +17,54 @@ interface SettingsNavItem {
   id: SettingsSection;
   label: string;
 }
+
+interface ToneAxis {
+  key: keyof TonePreferences;
+  label: string;
+  lowLabel: string;
+  highLabel: string;
+  /** 5 levels, index 0 = lowest. Index 2 ("ausgeglichen") is also the default when nothing is stored yet. */
+  levels: string[];
+}
+
+/** §174 SIMULATION SETTINGS — 5 sliders, narrative/simulation weighting only, never success odds (§175). */
+const TONE_AXES: ToneAxis[] = [
+  {
+    key: 'romanceIntensity',
+    label: 'Romance',
+    lowLabel: 'Low',
+    highLabel: 'High',
+    levels: ['sehr gering', 'eher gering', 'ausgeglichen', 'eher hoch', 'sehr hoch'],
+  },
+  {
+    key: 'socialIntrigueDepth',
+    label: 'Society',
+    lowLabel: 'Low',
+    highLabel: 'High',
+    levels: ['sehr gering', 'eher gering', 'ausgeglichen', 'eher hoch', 'sehr hoch'],
+  },
+  {
+    key: 'farmEconomyDepth',
+    label: 'Farm Management',
+    lowLabel: 'Light',
+    highLabel: 'Detailed',
+    levels: ['sehr oberflächlich', 'eher oberflächlich', 'ausgeglichen', 'eher detailliert', 'sehr detailliert'],
+  },
+  {
+    key: 'historicalAccuracy',
+    label: 'Historical Detail',
+    lowLabel: 'Loose',
+    highLabel: 'Strong',
+    levels: ['sehr locker', 'eher locker', 'ausgeglichen', 'eher strikt', 'sehr strikt'],
+  },
+  {
+    key: 'narrativePace',
+    label: 'Story Pace',
+    lowLabel: 'Slow',
+    highLabel: 'Fast',
+    levels: ['sehr langsam', 'eher langsam', 'ausgeglichen', 'eher schnell', 'sehr schnell'],
+  },
+];
 
 const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   gemini: 'Google Gemini',
@@ -45,6 +95,7 @@ export class SettingsScreen {
   private readonly api = inject(AiProvidersApiService);
   private readonly savepointsApi = inject(SavepointsApiService);
   private readonly backupApi = inject(BackupApiService);
+  private readonly toneApi = inject(TonePreferencesApiService);
   private readonly store = inject(SimulationStateStore);
   protected readonly activeSimulation = inject(ActiveSimulationService);
   protected readonly gmMode = inject(GmModeService);
@@ -53,6 +104,26 @@ export class SettingsScreen {
   protected readonly activeSection = signal<SettingsSection>('ai');
   protected readonly fallbackOrder = FALLBACK_ORDER;
   protected readonly displayName = PROVIDER_DISPLAY_NAMES;
+
+  protected readonly toneAxes = TONE_AXES;
+  protected readonly tonePreferences = this.store.tonePreferences;
+
+  /** 1-5, defaulting to the middle ("ausgeglichen") when nothing is stored or the stored text doesn't match a known level (e.g. from an older free-text answer). */
+  protected toneLevel(axis: ToneAxis): number {
+    const stored = this.tonePreferences()[axis.key];
+    const index = stored ? axis.levels.indexOf(stored) : -1;
+    return (index === -1 ? 2 : index) + 1;
+  }
+
+  protected setToneLevel(axis: ToneAxis, value: number): void {
+    const label = axis.levels[value - 1];
+    if (!label) return;
+
+    const next: TonePreferences = { ...this.tonePreferences(), [axis.key]: label };
+    this.toneApi.update(next).subscribe({
+      next: ({ state }) => this.store.refresh(state),
+    });
+  }
 
   protected readonly providers = signal<ProviderStatus[]>([
     { provider: 'gemini', connected: false, status: 'not-configured', keyHint: null, lastVerifiedAt: null, requestsToday: 0 },
@@ -70,6 +141,11 @@ export class SettingsScreen {
   protected readonly apiKeyDraft = signal('');
   protected readonly connectError = signal<string | null>(null);
   protected readonly connecting = signal(false);
+
+  /** B25-28 Model Discovery / Selector UI — per-provider, loaded lazily so a connected-but-unopened provider doesn't fire an extra request. */
+  protected readonly models = signal<Record<string, ModelInfo[]>>({});
+  protected readonly selectedModels = signal<Record<string, string | null>>({});
+  protected readonly modelsLoading = signal<Record<string, boolean>>({});
 
   protected readonly savepoints = signal<SavepointSummary[]>([]);
   protected readonly savepointsLoading = signal(true);
@@ -112,6 +188,9 @@ export class SettingsScreen {
       next: (list) => {
         this.providers.set(list);
         this.providersLoading.set(false);
+        for (const p of list) {
+          if (p.connected) this.loadModels(p.provider);
+        }
       },
       error: () => this.providersLoading.set(false),
     });
@@ -254,6 +333,7 @@ export class SettingsScreen {
         );
         this.connecting.set(false);
         this.closeConnect();
+        this.loadModels(providerId);
       },
       error: (err) => {
         this.connectError.set(err?.error?.error ?? 'The API key could not be authenticated.');
@@ -267,7 +347,29 @@ export class SettingsScreen {
       this.providers.update((list) =>
         list.map((p) => (p.provider === providerId ? { ...p, connected: false, status: 'not-configured', keyHint: null } : p)),
       );
+      this.models.update((m) => ({ ...m, [providerId]: [] }));
     });
+  }
+
+  /** B25-28 — fetched once per provider (on connect, or on first expand for an already-connected provider). */
+  protected loadModels(providerId: string): void {
+    if (this.models()[providerId]?.length || this.modelsLoading()[providerId]) return;
+
+    this.modelsLoading.update((m) => ({ ...m, [providerId]: true }));
+    this.api.listModels(providerId).subscribe({
+      next: ({ models, selectedModel }) => {
+        this.models.update((m) => ({ ...m, [providerId]: models }));
+        this.selectedModels.update((m) => ({ ...m, [providerId]: selectedModel }));
+        this.modelsLoading.update((m) => ({ ...m, [providerId]: false }));
+      },
+      error: () => this.modelsLoading.update((m) => ({ ...m, [providerId]: false })),
+    });
+  }
+
+  protected selectModel(providerId: string, modelId: string): void {
+    const value = modelId || null;
+    this.selectedModels.update((m) => ({ ...m, [providerId]: value }));
+    this.api.setModel(providerId, value).subscribe();
   }
 
   protected readonly exporting = signal(false);

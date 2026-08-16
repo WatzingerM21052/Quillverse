@@ -87,6 +87,40 @@ aiProvidersRoute.post('/:provider', async (c) => {
   return c.json({ provider, connected: true, keyHint: hint });
 });
 
+/** B25-28 — filtered, text-capable candidates only (each adapter's own concern which models qualify). */
+aiProvidersRoute.get('/:provider/models', async (c) => {
+  const provider = c.req.param('provider');
+  if (!isProviderId(provider)) {
+    return c.json({ error: 'Unknown provider.' }, 400);
+  }
+
+  const apiKey = await getDecryptedCredential(c.env, provider);
+  if (!apiKey) {
+    return c.json({ error: 'Provider not connected.' }, 400);
+  }
+
+  const models = await PROVIDER_ADAPTERS[provider].listModels(apiKey);
+  const row = await c.env.DB.prepare('SELECT selected_model FROM ai_provider_credentials WHERE user_id = ? AND provider = ?')
+    .bind(OWNER_USER_ID, provider)
+    .first<{ selected_model: string | null }>();
+
+  return c.json({ models, selectedModel: row?.selected_model ?? null });
+});
+
+aiProvidersRoute.put('/:provider/model', async (c) => {
+  const provider = c.req.param('provider');
+  if (!isProviderId(provider)) {
+    return c.json({ error: 'Unknown provider.' }, 400);
+  }
+
+  const body = await c.req.json<{ modelId?: string | null }>().catch(() => null);
+  await c.env.DB.prepare('UPDATE ai_provider_credentials SET selected_model = ? WHERE user_id = ? AND provider = ?')
+    .bind(body?.modelId ?? null, OWNER_USER_ID, provider)
+    .run();
+
+  return c.json({ provider, selectedModel: body?.modelId ?? null });
+});
+
 aiProvidersRoute.delete('/:provider', async (c) => {
   const provider = c.req.param('provider');
   if (!isProviderId(provider)) {
@@ -99,6 +133,14 @@ aiProvidersRoute.delete('/:provider', async (c) => {
 
   return c.json({ provider, connected: false });
 });
+
+/** B25-28 — the user's saved model choice, if any; callers fall back to their own auto-discovery when this is null. */
+export async function getSelectedModel(env: Env, provider: ProviderId): Promise<string | null> {
+  const row = await env.DB.prepare('SELECT selected_model FROM ai_provider_credentials WHERE user_id = ? AND provider = ?')
+    .bind(OWNER_USER_ID, provider)
+    .first<{ selected_model: string | null }>();
+  return row?.selected_model ?? null;
+}
 
 /** Internal helper for future AI Orchestrator use — never exposed via HTTP (B15). */
 export async function getDecryptedCredential(env: Env, provider: ProviderId): Promise<string | null> {

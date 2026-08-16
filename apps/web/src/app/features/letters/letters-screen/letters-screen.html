@@ -1,5 +1,8 @@
 <div class="letters">
-  <h1 class="letters__title">Correspondence</h1>
+  <div class="letters__header">
+    <h1 class="letters__title">Correspondence</h1>
+    <button type="button" class="compose-button" (click)="startCompose()">Brief schreiben</button>
+  </div>
 
   <div class="desk">
     <section class="pile">
@@ -47,6 +50,43 @@
         <p class="letter-heading">{{ senderName(letter.senderId) }}</p>
         <p class="letter-content"><span class="letter-content__dropcap">{{ letter.content.charAt(0) }}</span>{{ letter.content.slice(1) }}</p>
         <p class="letter-status">{{ statusLabels[letter.status] }} · {{ letter.dateWritten }}</p>
+      </div>
+    </qv-modal>
+  }
+
+  @if (composing()) {
+    <qv-modal title="Brief schreiben" (closed)="cancelCompose()">
+      <label class="compose-field">
+        <span>An</span>
+        <select [value]="composeRecipientId()" (change)="composeRecipientId.set($any($event.target).value)">
+          <option value="" disabled>Empfänger wählen …</option>
+          @for (character of recipients(); track character.id) {
+            <option [value]="character.id">{{ character.name }}</option>
+          }
+        </select>
+      </label>
+      <label class="compose-field">
+        <span>Inhalt</span>
+        <textarea
+          rows="8"
+          placeholder="Liebe(r) …"
+          [value]="composeContent()"
+          (input)="composeContent.set($any($event.target).value)"
+        ></textarea>
+      </label>
+      @if (sendError()) {
+        <p class="api-key-error">{{ sendError() }}</p>
+      }
+      <div class="compose-actions">
+        <button type="button" (click)="cancelCompose()">Abbrechen</button>
+        <button
+          type="button"
+          class="is-primary"
+          [disabled]="sending() || !composeRecipientId() || !composeContent().trim()"
+          (click)="sendLetter()"
+        >
+          {{ sending() ? 'Wird versandt …' : 'Absenden' }}
+        </button>
       </div>
     </qv-modal>
   }

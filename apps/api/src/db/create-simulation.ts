@@ -1,4 +1,4 @@
-import type { SimulationSummary } from '../models';
+import type { SimulationSummary, TonePreferences as ToneReferences } from '../models';
 import type { CharacterCreationDraft } from '../models/character-creation';
 import { getSimulationState } from './simulation-repository';
 
@@ -44,14 +44,6 @@ const WORLD_PACK_LOCATIONS = [
   },
   { id: 'loc_aubrey_hall', name: 'Aubrey Hall', type: 'estate', discovered: 0, baseAsset: 'asset://location/aubrey_hall/base', x: 82, y: 74, travel: null },
 ] as const;
-
-export interface ToneReferences {
-  romanceIntensity?: string;
-  socialIntrigueDepth?: string;
-  farmEconomyDepth?: string;
-  historicalAccuracy?: string;
-  narrativePace?: string;
-}
 
 const EMPTY_GOALS_JSON = JSON.stringify({
   shortTerm: [],

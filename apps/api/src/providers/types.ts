@@ -27,6 +27,10 @@ export interface AiProviderAdapter {
    * the model's raw text response — expected to be handed to
    * validateManualTurnResponse() same as a Manual Relay paste, just sourced
    * from an API call instead of a human copy-paste.
+   *
+   * `modelId` (B25-28 Model Discovery / Selector UI) — the user's saved
+   * choice from `listModels()`. Optional: when absent, the adapter falls
+   * back to its own live-discovery heuristic, same as before this existed.
    */
-  generateStory(apiKey: string, contextText: string): Promise<string>;
+  generateStory(apiKey: string, contextText: string, modelId?: string): Promise<string>;
 }

@@ -5,6 +5,7 @@ import { DirectTurnApiService } from '../../../core/ai/direct-turn-api.service';
 import { AiProvidersApiService } from '../../../core/ai/ai-providers-api.service';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { JournalApiService } from '../../../core/state/journal-api.service';
+import { PendingStoryActionService } from '../../../core/state/pending-story-action.service';
 import { Modal } from '../../../shared/ui/modal/modal';
 import { WaxSeal } from '../../../shared/ui/wax-seal/wax-seal';
 import { API_BASE_URL } from '../../../core/config/api.config';
@@ -37,6 +38,7 @@ export class StoryScreen {
   private readonly providersApi = inject(AiProvidersApiService);
   private readonly store = inject(SimulationStateStore);
   private readonly journalApi = inject(JournalApiService);
+  private readonly pendingAction = inject(PendingStoryActionService);
 
   protected readonly providerLinks = PROVIDER_LINKS;
   protected readonly recap = this.store.recap;
@@ -100,6 +102,9 @@ export class StoryScreen {
       },
       error: () => this.connectedProvider.set(null),
     });
+
+    const pending = this.pendingAction.consume();
+    if (pending) this.playerInput.set(pending);
   }
 
   /**

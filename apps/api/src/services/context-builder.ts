@@ -65,6 +65,20 @@ function describeCharacter(character: SimulationStateResponse['characters'][stri
   ].join('\n');
 }
 
+/** §174-175 — narrative/simulation weighting only, never success odds; omitted entirely when nothing is set, same as "(none yet)" sections above but simpler to just skip. */
+function describeTonePreferences(tone: SimulationStateResponse['tonePreferences']): string | null {
+  const lines = [
+    tone.romanceIntensity && `Romance: ${tone.romanceIntensity}`,
+    tone.socialIntrigueDepth && `Society/Intrigue: ${tone.socialIntrigueDepth}`,
+    tone.farmEconomyDepth && `Farm Management: ${tone.farmEconomyDepth}`,
+    tone.historicalAccuracy && `Historical Detail: ${tone.historicalAccuracy}`,
+    tone.narrativePace && `Story Pace: ${tone.narrativePace}`,
+  ].filter(Boolean);
+
+  if (lines.length === 0) return null;
+  return `=== PLAYER TONE PREFERENCES (§174-175 — narrative/simulation weighting only, never success odds) ===\n\n${lines.join('\n')}`;
+}
+
 export async function buildContextPackage(
   db: D1Database,
   simulationId: string,
@@ -106,10 +120,12 @@ ${discoveredLocations.map((l) => `${l.id} — ${l.name} (${l.type})`).join('\n')
 --- Open Threads ---
 ${state.openThreads.join('\n') || '(none)'}`,
 
+    describeTonePreferences(state.tonePreferences),
+
     `=== PLAYER ACTION ===\n\n${playerAction}`,
 
     OUTPUT_FORMAT_INSTRUCTIONS,
-  ];
+  ].filter(Boolean);
 
   return { contextText: sections.join('\n\n'), baseStateVersion: state.stateVersion };
 }

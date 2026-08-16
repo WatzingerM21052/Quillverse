@@ -12,6 +12,35 @@
 
     <div class="settings__content">
       @switch (activeSection()) {
+        @case ('simulation') {
+          <section class="tone-settings">
+            <h2>Simulation</h2>
+            <p class="settings__hint">
+              Diese Regler verändern Erzähl- und Simulationsgewichtung (§174) — nicht Erfolgschancen (§175).
+            </p>
+
+            @for (axis of toneAxes; track axis.key) {
+              <div class="tone-axis">
+                <div class="tone-axis__header">
+                  <span class="tone-axis__label">{{ axis.label }}</span>
+                  <span class="tone-axis__value">{{ axis.levels[toneLevel(axis) - 1] }}</span>
+                </div>
+                <div class="tone-axis__slider">
+                  <span class="tone-axis__end">{{ axis.lowLabel }}</span>
+                  <input
+                    type="range"
+                    min="1"
+                    max="5"
+                    step="1"
+                    [value]="toneLevel(axis)"
+                    (change)="setToneLevel(axis, $any($event.target).valueAsNumber)"
+                  />
+                  <span class="tone-axis__end">{{ axis.highLabel }}</span>
+                </div>
+              </div>
+            }
+          </section>
+        }
         @case ('ai') {
           <section class="ai-settings">
             <div class="narrator-simple">
@@ -29,6 +58,23 @@
                   </span>
                   @if (provider.connected) {
                     <button type="button" class="provider-card__action" (click)="disconnect(provider.provider)">Disconnect</button>
+
+                    @if (modelsLoading()[provider.provider]) {
+                      <p class="provider-card__models-hint">Modelle werden geladen …</p>
+                    } @else if (models()[provider.provider]?.length) {
+                      <label class="provider-card__model-picker">
+                        <span>Modell</span>
+                        <select
+                          [value]="selectedModels()[provider.provider] ?? ''"
+                          (change)="selectModel(provider.provider, $any($event.target).value)"
+                        >
+                          <option value="">Automatisch (empfohlen)</option>
+                          @for (model of models()[provider.provider]; track model.id) {
+                            <option [value]="model.id">{{ model.displayName }}</option>
+                          }
+                        </select>
+                      </label>
+                    }
                   } @else {
                     <button type="button" class="provider-card__action" (click)="startConnect(provider.provider)">Connect</button>
                   }

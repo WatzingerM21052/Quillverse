@@ -36,6 +36,7 @@ interface SimulationRow {
   last_visited_at: string | null;
   player_notes_json: string;
   favorite_quotes_json: string;
+  tone_preferences_json: string;
 }
 
 interface CharacterRow {
@@ -525,8 +526,17 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
     ),
     playerNotes: JSON.parse(simulation.player_notes_json),
     favoriteQuotes: JSON.parse(simulation.favorite_quotes_json),
+    tonePreferences: JSON.parse(simulation.tone_preferences_json || '{}'),
     recap: null,
   };
+}
+
+/** §174 Simulation Settings — the 5 tone sliders, editable any time after creation, not just at Character Creator time. */
+export async function updateTonePreferences(db: D1Database, simulationId: string, tonePreferences: unknown): Promise<void> {
+  await db
+    .prepare('UPDATE simulations SET tone_preferences_json = ? WHERE id = ?')
+    .bind(JSON.stringify(tonePreferences ?? {}), simulationId)
+    .run();
 }
 
 interface LastTurnRow {

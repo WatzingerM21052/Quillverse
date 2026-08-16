@@ -6,7 +6,7 @@ import { createAutoSnapshot, undoLastTurn } from '../db/savepoints';
 import { logAiCall } from '../db/ai-calls';
 import { PROVIDER_ADAPTERS } from '../providers/registry';
 import { PROVIDER_IDS, type ProviderId } from '../providers/types';
-import { getDecryptedCredential } from './ai-providers';
+import { getDecryptedCredential, getSelectedModel } from './ai-providers';
 
 export const turnsRoute = new Hono<{ Bindings: Env }>();
 
@@ -37,6 +37,7 @@ async function generateWithRepair(
   provider: ProviderId,
   apiKey: string,
   contextText: string,
+  modelId: string | null,
 ): Promise<GenerateAttempt | GenerateFailure> {
   for (let attempt = 0; attempt < 2; attempt++) {
     const prompt = attempt === 0 ? contextText : contextText + REPAIR_INSTRUCTION;
@@ -44,7 +45,7 @@ async function generateWithRepair(
 
     let responseText: string;
     try {
-      responseText = await PROVIDER_ADAPTERS[provider].generateStory(apiKey, prompt);
+      responseText = await PROVIDER_ADAPTERS[provider].generateStory(apiKey, prompt, modelId ?? undefined);
     } catch (err) {
       const error = err instanceof Error ? err.message : `${provider} request failed.`;
       await logAiCall(db, simulationId, provider, false, Date.now() - startedAt, 'generation_failed');
@@ -152,7 +153,8 @@ turnsRoute.post('/:id/turn/generate', async (c) => {
     if (!apiKey) continue;
     anyProviderConnected = true;
 
-    const attempt = await generateWithRepair(c.env.DB, simulationId, provider, apiKey, context.contextText);
+    const modelId = await getSelectedModel(c.env, provider);
+    const attempt = await generateWithRepair(c.env.DB, simulationId, provider, apiKey, context.contextText, modelId);
     if (!attempt.ok) {
       lastError = attempt.error;
       continue;

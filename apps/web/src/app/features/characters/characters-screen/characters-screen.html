@@ -70,6 +70,29 @@
       }
 
       <section class="character-sheet__section">
+        <h3>Aussehen</h3>
+        <dl class="character-sheet__appearance">
+          <dt>Größe</dt>
+          <dd>{{ character.appearance.height }}</dd>
+          <dt>Statur</dt>
+          <dd>{{ character.appearance.build }}</dd>
+          <dt>Gesicht</dt>
+          <dd>{{ character.appearance.face }}</dd>
+          <dt>Haare</dt>
+          <dd>{{ character.appearance.hair }}</dd>
+          <dt>Augen</dt>
+          <dd>{{ character.appearance.eyes }}</dd>
+          <dt>Kleidung</dt>
+          <dd>{{ character.appearance.clothing }}</dd>
+          <dt>Besondere Merkmale</dt>
+          <dd>{{ character.appearance.distinguishingFeatures }}</dd>
+        </dl>
+        <p class="character-sheet__whereabouts">
+          <strong>Zuletzt bekannter Aufenthaltsort:</strong> {{ locationName(character.locationId) }}
+        </p>
+      </section>
+
+      <section class="character-sheet__section">
         <h3>Was du über sie weißt</h3>
         @if (character.playerKnowledge.length === 0) {
           <p class="character-sheet__empty">Noch nichts Nennenswertes.</p>
