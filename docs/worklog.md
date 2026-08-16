@@ -85,9 +85,55 @@ would silently diverge. Production already has the relationship fix via the hand
 `apps/api/scripts/generate-seed.mjs`), push, confirm `API Checks` goes green on GitHub Actions — do not
 consider the session's work "done" until that's confirmed (the whole point of the fix is that CI was red).
 
-## Planned / open (from GitHub issues + spec audit)
+## Planned / open (from GitHub issues + spec audit, 2026-08-16)
 
-<!-- filled in after the docs+repo audit agent reports back; keep this section current going forward -->
+§ convention: unqualified `§N` = `ui-master-prompt-v1.md`; `A`-prefixed = `addendum-v1.1-architecture.md`;
+`B`-prefixed = `addendum-v1.2-byok.md`. Note `simulation-master-prompt-v3.md` has its own independent
+`§106`/`§108-110` (Sensorische Details / Gedankenlese-Fähigkeit / Save-System) — unrelated to the
+UI-doc sections the issues below actually cite.
+
+- **#27 — Module System / selective context loading + memory summarization (§108-110).** `§107` Prompt
+  Compiler wants `BASE + SCENE + RELEVANT MODULES + STATE + MEMORY`; `§108` lists 9 discrete prompt
+  modules (CORE_SIMULATION, RELATIONSHIPS, ROMANCE, ECONOMY, FARMING, CANON, SOCIETY, TRAVEL, LETTERS)
+  loaded selectively per turn; `§109` an 8-tier token-priority trim order; `§110` consolidating ~10 minor
+  memories into prose while keeping important ones individual. None of this exists —
+  `context-builder.ts` sends everything unconditionally every turn. Needs its own design pass, not a
+  quick fix.
+- **#26 — Long-tail spec gaps (grouped, small items).** Missing: `§20` Action Mode chips, `§22-23`
+  scene/time transition cards, `§26` Focus Mode, `§54` Dance Card, `§160` Model Profiles, `§189` Story
+  Quality Controls, `B17` Provider Detail Page, `B20` session-only key, `B33` configurable fallback
+  order, `B46` token-usage dashboard, `B50` pre-submit Manual Narrator dropdown, `A38` Full Archive
+  backup (adds `/assets/` to Compact Save). Partial: `§29` Character Sheet non-GM view omits known
+  whereabouts; `§75` Memory Inspector missing "Referenced by"/"Created" columns. Unused data:
+  `Scene.expression`/`imageCue`, `CharacterVisualState.availableExpressions`, most `Character.appearance`
+  fields beyond the 6 shown on Player Profile. Triage individually when picked up.
+- **#25 — Continuity Guard second-pass check (§106).** Optional, cheap second AI call before commit —
+  "does this response contradict current state?" — for important scenes only, not every turn.
+  `validate-turn-response.ts` only checks structural/schema correctness. Likely reuses the repair-retry
+  pattern already built for §188 (issue #9, closed).
+- **#20 — Mobile optimization pass.** `§130 MOBILE` wants a stacked Story Mode layout (scene image →
+  portrait → dialogue → input) with bottom-bar nav; `§131 TABLET`/`§132 DESKTOP` cover the other
+  breakpoints. `.shell__rail--mobile` exists but is unverified in practice; Character Creator's long
+  form and Settings' multi-column layout flagged as likely worst offenders.
+- **#19 — Location art + visual polish (rest of Phase 7).** `A15 Ortsbibliothek` wants day/season/weather
+  location variants primarily via lighting/overlay/particle/color-grading layers over a base image, a
+  wholly new image only when necessary. Also in scope: `A16` Cinematic Artwork System, `§40-43`
+  Map/Travel, `§111-117` Image Asset System, `§116` Major Event Gallery, `§117` Player House Visual
+  Progression. The portrait pipeline (`image-generation.ts`) pattern transfers directly; static
+  decorative assets (`§6` Ornamentik — seals, borders, dividers) are art-direction work, not code.
+
+**Other gaps noticed, not yet tracked as an issue:**
+- `§124` Timeline Identity — each save should carry title, current date, player portrait, current
+  location, short summary, last scene image. README's own "last remaining Phase 5 gap."
+- `§167` Location Reference Lock — the location-entity analogue of the already-built `§166` Character
+  Reference Lock (img2img identity pinning). Natural to bundle into #19.
+- Verification debt (code exists, unproven live): Character Reference Lock's img2img call has never
+  completed successfully — Cloudflare's `stable-diffusion-v1-5-img2img` kept returning `3040: Capacity
+  temporarily exceeded` throughout testing; OpenAI/Anthropic provider adapters are structurally complete
+  but untested end-to-end (no key available for either).
+- No TODO/FIXME comments anywhere in `apps/web` or `apps/api` — gap-tracking happens entirely through
+  GitHub issues via periodic docs-vs-implementation audits, not inline code comments. Keep using that
+  pattern rather than starting to sprinkle TODOs.
 
 ## Conventions worth remembering (so future sessions don't repeat this mistake)
 
