@@ -21,6 +21,23 @@
     <p class="story-header__provider-indicator">erzählt von {{ provider }}</p>
   }
 
+  @if (recap(); as r) {
+    @if (!recapDismissed()) {
+      <div class="recap-banner">
+        <p class="recap-banner__title">
+          Previously…
+          @if (r.chapterTitle) {
+            <span class="recap-banner__chapter">{{ r.chapterTitle }}</span>
+          }
+        </p>
+        @if (r.lastNarration) {
+          <p class="recap-banner__text">{{ r.lastNarration }}</p>
+        }
+        <button type="button" class="recap-banner__dismiss" (click)="dismissRecap()">Weiter</button>
+      </div>
+    }
+  }
+
   <section class="story-stage">
     <div class="story-stage__background"></div>
     <div class="story-stage__character story-stage__character--left"></div>
@@ -32,12 +49,29 @@
       <div class="dialogue-box">
         <span class="dialogue-box__speaker">{{ line.speakerId }}</span>
         <p class="dialogue-box__text">{{ line.text }}</p>
+        <button
+          type="button"
+          class="quote-favorite-button"
+          [disabled]="favoritedQuoteText() === line.text"
+          (click)="favoriteQuote(line)"
+        >
+          {{ favoritedQuoteText() === line.text ? '♥ gemerkt' : '♡ Zitat merken' }}
+        </button>
       </div>
     } @empty {
       @for (paragraph of scene().narration; track $index) {
         <p class="narration">{{ paragraph }}</p>
       }
     }
+
+    <div class="scene-actions">
+      <button type="button" class="bookmark-button" [disabled]="bookmarkBusy()" (click)="bookmarkMoment()">
+        {{ bookmarkBusy() ? 'Merke Moment …' : '🔖 Remember this moment' }}
+      </button>
+      @if (bookmarkMessage()) {
+        <span class="scene-actions__message">{{ bookmarkMessage() }}</span>
+      }
+    </div>
   </section>
 
   <footer class="player-input">

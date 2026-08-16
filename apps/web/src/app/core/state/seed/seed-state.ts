@@ -597,5 +597,8 @@ export function createSeedState(): SimulationState {
     scandals,
     obligations,
     causalityLog,
+    playerNotes: [],
+    favoriteQuotes: [],
+    recap: null,
   };
 }

@@ -1,5 +1,13 @@
 <div class="journal">
-  <h1 class="journal__title">Journal</h1>
+  <div class="journal__header">
+    <h1 class="journal__title">Journal</h1>
+    <button type="button" class="close-chapter-button" [disabled]="closeChapterBusy()" (click)="closeChapter()">
+      {{ closeChapterBusy() ? 'Schließt Kapitel …' : 'Kapitel abschließen' }}
+    </button>
+  </div>
+  @if (journalError()) {
+    <p class="api-key-error">{{ journalError() }}</p>
+  }
 
   <section class="chapters">
     @for (chapter of chapters(); track chapter.id) {
@@ -34,11 +42,82 @@
       <ul>
         @for (memory of memories(); track memory.id) {
           <li class="memory-entry">
-            <span class="memory-entry__date">{{ memory.worldDate }}</span>
+            <span class="memory-entry__date">
+              {{ memory.worldDate }}
+              @if (isBookmark(memory.tags)) {
+                <em class="memory-entry__bookmark">· gemerkter Moment</em>
+              }
+            </span>
             <p>{{ memory.fact }}</p>
           </li>
         }
       </ul>
     }
   </section>
+
+  <section class="memories">
+    <h2 class="memories__title">Lieblingszitate</h2>
+    @if (quotes().length === 0) {
+      <p class="memories__empty">Noch keine Zitate gemerkt — im Story-Modus bei einem Dialog "Zitat merken" wählen.</p>
+    } @else {
+      <ul>
+        @for (quote of quotes(); track quote.id) {
+          <li class="memory-entry quote-entry">
+            <span class="memory-entry__date">{{ quote.worldDate }} · {{ speakerName(quote.speakerId) }}</span>
+            <p>„{{ quote.text }}"</p>
+            <div class="quote-entry__actions">
+              <button type="button" class="quote-entry__card-button" (click)="openStoryCard(quote)">🖼 Story Card</button>
+              <button type="button" class="quote-entry__remove" (click)="removeQuote(quote.id)">Entfernen</button>
+            </div>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  <section class="memories">
+    <h2 class="memories__title">Private Notizen (§194)</h2>
+    <p class="memories__hint">Deine eigenen Notizen — nicht Teil der Simulation, niemals automatisch wahr.</p>
+    <div class="note-create">
+      <textarea
+        rows="2"
+        placeholder="Eigene Notiz hinzufügen …"
+        [value]="newNoteText()"
+        (input)="newNoteText.set($any($event.target).value)"
+      ></textarea>
+      <button type="button" [disabled]="noteBusy() || !newNoteText().trim()" (click)="addNote()">Hinzufügen</button>
+    </div>
+    @if (notes().length > 0) {
+      <ul>
+        @for (note of notes(); track note.id) {
+          <li class="memory-entry">
+            <span class="memory-entry__date">{{ note.worldDate }}</span>
+            <p>{{ note.text }}</p>
+            <button type="button" class="quote-entry__remove" [disabled]="noteBusy()" (click)="removeNote(note.id)">Löschen</button>
+          </li>
+        }
+      </ul>
+    }
+  </section>
+
+  @if (storyCardQuote(); as quote) {
+    <qv-modal title="Story Card" (closed)="closeStoryCard()">
+      <div class="story-card">
+        <div class="story-card__portrait">
+          @if (playerPortraitUrl(); as url) {
+            <img [src]="url" alt="" />
+          }
+        </div>
+        <p class="story-card__quote">„{{ quote.text }}"</p>
+        <p class="story-card__speaker">— {{ speakerName(quote.speakerId) }}</p>
+        <div class="story-card__meta">
+          <span>{{ quote.worldDate }}</span>
+          @if (quote.locationId) {
+            <span>{{ locationName(quote.locationId) }}</span>
+          }
+        </div>
+      </div>
+      <p class="story-card__hint">Zum Teilen: Bildschirmfoto dieser Karte machen.</p>
+    </qv-modal>
+  }
 </div>

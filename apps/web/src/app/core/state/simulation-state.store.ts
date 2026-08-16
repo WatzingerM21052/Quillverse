@@ -102,6 +102,10 @@ export class SimulationStateStore {
     Object.values(this.state().memories).filter((memory) => SimulationStateStore.JOURNAL_WORTHY.has(memory.importance)),
   );
 
+  readonly playerNotes = computed(() => this.state().playerNotes);
+  readonly favoriteQuotes = computed(() => this.state().favoriteQuotes);
+  readonly recap = computed(() => this.state().recap);
+
   readonly sentLetters = computed(() =>
     Object.values(this.state().letters).filter((letter) => letter.senderId === this.state().playerId),
   );

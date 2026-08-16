@@ -61,4 +61,33 @@ export interface SimulationState {
   scandals: ScandalEntry[];
   obligations: ObligationEntry[];
   causalityLog: CausalityLogEntry[];
+  /** §194 — private, player-authored; never simulation truth. */
+  playerNotes: PlayerNote[];
+  /** §196 */
+  favoriteQuotes: FavoriteQuote[];
+  /** §190/§193 — computed fresh per GET from the real-time gap since the last visit, never persisted. */
+  recap: RecapInfo | null;
+}
+
+export interface PlayerNote {
+  id: string;
+  text: string;
+  worldDate: string;
+  createdAt: string;
+}
+
+export interface FavoriteQuote {
+  id: string;
+  text: string;
+  speakerId: EntityId;
+  worldDate: string;
+  locationId: string;
+  createdAt: string;
+}
+
+export interface RecapInfo {
+  previousVisitAt: string;
+  lastNarration: string | null;
+  chapterTitle: string | null;
+  chapterNumber: number | null;
 }

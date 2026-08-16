@@ -1,5 +1,5 @@
 import { Hono } from 'hono';
-import { getSimulationState, listSimulations } from '../db/simulation-repository';
+import { getSimulationState, listSimulations, touchVisitAndBuildRecap } from '../db/simulation-repository';
 
 export const simulationsRoute = new Hono<{ Bindings: Env }>();
 
@@ -9,9 +9,11 @@ simulationsRoute.get('/', async (c) => {
 });
 
 simulationsRoute.get('/:id', async (c) => {
-  const state = await getSimulationState(c.env.DB, c.req.param('id'));
+  const simulationId = c.req.param('id');
+  const state = await getSimulationState(c.env.DB, simulationId);
   if (!state) {
     return c.json({ error: 'Simulation not found.' }, 404);
   }
+  state.recap = await touchVisitAndBuildRecap(c.env.DB, simulationId);
   return c.json(state);
 });

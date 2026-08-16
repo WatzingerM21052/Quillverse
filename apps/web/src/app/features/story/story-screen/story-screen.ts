@@ -1,9 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
-import { Scene } from '../../../core/state/models/scene.model';
+import { Scene, DialogueLine } from '../../../core/state/models/scene.model';
 import { ManualRelayService } from '../../../core/ai/manual-relay.service';
 import { DirectTurnApiService } from '../../../core/ai/direct-turn-api.service';
 import { AiProvidersApiService } from '../../../core/ai/ai-providers-api.service';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
+import { JournalApiService } from '../../../core/state/journal-api.service';
 import { Modal } from '../../../shared/ui/modal/modal';
 
 /** Same priority as Settings' FALLBACK_ORDER — first connected provider wins, else Manual Relay. */
@@ -31,8 +32,15 @@ export class StoryScreen {
   private readonly directTurn = inject(DirectTurnApiService);
   private readonly providersApi = inject(AiProvidersApiService);
   private readonly store = inject(SimulationStateStore);
+  private readonly journalApi = inject(JournalApiService);
 
   protected readonly providerLinks = PROVIDER_LINKS;
+  protected readonly recap = this.store.recap;
+  protected readonly recapDismissed = signal(false);
+
+  protected readonly bookmarkBusy = signal(false);
+  protected readonly bookmarkMessage = signal<string | null>(null);
+  protected readonly favoritedQuoteText = signal<string | null>(null);
 
   /** null until the provider list loads; a provider id once one is connected, so submitAction can skip Manual Relay. */
   protected readonly connectedProvider = signal<string | null>(null);
@@ -191,6 +199,41 @@ export class StoryScreen {
       error: (err) => {
         this.undoMessage.set(err?.error?.error ?? 'Nichts zum Rückgängigmachen.');
         this.undoing.set(false);
+      },
+    });
+  }
+
+  protected dismissRecap(): void {
+    this.recapDismissed.set(true);
+  }
+
+  /** §195 BOOKMARK MOMENT — "Remember this moment" on the currently displayed scene. */
+  protected bookmarkMoment(): void {
+    const scene = this.scene();
+    const text = scene.dialogue.length > 0 ? scene.dialogue.map((line) => line.text).join(' ') : scene.narration.join(' ');
+    if (!text.trim()) return;
+
+    this.bookmarkBusy.set(true);
+    this.bookmarkMessage.set(null);
+    this.journalApi.bookmark(text).subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.bookmarkMessage.set('Als wichtige Erinnerung im Journal gemerkt.');
+        this.bookmarkBusy.set(false);
+      },
+      error: () => {
+        this.bookmarkMessage.set('Moment konnte nicht gemerkt werden.');
+        this.bookmarkBusy.set(false);
+      },
+    });
+  }
+
+  /** §196 FAVORITE QUOTES. */
+  protected favoriteQuote(line: DialogueLine): void {
+    this.journalApi.favoriteQuote(line.text, line.speakerId, this.scene().locationId).subscribe({
+      next: ({ state }) => {
+        this.store.refresh(state);
+        this.favoritedQuoteText.set(line.text);
       },
     });
   }

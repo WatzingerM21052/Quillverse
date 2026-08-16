@@ -63,6 +63,54 @@
   margin: 0.4rem 0 0;
 }
 
+.recap-banner {
+  background: rgba(184, 147, 74, 0.12);
+  border-bottom: 1px solid var(--qv-gold);
+  padding: 0.75rem 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem 1rem;
+
+  &__title {
+    font-family: var(--qv-font-display);
+    font-style: italic;
+    color: var(--qv-champagne);
+    margin: 0;
+    flex-basis: 100%;
+  }
+
+  &__chapter {
+    font-family: var(--qv-font-ui);
+    font-style: normal;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--qv-gold);
+    margin-left: 0.6rem;
+  }
+
+  &__text {
+    font-family: var(--qv-font-serif);
+    font-size: 0.9rem;
+    color: var(--qv-ivory);
+    margin: 0;
+    flex: 1;
+    min-width: 200px;
+  }
+
+  &__dismiss {
+    background: none;
+    border: 1px solid var(--qv-gold);
+    color: var(--qv-champagne);
+    border-radius: 4px;
+    padding: 0.3rem 0.8rem;
+    font-family: var(--qv-font-ui);
+    font-size: 0.75rem;
+    cursor: pointer;
+  }
+}
+
 .story-stage {
   position: relative;
   flex: 1;
@@ -133,6 +181,62 @@
     font-size: 1.1rem;
     color: var(--qv-ivory);
   }
+}
+
+.quote-favorite-button {
+  display: block;
+  margin-top: 0.5rem;
+  background: none;
+  border: none;
+  color: var(--qv-gold);
+  font-family: var(--qv-font-ui);
+  font-size: 0.7rem;
+  cursor: pointer;
+  padding: 0;
+  opacity: 0.75;
+
+  &:hover {
+    opacity: 1;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 1;
+  }
+}
+
+.scene-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.bookmark-button {
+  background: none;
+  border: 1px solid var(--qv-gold);
+  color: var(--qv-champagne);
+  border-radius: 6px;
+  padding: 0.4rem 0.9rem;
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  cursor: pointer;
+
+  &:hover {
+    background: rgba(184, 147, 74, 0.15);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+.scene-actions__message {
+  font-family: var(--qv-font-serif);
+  font-style: italic;
+  font-size: 0.8rem;
+  color: var(--qv-gold);
 }
 
 .player-input {

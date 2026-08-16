@@ -9,6 +9,7 @@ import { assetsRoute } from './routes/assets';
 import { charactersRoute } from './routes/characters';
 import { characterCreationRoute } from './routes/character-creation';
 import { backupRoute } from './routes/backup';
+import { journalRoute } from './routes/journal';
 
 const ALLOWED_ORIGINS = ['https://watzingerm21052.github.io', 'http://localhost:4200'];
 
@@ -24,6 +25,7 @@ app.route('/api/simulations', savepointsRoute);
 app.route('/api/simulations', gmRoute);
 app.route('/api/simulations', charactersRoute);
 app.route('/api/simulations', backupRoute);
+app.route('/api/simulations', journalRoute);
 app.route('/api/ai/providers', aiProvidersRoute);
 app.route('/api/assets', assetsRoute);
 app.route('/api/character-creation', characterCreationRoute);

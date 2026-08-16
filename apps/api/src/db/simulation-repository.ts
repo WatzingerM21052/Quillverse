@@ -2,12 +2,15 @@ import type {
   CausalityLogEntry,
   CharacterResponse,
   FavorEntry,
+  FavoriteQuote,
   InfluenceEntry,
   InventoryItemResponse,
   LetterResponse,
   LocationResponse,
   MemoryResponse,
   ObligationEntry,
+  PlayerNote,
+  RecapInfo,
   RelationshipResponse,
   ReputationEntry,
   RumorEntry,
@@ -30,6 +33,9 @@ interface SimulationRow {
   world_status_json: string;
   farm_json: string;
   open_threads_json: string;
+  last_visited_at: string | null;
+  player_notes_json: string;
+  favorite_quotes_json: string;
 }
 
 interface CharacterRow {
@@ -517,7 +523,116 @@ export async function getSimulationState(db: D1Database, simulationId: string): 
         date: row.date,
       }),
     ),
+    playerNotes: JSON.parse(simulation.player_notes_json),
+    favoriteQuotes: JSON.parse(simulation.favorite_quotes_json),
+    recap: null,
   };
+}
+
+interface LastTurnRow {
+  scene_output_json: string | null;
+}
+
+interface LastChapterRow {
+  number: number;
+  title: string;
+}
+
+const RECAP_THRESHOLD_MINUTES = 30;
+
+/**
+ * §190/§193 — real wall-clock gap since the player's last visit (this is the
+ * one place real time is the right signal: §193's own wording is "Three days
+ * since your last visit", about the player's absence, not in-game time —
+ * doesn't contradict the earlier decision that game *state* only advances on
+ * player turns, not a clock). Reads the previous last_visited_at, decides
+ * whether the gap is worth surfacing, then always stamps "now" so the next
+ * call measures from this visit. Called once per GET, not part of
+ * getSimulationState itself since it's a write, not a pure read.
+ */
+export async function touchVisitAndBuildRecap(db: D1Database, simulationId: string): Promise<RecapInfo | null> {
+  const row = await db
+    .prepare('SELECT last_visited_at FROM simulations WHERE id = ?')
+    .bind(simulationId)
+    .first<{ last_visited_at: string | null }>();
+
+  await db.prepare("UPDATE simulations SET last_visited_at = datetime('now') WHERE id = ?").bind(simulationId).run();
+
+  const previousVisitAt = row?.last_visited_at ?? null;
+  if (!previousVisitAt) return null;
+
+  const gapMinutes = (Date.now() - Date.parse(`${previousVisitAt}Z`)) / 60_000;
+  if (gapMinutes < RECAP_THRESHOLD_MINUTES) return null;
+
+  const [lastNarration, lastChapter] = await Promise.all([
+    getLastNarration(db, simulationId),
+    db.prepare('SELECT number, title FROM chapters WHERE simulation_id = ? ORDER BY number DESC LIMIT 1').bind(simulationId).first<LastChapterRow>(),
+  ]);
+
+  return {
+    previousVisitAt,
+    lastNarration,
+    chapterTitle: lastChapter?.title ?? null,
+    chapterNumber: lastChapter?.number ?? null,
+  };
+}
+
+/** Shared by the recap above and §192 Close Chapter's auto-summary. */
+export async function getLastNarration(db: D1Database, simulationId: string): Promise<string | null> {
+  const lastTurn = await db
+    .prepare('SELECT scene_output_json FROM turns WHERE simulation_id = ? ORDER BY turn_number DESC LIMIT 1')
+    .bind(simulationId)
+    .first<LastTurnRow>();
+
+  if (!lastTurn?.scene_output_json) return null;
+  const scene = JSON.parse(lastTurn.scene_output_json) as { narration?: string[]; dialogue?: Array<{ text: string }> };
+  return scene.narration?.[0] ?? scene.dialogue?.[0]?.text ?? null;
+}
+
+/** §194/§196 — small player-authored lists, plain JSON columns, no dedicated tables. */
+export async function addPlayerNote(db: D1Database, simulationId: string, text: string, worldDate: string): Promise<PlayerNote> {
+  const note: PlayerNote = { id: crypto.randomUUID(), text, worldDate, createdAt: new Date().toISOString() };
+  const existing = await readJsonColumn<PlayerNote[]>(db, simulationId, 'player_notes_json');
+  await db
+    .prepare('UPDATE simulations SET player_notes_json = ? WHERE id = ?')
+    .bind(JSON.stringify([...existing, note]), simulationId)
+    .run();
+  return note;
+}
+
+export async function removePlayerNote(db: D1Database, simulationId: string, noteId: string): Promise<void> {
+  const existing = await readJsonColumn<PlayerNote[]>(db, simulationId, 'player_notes_json');
+  await db
+    .prepare('UPDATE simulations SET player_notes_json = ? WHERE id = ?')
+    .bind(JSON.stringify(existing.filter((n) => n.id !== noteId)), simulationId)
+    .run();
+}
+
+export async function addFavoriteQuote(
+  db: D1Database,
+  simulationId: string,
+  quote: Omit<FavoriteQuote, 'id' | 'createdAt'>,
+): Promise<FavoriteQuote> {
+  const entry: FavoriteQuote = { ...quote, id: crypto.randomUUID(), createdAt: new Date().toISOString() };
+  const existing = await readJsonColumn<FavoriteQuote[]>(db, simulationId, 'favorite_quotes_json');
+  await db
+    .prepare('UPDATE simulations SET favorite_quotes_json = ? WHERE id = ?')
+    .bind(JSON.stringify([...existing, entry]), simulationId)
+    .run();
+  return entry;
+}
+
+export async function removeFavoriteQuote(db: D1Database, simulationId: string, quoteId: string): Promise<void> {
+  const existing = await readJsonColumn<FavoriteQuote[]>(db, simulationId, 'favorite_quotes_json');
+  await db
+    .prepare('UPDATE simulations SET favorite_quotes_json = ? WHERE id = ?')
+    .bind(JSON.stringify(existing.filter((q) => q.id !== quoteId)), simulationId)
+    .run();
+}
+
+async function readJsonColumn<T>(db: D1Database, simulationId: string, column: 'player_notes_json' | 'favorite_quotes_json'): Promise<T> {
+  const row = await db.prepare(`SELECT ${column} AS value FROM simulations WHERE id = ?`).bind(simulationId).first<{ value: string }>();
+  return row ? JSON.parse(row.value) : ([] as unknown as T);
 }
 
 interface SimulationListRow {
