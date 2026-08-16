@@ -19,11 +19,15 @@ export class DirectTurnApiService {
   private readonly http = inject(HttpClient);
   private readonly activeSimulation = inject(ActiveSimulationService);
 
-  /** Backend tries every connected provider in priority order (A32) — no provider choice needed here. */
-  generate(playerAction: string): Observable<GenerateTurnResult> {
+  /**
+   * Backend tries every connected provider in priority order (A32). Pass
+   * `preferredProvider` (B50 Manual Narrator switch) to have that one tried
+   * first — the rest of the fallback chain still applies if it fails.
+   */
+  generate(playerAction: string, preferredProvider?: string): Observable<GenerateTurnResult> {
     return this.http.post<GenerateTurnResult>(
       `${API_BASE_URL}/api/simulations/${this.activeSimulation.id()}/turn/generate`,
-      { playerAction },
+      preferredProvider ? { playerAction, preferredProvider } : { playerAction },
     );
   }
 

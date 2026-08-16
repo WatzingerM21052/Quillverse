@@ -89,6 +89,10 @@ export class StoryScreen {
 
   /** null until the provider list loads; a provider id once one is connected, so submitAction can skip Manual Relay. */
   protected readonly connectedProvider = signal<string | null>(null);
+  /** B50 Manual Narrator switch — every connected provider, for the dropdown; empty until the list loads. */
+  protected readonly connectedProviders = signal<string[]>([]);
+  /** The player's chosen narrator for the next turn; defaults to connectedProvider once it loads, resets each session (not persisted). */
+  protected readonly selectedProvider = signal<string | null>(null);
   protected readonly generating = signal(false);
   protected readonly generateError = signal<string | null>(null);
   /** §98 Provider Change Indicator — whichever provider actually narrated the last turn (A32 fallback may differ from connectedProvider). */
@@ -99,8 +103,11 @@ export class StoryScreen {
   constructor() {
     this.providersApi.list().subscribe({
       next: (list) => {
-        const connected = PROVIDER_PRIORITY.find((id) => list.some((p) => p.provider === id && p.connected));
-        this.connectedProvider.set(connected ?? null);
+        const connectedIds = PROVIDER_PRIORITY.filter((id) => list.some((p) => p.provider === id && p.connected));
+        this.connectedProviders.set(connectedIds);
+        const connected = connectedIds[0] ?? null;
+        this.connectedProvider.set(connected);
+        this.selectedProvider.set(connected);
       },
       error: () => this.connectedProvider.set(null),
     });
@@ -154,7 +161,7 @@ export class StoryScreen {
     this.generating.set(true);
     this.generateError.set(null);
 
-    this.directTurn.generate(action).subscribe({
+    this.directTurn.generate(action, this.selectedProvider() ?? undefined).subscribe({
       next: ({ state, scene, provider }) => {
         this.store.refresh(state);
         this.scene.set(scene);

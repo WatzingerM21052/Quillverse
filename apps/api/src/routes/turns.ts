@@ -5,6 +5,7 @@ import { applyTurn } from '../db/apply-turn';
 import { createAutoSnapshot, undoLastTurn } from '../db/savepoints';
 import { logAiCall } from '../db/ai-calls';
 import { PROVIDER_ADAPTERS } from '../providers/registry';
+import { orderProviders } from '../providers/provider-order';
 import { PROVIDER_IDS, type ProviderId } from '../providers/types';
 import { getDecryptedCredential, getSelectedModel } from './ai-providers';
 
@@ -133,7 +134,7 @@ turnsRoute.post('/:id/commit', async (c) => {
  */
 turnsRoute.post('/:id/turn/generate', async (c) => {
   const simulationId = c.req.param('id');
-  const body = await c.req.json<{ playerAction?: string }>().catch(() => null);
+  const body = await c.req.json<{ playerAction?: string; preferredProvider?: string }>().catch(() => null);
   const playerAction = body?.playerAction?.trim();
 
   if (!playerAction) {
@@ -148,7 +149,7 @@ turnsRoute.post('/:id/turn/generate', async (c) => {
   let anyProviderConnected = false;
   let lastError = 'No AI provider is connected. Connect one in Settings, or use Manual Relay.';
 
-  for (const provider of PROVIDER_IDS) {
+  for (const provider of orderProviders(body?.preferredProvider, PROVIDER_IDS)) {
     const apiKey = await getDecryptedCredential(c.env, provider);
     if (!apiKey) continue;
     anyProviderConnected = true;

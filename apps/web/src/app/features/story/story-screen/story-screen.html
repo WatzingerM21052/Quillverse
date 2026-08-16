@@ -4,6 +4,16 @@
       <span class="story-header__date">{{ scene().worldDate }}</span>
       <span class="story-header__location">{{ locationName(scene().locationId) }}</span>
       <span class="story-header__weather">{{ scene().weather }}</span>
+      @if (connectedProviders().length > 0) {
+        <label class="story-header__narrator">
+          Narrator
+          <select [value]="selectedProvider()" (change)="selectedProvider.set($any($event.target).value)">
+            @for (provider of connectedProviders(); track provider) {
+              <option [value]="provider">{{ provider }}</option>
+            }
+          </select>
+        </label>
+      }
       <button
         class="story-header__undo"
         type="button"
