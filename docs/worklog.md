@@ -14,9 +14,10 @@ share memory otherwise.
 
 ## Status snapshot (2026-08-16, end of session)
 
-Last commit: `da0c7d4` "Structured Stammbaum + generated map background + German-first UI", pushed to
-`main`. GitHub Pages deploy succeeded. **API Checks CI failed on that push** — root-caused and fixed
-in this session (see below); fix not yet committed as of this writing, see "In progress".
+Last commit: `305a237` (Focus Mode navigation-dead-end fix, part of the issue #26 Quick Wins batch
+below). `API Checks` CI is green — the `da0c7d4` regression (see "CI regression" entry below) was
+root-caused, fixed, and confirmed green in commit `301d901`. Working tree clean, everything in this
+log is pushed to `main`.
 
 ## Done this session
 
@@ -46,10 +47,33 @@ in this session (see below); fix not yet committed as of this writing, see "In p
    (Pollinations rejected style-bible params it doesn't support; Cloudflare Workers AI rejected
    width/height in the schema) until it produced a proper top-down antique map with roads/woodland/village
    cluster aligned with the pins.
+6. **Issue #26 Quick Wins batch** — 4 small items closed via a brainstorming → spec → plan →
+   subagent-driven-development pass (spec: `docs/superpowers/specs/2026-08-16-issue-26-quick-wins-design.md`,
+   plan: `docs/superpowers/plans/2026-08-16-issue-26-quick-wins.md`, all committed directly to `main`
+   per this project's established convention, no branch/worktree):
+   - NPC appearance fields on the Characters screen (mirrors the 6 fields Player Profile already had:
+     voice/posture/typicalExpression/hands/grooming/generalPresence).
+   - `§75` Memory Inspector (GM Dashboard): added a "Created" column (`worldDate`) and resolved entity
+     IDs to character names in "Involves", instead of raw IDs.
+   - `§26` Focus Mode: new session-only `FocusModeService`, toggle in Story screen's header, hides both
+     nav rails (desktop + mobile) and Story's own header chrome. Final whole-batch review caught a real
+     bug the per-task review couldn't see (focus mode had no in-app exit once you navigated away from
+     Story, since the only toggle lived in Story's header) — fixed by auto-resetting focus mode on any
+     navigation away from the Story route (`FocusModeService` now watches `Router` `NavigationEnd`).
+   - `B50` Manual Narrator switch: pre-submit "Narrator" dropdown in Story Mode lets the player pick
+     which connected AI provider narrates the next turn. Backend gained a small pure `orderProviders()`
+     function (`apps/api/src/providers/provider-order.ts`, unit-tested, following the existing
+     `response-text.ts` pattern of extracting testable pure logic) that re-roots the A32 automatic-
+     fallback chain at the player's choice without weakening the fallback safety net.
+   - Process note: this batch used `superpowers:subagent-driven-development` (fresh implementer +
+     reviewer subagent per task, ledger-tracked, one whole-batch final review at the end) for the first
+     time on this project — worked well, caught 2 real Important findings (the select-binding race in
+     Task 4, the Focus Mode navigation dead-end) that individual task reviews or a single-pass
+     implementation likely would have missed. Worth reusing for future batches like this.
 
-## In progress / needs a decision
+## Resolved this session (was "in progress")
 
-**CI regression from this session's commit — root-caused, fix staged, not yet committed.**
+**CI regression from this session's earlier commit — root-caused and fixed, confirmed green.**
 
 `API Checks` failed on push `da0c7d4` with `D1_ERROR: table characters has no column named skills_json`
 during `applyD1Migrations` on a fresh test DB. Cause: `scripts/generate-seed.mjs` — the generator for
@@ -81,9 +105,7 @@ own `database_name`), so editing 0002 in place is safe — there's no second alr
 would silently diverge. Production already has the relationship fix via the hand-run SQL patch
 (`patch-sim-default-relationships.sql`, applied and verified earlier this session).
 
-**Next action**: commit these two files (`apps/api/migrations/0002_seed_default_simulation.sql`,
-`apps/api/scripts/generate-seed.mjs`), push, confirm `API Checks` goes green on GitHub Actions — do not
-consider the session's work "done" until that's confirmed (the whole point of the fix is that CI was red).
+Committed as `301d901`, pushed, confirmed `API Checks` green on GitHub Actions before moving on.
 
 ## Planned / open (from GitHub issues + spec audit, 2026-08-16)
 
@@ -99,14 +121,21 @@ UI-doc sections the issues below actually cite.
   memories into prose while keeping important ones individual. None of this exists —
   `context-builder.ts` sends everything unconditionally every turn. Needs its own design pass, not a
   quick fix.
-- **#26 — Long-tail spec gaps (grouped, small items).** Missing: `§20` Action Mode chips, `§22-23`
-  scene/time transition cards, `§26` Focus Mode, `§54` Dance Card, `§160` Model Profiles, `§189` Story
-  Quality Controls, `B17` Provider Detail Page, `B20` session-only key, `B33` configurable fallback
-  order, `B46` token-usage dashboard, `B50` pre-submit Manual Narrator dropdown, `A38` Full Archive
-  backup (adds `/assets/` to Compact Save). Partial: `§29` Character Sheet non-GM view omits known
-  whereabouts; `§75` Memory Inspector missing "Referenced by"/"Created" columns. Unused data:
-  `Scene.expression`/`imageCue`, `CharacterVisualState.availableExpressions`, most `Character.appearance`
-  fields beyond the 6 shown on Player Profile. Triage individually when picked up.
+- **#26 — Long-tail spec gaps (grouped, small items).** Quick Wins sub-batch shipped this session (see
+  "Done this session" above): NPC appearance fields, `§75` Memory Inspector columns, `§26` Focus Mode,
+  `B50` Manual Narrator dropdown. Still missing: `§20` Action Mode chips, `§22-23` scene/time transition
+  cards, `§54` Dance Card, `§160` Model Profiles, `§189` Story Quality Controls, `B17` Provider Detail
+  Page, `B20` session-only key, `B33` configurable fallback order, `B46` token-usage dashboard, `A38`
+  Full Archive backup (adds `/assets/` to Compact Save). Still partial: `§29` Character Sheet non-GM
+  view whereabouts (already partly addressed — check current state before assuming the gap is
+  unchanged, the Quick Wins pass touched adjacent code). Still unused data: `Scene.expression`/
+  `imageCue`, `CharacterVisualState.availableExpressions`, and `Character.appearance` fields beyond the
+  6 now shown on both Player Profile and the Characters (NPC) screen. Triage individually when picked up.
+  Two minor items deferred during the Quick Wins review (not bugs, just noted for whoever touches this
+  code next): `story-screen.scss`'s Focus-toggle position CSS (`&:first-child { margin-left: auto; }`)
+  is correct today but coupled to the header's exact DOM shape; `story-screen.html` has two
+  near-identical `@if (!focusMode.active())` blocks that need disambiguating by surrounding content, not
+  the bare condition text, if either is edited again.
 - **#25 — Continuity Guard second-pass check (§106).** Optional, cheap second AI call before commit —
   "does this response contradict current state?" — for important scenes only, not every turn.
   `validate-turn-response.ts` only checks structural/schema correctness. Likely reuses the repair-retry
@@ -152,3 +181,8 @@ UI-doc sections the issues below actually cite.
 - Production D1 database is `sim_default`'s single simulation row set — this project doesn't yet have a
   staging environment. Direct live-DB patches (outside of migrations) have been used at least once this
   session for a data fix and should stay rare, explicit, and user-confirmed each time.
+- This project has no branch/PR workflow — every session commits and pushes directly to `main`, which
+  auto-deploys (Pages on every push; the Worker/D1 migrations stay a manual `npm run deploy` step). If a
+  future session uses `superpowers:subagent-driven-development` (which defaults to an isolated
+  worktree/branch), that default conflicts with this project's convention — ask the user explicitly
+  which they want, same as this session did, rather than assuming either way.
