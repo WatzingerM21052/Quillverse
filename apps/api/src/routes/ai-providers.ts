@@ -137,7 +137,12 @@ aiProvidersRoute.get('/continuity-model', async (c) => {
 
 aiProvidersRoute.put('/continuity-model', async (c) => {
   const body = await c.req.json<{ provider?: ProviderId | null; modelId?: string | null }>().catch(() => null);
-  const provider = body?.provider ?? null;
+
+  if (!body || !('provider' in body) || body.provider === undefined) {
+    return c.json({ error: 'Request body must include a "provider" field (a provider id, or null to clear).' }, 400);
+  }
+
+  const provider = body.provider;
 
   if (provider === null) {
     await c.env.DB.prepare('DELETE FROM model_profiles WHERE user_id = ? AND profile = ?')
@@ -154,10 +159,10 @@ aiProvidersRoute.put('/continuity-model', async (c) => {
     `INSERT INTO model_profiles (user_id, profile, provider, model_id) VALUES (?, 'continuity', ?, ?)
      ON CONFLICT(user_id, profile) DO UPDATE SET provider = excluded.provider, model_id = excluded.model_id`,
   )
-    .bind(OWNER_USER_ID, provider, body?.modelId ?? null)
+    .bind(OWNER_USER_ID, provider, body.modelId ?? null)
     .run();
 
-  return c.json({ provider, modelId: body?.modelId ?? null });
+  return c.json({ provider, modelId: body.modelId ?? null });
 });
 
 aiProvidersRoute.delete('/:provider', async (c) => {
