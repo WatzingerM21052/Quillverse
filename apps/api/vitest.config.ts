@@ -8,7 +8,12 @@ export default defineConfig(async () => {
   return defineProject({
     plugins: [
       cloudflareTest({
-        wrangler: { configPath: './wrangler.jsonc' },
+        // Deliberately not wrangler.jsonc: the `ai` binding has no local
+        // emulator (Miniflare always proxies it to the real Cloudflare API),
+        // which makes vitest-pool-workers demand a CLOUDFLARE_API_TOKEN even
+        // in CI where no test touches it. This mirrors every other binding
+        // but omits `ai` -- keep the two files in sync if D1/R2 ever change.
+        wrangler: { configPath: './wrangler.test.jsonc' },
         miniflare: {
           bindings: { TEST_MIGRATIONS: migrations },
         },
