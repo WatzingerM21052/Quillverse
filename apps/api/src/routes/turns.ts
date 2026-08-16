@@ -7,7 +7,9 @@ import { logAiCall } from '../db/ai-calls';
 import { PROVIDER_ADAPTERS } from '../providers/registry';
 import { orderProviders } from '../providers/provider-order';
 import { PROVIDER_IDS, type ProviderId } from '../providers/types';
-import { getDecryptedCredential, getSelectedModel } from './ai-providers';
+import { getDecryptedCredential, getSelectedModel, getContinuityModel } from './ai-providers';
+import { checkContinuity, isImportantScene } from '../services/continuity-guard';
+import { getSimulationState } from '../db/simulation-repository';
 
 export const turnsRoute = new Hono<{ Bindings: Env }>();
 
@@ -15,6 +17,14 @@ const REPAIR_INSTRUCTION =
   '\n\n=== FORMAT CORRECTION ===\n\nYour previous response could not be parsed as the required JSON object ' +
   '(schemaVersion, scene.worldDate, scene.narration, statePatch). Respond again with ONLY that one JSON object — ' +
   'no prose, no markdown code fence, nothing before or after it.';
+
+function continuityCorrectionInstruction(reason: string): string {
+  return (
+    '\n\n=== CONTINUITY CORRECTION ===\n\nYour previous response contradicts the established state: ' +
+    reason +
+    '\n\nRespond again with a corrected JSON object (same schemaVersion/scene/statePatch shape) that resolves this contradiction.'
+  );
+}
 
 interface GenerateAttempt {
   ok: true;
@@ -69,6 +79,67 @@ async function generateWithRepair(
 
   // Unreachable — the loop always returns on attempt 1 — but keeps TS happy.
   return { ok: false, error: `${provider}: exhausted retries.` };
+}
+
+/**
+ * §106 Continuity Guard — optional, cheap second AI call before commit, only
+ * for scenes isImportantScene() judges significant (avoids a second call
+ * after every trivial turn, per spec: "nicht nach jedem Frühstück"). Skipped
+ * entirely when no Continuity model profile is configured (opt-in) or the
+ * check itself errors — this must never turn a working turn into a failed
+ * one, only add one bounded retry when it finds a real contradiction (same
+ * one-retry-then-accept shape as generateWithRepair's §188 repair retry).
+ */
+async function maybeRunContinuityGuard(
+  env: Env,
+  simulationId: string,
+  provider: ProviderId,
+  apiKey: string,
+  modelId: string | null,
+  contextText: string,
+  attempt: GenerateAttempt,
+): Promise<{ attempt: GenerateAttempt; continuityRetried: boolean }> {
+  if (!isImportantScene(attempt.validation.response.statePatch)) {
+    return { attempt, continuityRetried: false };
+  }
+
+  const continuityProfile = await getContinuityModel(env);
+  if (!continuityProfile) {
+    return { attempt, continuityRetried: false };
+  }
+
+  const continuityApiKey = await getDecryptedCredential(env, continuityProfile.provider);
+  if (!continuityApiKey) {
+    return { attempt, continuityRetried: false };
+  }
+
+  const startedAt = Date.now();
+  try {
+    const currentState = await getSimulationState(env.DB, simulationId);
+    if (!currentState) {
+      return { attempt, continuityRetried: false };
+    }
+
+    const guardResult = await checkContinuity(
+      continuityApiKey,
+      continuityProfile.provider,
+      continuityProfile.modelId,
+      currentState,
+      attempt.validation.response.statePatch,
+    );
+    await logAiCall(env.DB, simulationId, continuityProfile.provider, true, Date.now() - startedAt, null);
+
+    if (!guardResult.contradicts) {
+      return { attempt, continuityRetried: false };
+    }
+
+    const correctedText = contextText + continuityCorrectionInstruction(guardResult.reason ?? 'unspecified contradiction');
+    const retryAttempt = await generateWithRepair(env.DB, simulationId, provider, apiKey, correctedText, modelId);
+    return retryAttempt.ok ? { attempt: retryAttempt, continuityRetried: true } : { attempt, continuityRetried: false };
+  } catch {
+    await logAiCall(env.DB, simulationId, continuityProfile.provider, false, Date.now() - startedAt, 'continuity_check_failed');
+    return { attempt, continuityRetried: false };
+  }
 }
 
 // Step 1 of Manual Relay (addendum-v1.1-architecture.md A23-A26): generate the
@@ -161,6 +232,16 @@ turnsRoute.post('/:id/turn/generate', async (c) => {
       continue;
     }
 
+    const { attempt: finalAttempt, continuityRetried } = await maybeRunContinuityGuard(
+      c.env,
+      simulationId,
+      provider,
+      apiKey,
+      modelId,
+      context.contextText,
+      attempt,
+    );
+
     await createAutoSnapshot(c.env.DB, simulationId);
     const result = await applyTurn(
       c.env.DB,
@@ -168,13 +249,13 @@ turnsRoute.post('/:id/turn/generate', async (c) => {
       playerAction,
       context.baseStateVersion,
       provider,
-      attempt.validation.response,
+      finalAttempt.validation.response,
     );
 
     if (!result.ok) {
       return c.json({ error: result.error }, result.status as 404 | 409);
     }
-    return c.json({ state: result.state, scene: attempt.validation.response.scene, provider });
+    return c.json({ state: result.state, scene: finalAttempt.validation.response.scene, provider, continuityRetried });
   }
 
   return c.json(
