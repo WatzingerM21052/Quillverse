@@ -154,6 +154,20 @@ export class SettingsScreen {
   protected readonly continuityProvider = signal<string | null>(null);
   protected readonly continuityModelId = signal<string | null>(null);
 
+  /**
+   * Guards against two independent races: (1) getContinuityModel() resolving before list(), which
+   * would otherwise try to select an <option> that doesn't exist in the DOM yet; (2) the
+   * configured provider later being disconnected, in which case its <option> disappears from the
+   * list. Both cases fall back to "" (shows "Aus") until the provider is actually present and
+   * connected.
+   */
+  protected readonly continuitySelectValue = computed(() => {
+    const provider = this.continuityProvider();
+    if (!provider) return '';
+    const isConnected = this.providers().some((p) => p.provider === provider && p.connected);
+    return isConnected ? provider : '';
+  });
+
   protected readonly savepoints = signal<SavepointSummary[]>([]);
   protected readonly savepointsLoading = signal(true);
   protected readonly newSavepointLabel = signal('');

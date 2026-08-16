@@ -96,7 +96,7 @@
             </p>
             <label class="provider-card__model-picker">
               <span>Anbieter</span>
-              <select [value]="continuityProvider() ?? ''" (change)="setContinuityProvider($any($event.target).value)">
+              <select [value]="continuitySelectValue()" (change)="setContinuityProvider($any($event.target).value)">
                 <option value="">Aus</option>
                 @for (provider of providers(); track provider.provider) {
                   @if (provider.connected) {
