@@ -27,6 +27,7 @@ export class PlayerProfileScreen {
   protected readonly generatingPortrait = signal(false);
   protected readonly portraitError = signal<string | null>(null);
   protected readonly lockBusy = signal(false);
+  protected readonly portraitNotice = signal<string | null>(null);
 
   protected skillEntries(skills: Record<string, string>): [string, string][] {
     return Object.entries(skills);
@@ -40,12 +41,18 @@ export class PlayerProfileScreen {
     const player = this.player();
     this.generatingPortrait.set(true);
     this.portraitError.set(null);
+    this.portraitNotice.set(null);
 
     const prompt = buildPortraitPrompt(player, this.store.worldPack().visualStyleBible);
     this.portraitApi.generate(player.id, prompt).subscribe({
-      next: ({ state }) => {
+      next: ({ state, referenceFallback }) => {
         this.store.refresh(state);
         this.generatingPortrait.set(false);
+        if (referenceFallback) {
+          this.portraitNotice.set(
+            'Das gesperrte Aussehen war gerade nicht erreichbar (Kapazität) — Portrait wurde ohne Referenz erzeugt. Sperre bleibt bestehen.',
+          );
+        }
       },
       error: (err) => {
         this.portraitError.set(err?.error?.error ?? 'Portrait konnte nicht erzeugt werden.');

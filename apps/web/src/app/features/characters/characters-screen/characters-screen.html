@@ -65,6 +65,9 @@
       @if (portraitError()) {
         <p class="api-key-error">{{ portraitError() }}</p>
       }
+      @if (portraitNotice()) {
+        <p class="portrait-notice">{{ portraitNotice() }}</p>
+      }
 
       <section class="character-sheet__section">
         <h3>Was du über sie weißt</h3>

@@ -47,6 +47,9 @@
       @if (portraitError()) {
         <p class="profile-header__error">{{ portraitError() }}</p>
       }
+      @if (portraitNotice()) {
+        <p class="portrait-notice">{{ portraitNotice() }}</p>
+      }
     </div>
   </div>
 

@@ -41,7 +41,18 @@ charactersRoute.post('/:id/characters/:characterId/portrait', async (c) => {
   const visualState = JSON.parse(character.visual_state_json);
   const referenceImage = await loadReferenceImage(c.env, visualState);
 
-  const image = await generatePortraitImage(c.env, prompt, referenceImage);
+  let image = await generatePortraitImage(c.env, prompt, referenceImage);
+  // §166 escape hatch: img2img capacity can be genuinely unavailable
+  // (live-observed: Cloudflare's shared SD1.5 img2img capacity, not
+  // something retries fix). Rather than a dead end for a locked
+  // character, fall through to a plain generation and say so — the lock
+  // itself is untouched, so the next attempt still tries img2img first.
+  let referenceFallback = false;
+  if (!image && referenceImage) {
+    image = await generatePortraitImage(c.env, prompt);
+    referenceFallback = image !== null;
+  }
+
   if (!image) {
     const message = referenceImage
       ? 'Portrait konnte mit gesperrtem Aussehen nicht erzeugt werden.'
@@ -60,7 +71,7 @@ charactersRoute.post('/:id/characters/:characterId/portrait', async (c) => {
     .run();
 
   const state = await getSimulationState(c.env.DB, simulationId);
-  return c.json({ state, provider: image.provider });
+  return c.json({ state, provider: image.provider, referenceFallback });
 });
 
 /** §166 Character Reference Lock — makes the current portrait the reference for future variants. */

@@ -9,6 +9,8 @@ import { EntityId } from '../state/models/entity-id';
 export interface PortraitResult {
   state: SimulationState;
   provider: 'imagen' | 'gemini' | 'pollinations' | 'cloudflare';
+  /** §166 escape hatch — true when a locked character's img2img reference call failed and this was generated without it instead. */
+  referenceFallback: boolean;
 }
 
 export interface LockResult {

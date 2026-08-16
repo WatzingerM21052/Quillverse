@@ -29,6 +29,7 @@ export class CharactersScreen {
   protected readonly generatingPortraitId = signal<EntityId | null>(null);
   protected readonly portraitError = signal<string | null>(null);
   protected readonly lockBusyId = signal<EntityId | null>(null);
+  protected readonly portraitNotice = signal<string | null>(null);
 
   protected readonly selectedCharacter = computed(() => {
     const id = this.selectedId();
@@ -58,12 +59,18 @@ export class CharactersScreen {
 
     this.generatingPortraitId.set(characterId);
     this.portraitError.set(null);
+    this.portraitNotice.set(null);
 
     const prompt = buildPortraitPrompt(character, this.store.worldPack().visualStyleBible);
     this.portraitApi.generate(characterId, prompt).subscribe({
-      next: ({ state }) => {
+      next: ({ state, referenceFallback }) => {
         this.store.refresh(state);
         this.generatingPortraitId.set(null);
+        if (referenceFallback) {
+          this.portraitNotice.set(
+            'Das gesperrte Aussehen war gerade nicht erreichbar (Kapazität) — Portrait wurde ohne Referenz erzeugt. Sperre bleibt bestehen.',
+          );
+        }
       },
       error: (err) => {
         this.portraitError.set(err?.error?.error ?? 'Portrait konnte nicht erzeugt werden.');
