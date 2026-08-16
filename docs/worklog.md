@@ -14,10 +14,78 @@ share memory otherwise.
 
 ## Status snapshot (2026-08-16, end of session)
 
-Last commit: `305a237` (Focus Mode navigation-dead-end fix, part of the issue #26 Quick Wins batch
-below). `API Checks` CI is green — the `da0c7d4` regression (see "CI regression" entry below) was
-root-caused, fixed, and confirmed green in commit `301d901`. Working tree clean, everything in this
-log is pushed to `main`.
+Last commit: `54f7cd4` (Task 6 of the Continuity Guard batch, see below). `API Checks` CI has been green
+throughout this session (last confirmed after the issue #26 Quick Wins batch, commit `d37e111`; the
+Continuity Guard batch below adds new backend code/tests — confirm CI is still green on the *next*
+session's first action, since this session's local `npm test` passed but a push+CI-confirm wasn't done
+before stopping — see "Immediate next steps" below). Working tree clean. Everything through `54f7cd4`
+is committed; confirm it's pushed as the very next action next session (this session ran out of budget
+right at the finish line — see below).
+
+**Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
+(Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
+reviewed; 3 of them needed a fix round (all fixed and re-reviewed clean — see "Done this session" below
+for detail). **The final whole-batch review (the last step of `subagent-driven-development` before
+`finishing-a-development-branch`) was NOT run** — the session hit a usage/rate limit mid-review once
+already this batch (recovered by retrying with a cheaper model) and the user asked to wrap up for the
+day right after the last task landed. This is the single most important thing for the next session to
+do first — see "Immediate next steps."
+
+## Immediate next steps (do these first, in order)
+
+1. **Confirm the push landed and CI is green.** `git log origin/main..HEAD` should be empty; if not,
+   push. Then check `gh run list --limit 3` for `API Checks` on the latest commit (`54f7cd4`) — this
+   batch added new backend routes/services/tests, so don't assume green without checking.
+2. **Run the final whole-batch review for the Continuity Guard plan.** The SDD workspace is still at
+   `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger
+   (`progress.md`) — read it first, it has the exact commit ranges and a summary of every fix round.
+   Per `superpowers:subagent-driven-development`: run
+   `scripts/review-package docs/superpowers/plans/2026-08-16-continuity-guard-model-profiles.md 8f3f387 54f7cd4`
+   (or the actual merge-base if that's shifted), dispatch the final reviewer on the most capable
+   available model using `superpowers:requesting-code-review`'s `code-reviewer.md` template, point it at
+   the ledger's deferred-minor lines (2 of them — see the ledger) so it can triage what needs fixing
+   before merge. If it finds issues: ONE fix dispatch with the complete findings list, ONE scoped
+   re-review, adjudicate any residuals per the breaker rules.
+3. **If the final review is clean:** delete the workspace (`rm -rf
+   .superpowers/sdd/2026-08-16-continuity-guard-model-profiles`) and use
+   `superpowers:finishing-a-development-branch` (this project has no branch/worktree — see the
+   "Conventions" section below — so this mostly means "confirm tests pass, confirm pushed, done").
+4. **Then**: `gh issue comment 25` (or close it — check the issue body once more against what shipped,
+   same as the Quick Wins batch's issue-closing step) and update this file's "Planned / open" +
+   "Execution roadmap" sections to move Batch 1 out of "next" — same pattern as this file already shows
+   for the Quick Wins batch.
+5. **After that**, the roadmap's Batch 2 (Story Mode interaction UX: §20 Action Mode chips, §22-23
+   scene/time transition cards) is next in the existing execution order — *unless* the user wants one of
+   the newly-noted Design Rework items below prioritized instead; ask rather than assume, the same way
+   scope was checked at the start of both batches this session.
+
+## New backlog items noted by the user at end of session (2026-08-16, not yet scoped)
+
+The user asked for these to be recorded for a future brainstorming pass — none of these have a design
+spec yet, don't start implementing from this one-line description alone, brainstorm them properly first
+(same process as every other batch this session):
+
+- **"Design Rework" continuation — relationship visualization.** User's own words: *"Stammbaum /
+  Beziehungsbaum / Freundebaum / Bekanntschaftsbaum"*. Reads as: extend the family-tree visualization
+  already built for the Relationships screen (issue #21-24-era "Structured Stammbaum" work, commit
+  `da0c7d4`) with the same tree-based treatment for the other relationship categories — friends,
+  acquaintances — rather than the current flat "Beziehungen" list for non-family relationships. Likely
+  touches `apps/web/src/app/features/relationships/relationships-screen/` and
+  `relationship-language.ts`. Needs a real brainstorming pass: what visually distinguishes a
+  "Freundebaum" from a "Bekanntschaftsbaum" from the existing flat list? Is "tree" literal (a graph
+  layout) or just the word the user used loosely for "a nicer visual treatment"? Ask before assuming.
+- **"Map Bild"** — further work on the Map screen's generated background image (built this session,
+  commit `da0c7d4`, `§40-43`/A15-adjacent). Unclear from the one-liner whether this means: fixing a
+  specific problem with the current image, generating variants (day/season/weather — this overlaps
+  issue #19's `A15 Ortsbibliothek` scope), or something else. Ask before assuming.
+- **"Settings alles implementieren"** ("implement all of Settings") — the still-placeholder Settings
+  tabs. Confirmed still-placeholder as of this session: "Appearance"/"Story"/"Privacy" all route to the
+  same generic placeholder (noted in issue #26's original audit, not yet closed by either batch this
+  session). This significantly overlaps the roadmap's existing Batch 3 ("Settings/BYOK depth": B17
+  Provider Detail Page, B20 session-only key, B33 fallback order, B46 token dashboard) — when
+  brainstorming this, decide together whether "alles" means finishing Batch 3 as already scoped, or a
+  broader pass that also gives Appearance/Story/Privacy real content (and if so, what that content even
+  is — the specs don't fully define these three tabs either, that's likely its own design question).
 
 ## Done this session
 
@@ -70,6 +138,53 @@ log is pushed to `main`.
      time on this project — worked well, caught 2 real Important findings (the select-binding race in
      Task 4, the Focus Mode navigation dead-end) that individual task reviews or a single-pass
      implementation likely would have missed. Worth reusing for future batches like this.
+
+7. **Roadmap Batch 1: Continuity Guard + Continuity model profile (closes issue #25)** — spec:
+   `docs/superpowers/specs/2026-08-16-continuity-guard-model-profiles-design.md`, plan:
+   `docs/superpowers/plans/2026-08-16-continuity-guard-model-profiles.md`, same
+   subagent-driven-development process as the Quick Wins batch, 6 tasks, commits `8f3f387..54f7cd4`.
+   - New `model_profiles` table (migration `0015`) storing a single configurable provider+model pointer
+     for the Continuity check — deliberately just the "Continuity" slot from §160 Model Profiles'
+     Narrative/Fast/Continuity example, not a full profile system (no consumer for Narrative/Fast yet —
+     YAGNI, revisit when something needs them).
+   - `GET/PUT /api/ai/providers/continuity-model` routes + `getContinuityModel()` helper
+     (`apps/api/src/routes/ai-providers.ts`).
+   - `apps/api/src/services/continuity-guard.ts`: `isImportantScene()` (pure heuristic, unit-tested —
+     true when a turn's proposed patch touches canon events, new characters/locations, secrets/scandals,
+     or a memory rated notable-or-higher; deliberately does NOT diff relationship-dimension swings) and
+     `checkContinuity()` (a second, lean AI call — only the entities the patch itself touches, not the
+     full context-builder.ts package — asking "does this contradict anything?").
+   - Wired into `POST /:id/turn/generate` only (never Manual Relay, which has no guaranteed connected
+     provider). On a flagged contradiction: exactly one corrective retry of the narrative generation,
+     then accept whatever comes back regardless (bounded, mirrors the existing §188 repair-retry shape).
+     No profile configured (the default) → complete no-op, zero behavior change.
+   - Settings gained a small "Kontinuitäts-Check (§106)" picker (provider + model, defaults to "Aus").
+     Story Mode's existing "erzählt von X" indicator gains a conditional suffix when a retry actually
+     fired.
+   - **3 of the 6 tasks needed a fix round** (all fixed and re-reviewed clean, i.e. this list is the
+     *shipped* state, not a list of known bugs):
+     - Task 2: `PUT /continuity-model` couldn't tell a malformed/empty body from an explicit
+       `{provider: null}` clear-request — both silently wiped the setting with `200`. Fixed to require
+       the `provider` key be genuinely present in a parsed body; `400` otherwise.
+     - **Task 4 (Critical): `getDecryptedCredential` was called outside the guard's try/catch.** Since
+       AES-GCM decrypt can genuinely throw (corrupted ciphertext, incompatible `CREDENTIAL_MASTER_KEY`),
+       an uncaught exception there would have failed an *already-successful* turn — a direct violation
+       of the batch's core "never turn a working turn into a failed one" constraint. Worse: the first
+       review pass mis-judged this as "unreachable until Task 5's UI ships" — actually reachable the
+       whole time via the already-merged Task 2 `PUT` endpoint (curl/devtools, no UI needed). Fixed by
+       moving the decrypt call inside the try block. This is the kind of bug the per-task review process
+       exists to catch before it reaches production, not after.
+     - Task 5: the Continuity provider `<select>`'s options (`providers()`) and its selected value
+       (`continuityProvider()`) came from two independent, differently-timed API calls — if the value
+       arrived before the matching `<option>` existed in the DOM, the write silently failed and never
+       re-synced (no signal delta to react to). After a reload, a correctly-configured setting could
+       display as "Aus". Fixed with a `computed()` that only reports the provider selected if it's
+       actually present in the loaded connected-providers list.
+   - **Not yet done: the final whole-batch review.** See "Immediate next steps" below — this is the very
+     next action, before this plan's workspace can be deleted or `finishing-a-development-branch` runs.
+   - Not covered by this batch (deliberately, see the design spec): Manual Relay has no Continuity Guard
+     coverage; no relationship-dimension-swing detection in the heuristic; no "Narrative"/"Fast" model
+     profiles.
 
 ## Resolved this session (was "in progress")
 
@@ -179,9 +294,8 @@ Each batch below should get its own brainstorm → spec → plan → subagent-dr
 process as the Quick Wins batch), not one giant plan — that pattern worked well and caught real bugs a
 single-pass implementation likely would have missed.
 
-1. **Continuity Guard + Model Profiles** — `#25` (§106 second-pass AI contradiction check, reuses the
-   §188 repair-retry pattern) + `§160` Model Profiles (small presets on top of the already-shipped model
-   selector, #23). Independent of everything else, small, high correctness value — good next batch.
+1. ~~**Continuity Guard + Model Profiles**~~ — **done this session** (see "Done this session" item 7),
+   pending only the final whole-batch review (see "Immediate next steps" at the top of this file).
 2. **Story Mode interaction UX** — `§20` Action Mode chips + `§22-23` scene/time transition cards. Same
    screen as Focus Mode (just shipped), same file family (`story-screen.*`) — bundle to minimize
    re-orientation cost.
