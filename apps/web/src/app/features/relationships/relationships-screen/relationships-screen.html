@@ -37,10 +37,16 @@
   </div>
 
   @if (selectedNode(); as node) {
-    <aside class="detail">
+    <aside class="detail qv-document-frame">
       <h2>{{ node.character.name }}</h2>
       <p class="detail__stance"><strong>Öffentlich:</strong> {{ node.relationship.publicStance }}</p>
       <p class="detail__stance"><strong>Privat:</strong> {{ node.relationship.privateStance }}</p>
+      <p class="detail__meta">
+        <strong>Dynamik:</strong> {{ node.relationship.momentum }}
+        @if (node.relationship.lastContact) {
+          · <strong>Letzter Kontakt:</strong> {{ node.relationship.lastContact }}
+        }
+      </p>
 
       <dl class="detail__dimensions">
         <dt>Vertrautheit</dt>

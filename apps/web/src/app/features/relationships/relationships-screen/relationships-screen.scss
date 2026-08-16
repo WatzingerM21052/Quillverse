@@ -138,6 +138,13 @@
   }
 }
 
+.detail__meta {
+  font-family: var(--qv-font-ui);
+  font-size: 0.75rem;
+  opacity: 0.75;
+  margin: 0 0 1rem;
+}
+
 .detail {
   width: 280px;
   flex-shrink: 0;

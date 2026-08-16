@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { EntityId } from '../../../core/state/models/entity-id';
 import { Modal } from '../../../shared/ui/modal/modal';
+import { WaxSeal } from '../../../shared/ui/wax-seal/wax-seal';
 
 const STATUS_LABELS: Record<string, string> = {
   written: 'Geschrieben',
@@ -14,7 +15,7 @@ const STATUS_LABELS: Record<string, string> = {
 
 @Component({
   selector: 'qv-letters-screen',
-  imports: [Modal],
+  imports: [Modal, WaxSeal],
   templateUrl: './letters-screen.html',
   styleUrl: './letters-screen.scss',
 })

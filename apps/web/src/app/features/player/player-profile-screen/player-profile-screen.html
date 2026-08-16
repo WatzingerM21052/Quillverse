@@ -54,7 +54,7 @@
   </div>
 
   <div class="profile-grid">
-    <section class="profile-card">
+    <section class="profile-card qv-document-frame">
       <h2>Aussehen</h2>
       <dl>
         <dt>Größe</dt>
@@ -72,7 +72,7 @@
       </dl>
     </section>
 
-    <section class="profile-card">
+    <section class="profile-card qv-document-frame">
       <h2>Fähigkeiten</h2>
       <dl>
         @for (entry of skillEntries(player().skills); track entry[0]) {
@@ -82,7 +82,7 @@
       </dl>
     </section>
 
-    <section class="profile-card">
+    <section class="profile-card qv-document-frame">
       <h2>Ruf</h2>
       <dl>
         @for (entry of reputation(); track entry.scope) {
@@ -93,7 +93,7 @@
     </section>
 
     @if (influence().length > 0) {
-      <section class="profile-card">
+      <section class="profile-card qv-document-frame">
         <h2>Einfluss</h2>
         <ul>
           @for (entry of influence(); track entry.id) {
@@ -103,7 +103,7 @@
       </section>
     }
 
-    <section class="profile-card">
+    <section class="profile-card qv-document-frame">
       <h2>Persönliche Ziele</h2>
       <ul>
         @for (goal of player().goals.midTerm; track $index) {
@@ -120,7 +120,7 @@
     <h2>Kleidung</h2>
     <div class="wardrobe">
       @for (item of player().wardrobe; track item.id) {
-        <div class="wardrobe-card" [class.is-current]="item.id.includes(player().visualState.currentOutfit)">
+        <div class="wardrobe-card qv-document-frame" [class.is-current]="item.id.includes(player().visualState.currentOutfit)">
           <span class="wardrobe-card__name">{{ item.name }}</span>
           <span class="wardrobe-card__note">{{ item.note }}</span>
         </div>
@@ -135,7 +135,7 @@
     } @else {
       <div class="inventory">
         @for (item of inventory(); track item.id) {
-          <div class="inventory-card">
+          <div class="inventory-card qv-document-frame">
             <span class="inventory-card__name">{{ item.name }}</span>
             <p class="inventory-card__description">{{ item.description }}</p>
           </div>

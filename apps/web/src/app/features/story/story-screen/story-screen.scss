@@ -33,14 +33,6 @@
     }
   }
 
-  &__menu {
-    background: none;
-    border: 1px solid var(--qv-gold);
-    color: var(--qv-champagne);
-    border-radius: 4px;
-    padding: 0.25rem 0.6rem;
-    cursor: pointer;
-  }
 }
 
 .story-header__provider-indicator {
@@ -130,22 +122,34 @@
     }
   }
 
-  /* Reserved for a future character-sprite feature (not part of this pass)
-     -- invisible for now rather than a visible empty rectangle sitting on
-     top of a real scene background. */
+  /* §9/§14 speaker portrait -- a framed cameo inset (portraits are bust
+     crops, not transparent full-body sprites, so a small oval frame reads
+     honestly; stretching them edge-to-edge would look like a broken cutout).
+     Empty/invisible until a real portrait resolves for whoever's speaking
+     on that side, same "never render a placeholder as content" rule as
+     everywhere else portraits appear. */
   &__character {
     position: absolute;
-    bottom: 0;
-    width: 28%;
-    max-width: 320px;
-    height: 80%;
+    bottom: 1.5rem;
+    width: 120px;
+    height: 150px;
+    pointer-events: none;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50% / 40%;
+      border: 2px solid var(--qv-gold);
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+    }
 
     &--left {
-      left: 6%;
+      left: 4%;
     }
 
     &--right {
-      right: 6%;
+      right: 4%;
     }
   }
 }

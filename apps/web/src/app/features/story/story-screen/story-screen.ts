@@ -53,6 +53,36 @@ export class StoryScreen {
     return `${API_BASE_URL}${baseAsset}`;
   });
 
+  /** §9/§14 — dialogue lines carried a raw speakerId with no portrait; both were simply never wired to this screen. */
+  protected speakerName(speakerId: string): string {
+    if (speakerId === this.store.player().id) return this.store.player().name;
+    return this.store.current().characters[speakerId]?.name ?? speakerId;
+  }
+
+  protected locationName(locationId: string): string {
+    return this.store.current().locations[locationId]?.name ?? locationId;
+  }
+
+  private characterPortraitUrl(characterId: string): string | null {
+    const basePortrait = this.store.current().characters[characterId]?.visualState.basePortrait;
+    if (!basePortrait || basePortrait.startsWith(PLACEHOLDER_SCHEME)) return null;
+    return `${API_BASE_URL}${basePortrait}`;
+  }
+
+  /** First non-player speaker in the scene, honoring an explicit `position` if the AI set one. */
+  protected readonly leftSpeakerPortrait = computed(() => this.speakerPortraitFor('left', 0));
+  protected readonly rightSpeakerPortrait = computed(() => this.speakerPortraitFor('right', 1));
+
+  private speakerPortraitFor(side: 'left' | 'right', fallbackIndex: number): string | null {
+    const playerId = this.store.player().id;
+    const explicit = this.scene().dialogue.find((line) => line.speakerId !== playerId && line.position === side);
+    if (explicit) return this.characterPortraitUrl(explicit.speakerId);
+
+    const distinctSpeakers = [...new Set(this.scene().dialogue.map((line) => line.speakerId))].filter((id) => id !== playerId);
+    const speakerId = distinctSpeakers[fallbackIndex];
+    return speakerId ? this.characterPortraitUrl(speakerId) : null;
+  }
+
   /** null until the provider list loads; a provider id once one is connected, so submitAction can skip Manual Relay. */
   protected readonly connectedProvider = signal<string | null>(null);
   protected readonly generating = signal(false);

@@ -23,6 +23,21 @@
     radial-gradient(circle at 20% 80%, rgba(138, 154, 126, 0.15), transparent 40%),
     radial-gradient(circle at 75% 30%, rgba(111, 139, 160, 0.15), transparent 45%),
     var(--qv-cream);
+  /* Cartographic frame — the one screen where a heavier map-flavored
+     ornament fits (per design direction: occasional, not app-wide). */
+  box-shadow:
+    inset 0 0 0 6px var(--qv-mahogany),
+    inset 0 0 0 7px var(--qv-gold),
+    inset 0 0 0 10px var(--qv-mahogany),
+    inset 0 0 0 11px rgba(184, 147, 74, 0.5);
+}
+
+.map__compass {
+  position: absolute;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  opacity: 0.8;
+  pointer-events: none;
 }
 
 .map__pin {

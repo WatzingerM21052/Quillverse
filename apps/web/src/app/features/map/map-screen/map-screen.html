@@ -2,6 +2,7 @@
   <h1 class="map-screen__title">Map</h1>
 
   <div class="map">
+    <qv-compass-rose class="map__compass" />
     @for (location of locations(); track location.id) {
       <button
         type="button"

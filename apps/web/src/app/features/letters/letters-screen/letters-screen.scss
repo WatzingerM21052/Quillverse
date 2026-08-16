@@ -66,15 +66,6 @@
     background: rgba(184, 147, 74, 0.15);
   }
 
-  &__seal {
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: var(--qv-oxblood);
-    border: 1px solid var(--qv-gold);
-    flex-shrink: 0;
-  }
-
   &__from {
     flex: 1;
     font-family: var(--qv-font-serif);
@@ -86,10 +77,15 @@
   }
 }
 
+.letter-page {
+  padding: 2rem 2.25rem;
+  border-radius: 4px;
+}
+
 .letter-heading {
   font-family: var(--qv-font-hand);
   font-size: 2rem;
-  color: var(--qv-champagne);
+  color: var(--qv-oxblood);
   text-align: center;
   margin: 0 0 1.25rem;
 }
@@ -100,12 +96,21 @@
   line-height: 1.7;
   white-space: pre-wrap;
   margin: 0 0 1.5rem;
+
+  &__dropcap {
+    float: left;
+    font-family: var(--qv-font-display);
+    font-size: 3.2rem;
+    line-height: 0.8;
+    padding: 0.1rem 0.3rem 0 0;
+    color: var(--qv-oxblood);
+  }
 }
 
 .letter-status {
   font-family: var(--qv-font-ui);
   font-size: 0.75rem;
-  opacity: 0.6;
+  opacity: 0.7;
   text-align: right;
   margin: 0;
 }

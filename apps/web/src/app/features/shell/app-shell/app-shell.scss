@@ -24,13 +24,31 @@
   }
 }
 
+/* Design Rework — the nav rail reads as a book's table of contents rather
+   than a plain app menu: a title with its own quiet rule, and entries
+   marked the way a ToC marks the current page rather than a generic
+   "selected" tab state. */
 .shell__brand {
   font-family: var(--qv-font-display);
   font-size: 1.4rem;
   font-weight: 600;
   letter-spacing: 0.03em;
   color: var(--qv-champagne);
-  padding: 0 1.5rem 0.5rem;
+  padding: 0 1.5rem 0.75rem;
+  margin-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(184, 147, 74, 0.5);
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 1.5rem;
+    bottom: -4px;
+    width: 5px;
+    height: 5px;
+    background: var(--qv-gold);
+    transform: rotate(45deg);
+  }
 }
 
 .shell__status {
@@ -61,7 +79,9 @@
   }
 
   a {
-    display: block;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     padding: 0.55rem 1.5rem;
     font-family: var(--qv-font-ui);
     font-size: 0.8rem;
@@ -71,6 +91,16 @@
     text-decoration: none;
     border-left: 2px solid transparent;
 
+    &::before {
+      content: '';
+      width: 4px;
+      height: 4px;
+      flex-shrink: 0;
+      background: transparent;
+      transform: rotate(45deg);
+      transition: background-color 0.15s ease;
+    }
+
     &:hover {
       background: rgba(184, 147, 74, 0.12);
     }
@@ -79,6 +109,10 @@
       border-left-color: var(--qv-gold);
       color: var(--qv-gold);
       background: rgba(184, 147, 74, 0.08);
+
+      &::before {
+        background: var(--qv-gold);
+      }
     }
   }
 }

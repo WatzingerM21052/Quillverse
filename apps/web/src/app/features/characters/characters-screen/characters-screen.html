@@ -3,7 +3,7 @@
 
   <div class="characters__grid">
     @for (character of characters(); track character.id) {
-      <button type="button" class="character-card" (click)="select(character.id)">
+      <button type="button" class="character-card qv-document-frame" (click)="select(character.id)">
         <div class="character-card__portrait">
           @if (portraitUrl(character.visualState.basePortrait); as url) {
             <img [src]="url" [alt]="character.name" />

@@ -11,7 +11,7 @@
           @for (letter of received(); track letter.id) {
             <li>
               <button type="button" class="letter-row" (click)="open(letter.id)">
-                <span class="letter-row__seal"></span>
+                <qv-wax-seal [size]="22" />
                 <span class="letter-row__from">{{ senderName(letter.senderId) }}</span>
                 <span class="letter-row__status">{{ statusLabels[letter.status] }}</span>
               </button>
@@ -30,7 +30,7 @@
           @for (letter of sent(); track letter.id) {
             <li>
               <button type="button" class="letter-row" (click)="open(letter.id)">
-                <span class="letter-row__seal"></span>
+                <qv-wax-seal [size]="22" />
                 <span class="letter-row__from">an {{ senderName(letter.recipientId) }}</span>
                 <span class="letter-row__status">{{ statusLabels[letter.status] }}</span>
               </button>
@@ -43,9 +43,11 @@
 
   @if (selectedLetter(); as letter) {
     <qv-modal (closed)="close()">
-      <p class="letter-heading">{{ senderName(letter.senderId) }}</p>
-      <p class="letter-content">{{ letter.content }}</p>
-      <p class="letter-status">{{ statusLabels[letter.status] }} · {{ letter.dateWritten }}</p>
+      <div class="letter-page qv-parchment-page">
+        <p class="letter-heading">{{ senderName(letter.senderId) }}</p>
+        <p class="letter-content"><span class="letter-content__dropcap">{{ letter.content.charAt(0) }}</span>{{ letter.content.slice(1) }}</p>
+        <p class="letter-status">{{ statusLabels[letter.status] }} · {{ letter.dateWritten }}</p>
+      </div>
     </qv-modal>
   }
 </div>

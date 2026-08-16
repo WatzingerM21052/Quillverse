@@ -1,7 +1,7 @@
 <div class="story-screen">
   <header class="story-header">
     <span class="story-header__date">{{ scene().worldDate }}</span>
-    <span class="story-header__location">{{ scene().locationId }}</span>
+    <span class="story-header__location">{{ locationName(scene().locationId) }}</span>
     <span class="story-header__weather">{{ scene().weather }}</span>
     <button
       class="story-header__undo"
@@ -12,7 +12,6 @@
     >
       ⟲ Undo
     </button>
-    <button class="story-header__menu" type="button" aria-label="Menü">☰</button>
   </header>
   @if (undoMessage()) {
     <p class="story-header__undo-message">{{ undoMessage() }}</p>
@@ -44,14 +43,22 @@
       [class.story-stage__background--photo]="sceneBackgroundUrl()"
       [style.background-image]="sceneBackgroundUrl() ? 'url(' + sceneBackgroundUrl() + ')' : null"
     ></div>
-    <div class="story-stage__character story-stage__character--left"></div>
-    <div class="story-stage__character story-stage__character--right"></div>
+    <div class="story-stage__character story-stage__character--left">
+      @if (leftSpeakerPortrait(); as url) {
+        <img [src]="url" alt="" />
+      }
+    </div>
+    <div class="story-stage__character story-stage__character--right">
+      @if (rightSpeakerPortrait(); as url) {
+        <img [src]="url" alt="" />
+      }
+    </div>
   </section>
 
   <section class="story-text">
     @for (line of scene().dialogue; track $index) {
       <div class="dialogue-box">
-        <span class="dialogue-box__speaker">{{ line.speakerId }}</span>
+        <span class="dialogue-box__speaker">{{ speakerName(line.speakerId) }}</span>
         <p class="dialogue-box__text">{{ line.text }}</p>
         <button
           type="button"

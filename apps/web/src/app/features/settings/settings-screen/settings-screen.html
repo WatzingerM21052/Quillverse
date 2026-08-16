@@ -22,7 +22,7 @@
             <h2>Providers</h2>
             <div class="providers">
               @for (provider of providers(); track provider.provider) {
-                <div class="provider-card">
+                <div class="provider-card qv-document-frame">
                   <span class="provider-card__name">{{ displayName[provider.provider] }}</span>
                   <span class="provider-card__status" [class.is-connected]="provider.connected">
                     {{ provider.connected ? '✓ Connected (' + provider.keyHint + ')' : 'Not connected' }}

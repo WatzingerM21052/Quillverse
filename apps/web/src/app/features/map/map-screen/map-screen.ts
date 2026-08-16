@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { EntityId } from '../../../core/state/models/entity-id';
 import { Modal } from '../../../shared/ui/modal/modal';
+import { CompassRose } from '../../../shared/ui/compass-rose/compass-rose';
 import { LocationImageApiService } from '../../../core/ai/location-image-api.service';
 import { buildLocationPrompt } from '../../../core/ai/location-prompt';
 import { API_BASE_URL } from '../../../core/config/api.config';
@@ -10,7 +11,7 @@ const PLACEHOLDER_SCHEME = 'asset://';
 
 @Component({
   selector: 'qv-map-screen',
-  imports: [Modal],
+  imports: [Modal, CompassRose],
   templateUrl: './map-screen.html',
   styleUrl: './map-screen.scss',
 })
