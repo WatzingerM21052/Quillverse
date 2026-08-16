@@ -6,50 +6,25 @@ INSERT INTO simulations (id, world_pack_id, state_version, current_world_date, c
   '{"londonSeasonStatus":"gerade erst begonnen","socialMood":"neugierig, abwartend","region":"ländliches Umland Londons","weather":"leichter Nebel, mild"}', '{"id":"farm_hale","ownerId":"char_player_matthias","stats":{"landAcres":18,"annualRent":"£24 jährlich","livestock":"1 Kuh, 1 Zugpferd, 8 Hühner","supplies":"für den Winter knapp bemessen","workers":"Familie + gelegentliche Tagelöhner zur Ernte"},"calendar":[{"season":"spring","task":"Aussaat"},{"season":"summer","task":"Heuernte"},{"season":"autumn","task":"Getreideernte"},{"season":"winter","task":"Instandhaltung"}],"buildings":[{"id":"house","name":"Wohnhaus","condition":"worn"},{"id":"barn","name":"Scheune","condition":"worn"},{"id":"stable","name":"Stall","condition":"sound"},{"id":"fields","name":"Felder","condition":"sound"},{"id":"pasture","name":"Weiden","condition":"sound"},{"id":"garden","name":"Garten","condition":"worn"},{"id":"storage","name":"Lager","condition":"worn"},{"id":"drive","name":"Zufahrt","condition":"worn"}]}', '[{"id":"txn_1","date":"2. April 1813","description":"Saatgut","amount":-3.5},{"id":"txn_2","date":"5. April 1813","description":"Marktverkauf — Eier","amount":1.2},{"id":"txn_3","date":"9. April 1813","description":"Reparatur Zaun","amount":-0.8},{"id":"txn_4","date":"11. April 1813","description":"Pacht (Quartal)","amount":-6}]', '[]'
 );
 
-INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json, skills_json, wardrobe_json) VALUES (
+INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json) VALUES (
   'char_player_matthias', 'sim_default', 'Matthias Hale', 0, 1, 'loc_player_farm',
   '{"height":"mittelgroß","build":"drahtig-kräftig von der Feldarbeit","face":"markant, wettergegerbt","hair":"dunkelblond","eyes":"graugrün","voice":"ruhig, tief","posture":"aufrecht, aber unauffällig","typicalExpression":"zurückhaltend beobachtend","hands":"schwielig, kräftig","grooming":"einfach, aber gepflegt","clothing":"schlichte Arbeitskleidung eines Pächtersohns","distinguishingFeatures":"kleine Narbe am linken Handrücken","generalPresence":"unaufdringlich, aber bemerkbar ruhig"}', '{"characterId":"char_player_matthias","basePortrait":"asset://character/matthias/base","currentOutfit":"work_shirt","currentHairState":"neutral","currentAge":"22","currentCondition":"healthy","availableExpressions":["neutral"]}', '{"traits":["zurückhaltend","beobachtend","trockener Humor","verlässlich","stur"]}', '{"shortTerm":["die Ernte sichern"],"midTerm":["der Familie ein sichereres Auskommen verschaffen"],"longTerm":[],"currentWorries":["knappe Pacht"],"currentObligations":[],"currentPriorities":["Hof","Familie"],"plannedActions":[],"currentlyImportantPeople":["char_anne_hale","char_grace_hale"]}',
-  '[]', '{}', '{"Landwirtschaft":"sehr gut","Reiten":"gut","Lesen":"mittel","Schreiben":"mittel","Etikette":"gering","Tanzen":"keine Erfahrung","Geschäftssinn":"mittel"}', '[{"id":"wardrobe_work_shirt","name":"Arbeitshemd","note":"für den Alltag geeignet, für gesellschaftliche Anlässe unpassend"},{"id":"wardrobe_sunday_coat","name":"Sonntagsmantel","note":"einfach, aber ordentlich — für die Kirche und kleinere Anlässe ausreichend"}]'
+  '[]', '{}'
 );
-INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json, skills_json, wardrobe_json) VALUES (
+INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json) VALUES (
   'char_anne_hale', 'sim_default', 'Anne Hale', 0, 0, 'loc_player_farm',
   '{"height":"mittelgroß","build":"schlank, von harter Arbeit gezeichnet","face":"freundlich, müde Augen","hair":"graumeliert, zurückgebunden","eyes":"graugrün wie Matthias","voice":"warm, bestimmt","posture":"leicht gebeugt","typicalExpression":"sorgenvoll-liebevoll","hands":"rau von Hausarbeit","grooming":"einfach, ordentlich","clothing":"schlichtes Kleid, geflickt aber sauber","distinguishingFeatures":"—","generalPresence":"das ruhige Zentrum des Haushalts"}', '{"characterId":"char_anne_hale","basePortrait":"asset://character/anne/base","currentOutfit":"everyday_dress","currentHairState":"neutral","currentAge":"47","currentCondition":"healthy","availableExpressions":["neutral"]}', '{"traits":["fürsorglich","praktisch","zäh"]}', '{"shortTerm":["den Haushalt durch den Winter bringen"],"midTerm":[],"longTerm":["Grace gut verheiratet oder versorgt wissen"],"currentWorries":["Matthias arbeitet zu viel"],"currentObligations":[],"currentPriorities":["Familie"],"plannedActions":[],"currentlyImportantPeople":["char_player_matthias","char_grace_hale"]}',
-  '[]', '{}', '{}', '[]'
+  '[]', '{}'
 );
-INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json, skills_json, wardrobe_json) VALUES (
+INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json) VALUES (
   'char_grace_hale', 'sim_default', 'Grace Hale', 0, 0, 'loc_player_farm',
   '{"height":"klein","build":"schmal, noch jugendlich","face":"lebhaft","hair":"dunkelblond wie ihr Bruder","eyes":"graugrün","voice":"hell, schnell","posture":"quirlig","typicalExpression":"neugierig","hands":"—","grooming":"einfach","clothing":"einfaches Kleid","distinguishingFeatures":"—","generalPresence":"bringt Leben ins Haus"}', '{"characterId":"char_grace_hale","basePortrait":"asset://character/grace/base","currentOutfit":"everyday_dress","currentHairState":"neutral","currentAge":"16","currentCondition":"healthy","availableExpressions":["neutral"]}', '{"traits":["neugierig","lebhaft","ungeduldig"]}', '{"shortTerm":["mehr von der Welt jenseits des Hofes sehen"],"midTerm":[],"longTerm":[],"currentWorries":[],"currentObligations":["Mutter im Haushalt helfen"],"currentPriorities":[],"plannedActions":[],"currentlyImportantPeople":["char_player_matthias","char_anne_hale"]}',
-  '[]', '{}', '{}', '[]'
+  '[]', '{}'
 );
-INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json, skills_json, wardrobe_json) VALUES (
+INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json) VALUES (
   'char_thomas_hale', 'sim_default', 'Thomas Hale', 0, 0, NULL,
   '{"height":"groß","build":"kräftig","face":"wettergegerbt, Bruder von Matthias'' verstorbenem Vater","hair":"ergraut","eyes":"braun","voice":"laut, herzlich","posture":"aufrecht","typicalExpression":"joviale Zurückhaltung","hands":"schwielig","grooming":"einfach","clothing":"Händlerkleidung","distinguishingFeatures":"—","generalPresence":"entfernt, aber verlässlich"}', '{"characterId":"char_thomas_hale","basePortrait":"asset://character/thomas/base","currentOutfit":"travel_coat","currentHairState":"neutral","currentAge":"51","currentCondition":"healthy","availableExpressions":["neutral"]}', '{"traits":["herzlich","geschäftstüchtig"]}', '{"shortTerm":[],"midTerm":[],"longTerm":[],"currentWorries":[],"currentObligations":[],"currentPriorities":[],"plannedActions":[],"currentlyImportantPeople":["char_player_matthias"]}',
-  '["Bruder des verstorbenen Vaters","Kornhändler in Bristol"]', '{}', '{}', '[]'
-);
-
-INSERT INTO inventory (id, simulation_id, owner_id, name, description) VALUES (
-  'inv_pocket_watch', 'sim_default', 'char_player_matthias', 'Taschenuhr des Vaters', 'Eine einfache, aber gut erhaltene Taschenuhr — eines der wenigen Dinge, die von seinem Vater geblieben sind.'
-);
-INSERT INTO inventory (id, simulation_id, owner_id, name, description) VALUES (
-  'inv_old_book', 'sim_default', 'char_player_matthias', 'Altes Buch', 'Ein abgegriffenes Buch, an dem Matthias das Lesen geübt hat.'
-);
-
-INSERT INTO whistledown_issues (id, simulation_id, issue_number, date, headline, body_json) VALUES (
-  'whistledown_1', 'sim_default', 1, '10. April 1813', 'Die Saison ist eröffnet', '["Dieser Autorin ist zu Ohren gekommen, dass die ersten Kutschen bereits Richtung London aufgebrochen sind — beladen mit hoffnungsvollen jungen Damen und ihren nicht minder hoffnungsvollen Müttern.","Wer in dieser Saison die Herzen — und, seien wir ehrlich, liebe Leserschaft, die Vermögen — erobern wird, bleibt abzuwarten. Diese Autorin wird, wie stets, ein wachsames Auge behalten."]'
-);
-
-INSERT INTO reputation (simulation_id, character_id, scope, standing) VALUES (
-  'sim_default', 'char_player_matthias', 'local', 'angesehen als verlässlicher, fleißiger Pächtersohn'
-);
-INSERT INTO reputation (simulation_id, character_id, scope, standing) VALUES (
-  'sim_default', 'char_player_matthias', 'regional', 'praktisch unbekannt'
-);
-INSERT INTO reputation (simulation_id, character_id, scope, standing) VALUES (
-  'sim_default', 'char_player_matthias', 'ton', 'unbekannt'
-);
-
-INSERT INTO obligations (id, simulation_id, description, owed_to, deadline, status) VALUES (
-  'obl_1', 'sim_default', 'Die Pacht für das nächste Quartal begleichen', 'Grundherr', 'Ende Juni 1813', 'open'
+  '["Bruder des verstorbenen Vaters","Kornhändler in Bristol"]', '{}'
 );
 
 INSERT INTO relationships (simulation_id, from_id, to_id, type, dimensions_json, momentum, attention, public_stance, private_stance) VALUES (

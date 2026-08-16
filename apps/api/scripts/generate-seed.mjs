@@ -1,7 +1,18 @@
-// Generates migrations/0002_seed_default_simulation.sql from the exact same
-// data as apps/web/src/app/core/state/seed/seed-state.ts, so the backend's
-// initial data matches the frontend's mock 1:1 (both derived from
-// docs/spec/simulation-master-prompt-v3.md §131/§132).
+// Generates migrations/0002_seed_default_simulation.sql from a subset of the
+// same data as apps/web/src/app/core/state/seed/seed-state.ts, so the
+// backend's initial data matches the frontend's mock 1:1 for the fields it
+// covers (both derived from docs/spec/simulation-master-prompt-v3.md
+// §131/§132).
+//
+// IMPORTANT: migration 0002 already ran against the remote D1 database
+// before skills_json/wardrobe_json (0004), inventory (0004), whistledown_issues
+// (0006), and reputation/obligations (0007) existed. Emitting those into 0002
+// breaks a *fresh* `wrangler d1 migrations apply` (CI, new dev DBs) because
+// migrations run in order and those columns/tables don't exist yet at 0002.
+// That data is intentionally seeded by the later migrations instead — keep
+// this script emitting only what 0002 originally covered (simulations,
+// characters w/o skills+wardrobe, relationships, locations, memories,
+// letters, chapters, finance_transactions, world_events, social_calendar).
 //
 // Run: node scripts/generate-seed.mjs > migrations/0002_seed_default_simulation.sql
 
@@ -372,29 +383,6 @@ const worldEvents = [
   { id: 'event_3', category: 'economic', title: 'Getreidepreise ziehen an', description: 'Auf dem Wochenmarkt wird über steigende Preise für Weizen gesprochen.', date: '11. April 1813' },
 ];
 
-const reputation = [
-  { characterId: PLAYER_ID, scope: 'local', standing: 'angesehen als verlässlicher, fleißiger Pächtersohn' },
-  { characterId: PLAYER_ID, scope: 'regional', standing: 'praktisch unbekannt' },
-  { characterId: PLAYER_ID, scope: 'ton', standing: 'unbekannt' },
-];
-
-const obligations = [
-  { id: 'obl_1', description: 'Die Pacht für das nächste Quartal begleichen', owedTo: 'Grundherr', deadline: 'Ende Juni 1813', status: 'open' },
-];
-
-const whistledownIssues = [
-  {
-    id: 'whistledown_1',
-    issueNumber: 1,
-    date: '10. April 1813',
-    headline: 'Die Saison ist eröffnet',
-    body: [
-      'Dieser Autorin ist zu Ohren gekommen, dass die ersten Kutschen bereits Richtung London aufgebrochen sind — beladen mit hoffnungsvollen jungen Damen und ihren nicht minder hoffnungsvollen Müttern.',
-      'Wer in dieser Saison die Herzen — und, seien wir ehrlich, liebe Leserschaft, die Vermögen — erobern wird, bleibt abzuwarten. Diese Autorin wird, wie stets, ein wachsames Auge behalten.',
-    ],
-  },
-];
-
 const socialCalendar = [
   { id: 'social_1', title: "Lady Danbury's Evening", date: '20. April 1813', host: 'Lady Danbury', location: 'Danbury House, London', access: 'not-invited' },
 ];
@@ -446,46 +434,16 @@ lines.push(`INSERT INTO simulations (id, world_pack_id, state_version, current_w
 lines.push('');
 
 for (const c of characters) {
-  lines.push(`INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json, skills_json, wardrobe_json) VALUES (
+  lines.push(`INSERT INTO characters (id, simulation_id, name, is_canon, is_player, location_id, appearance_json, visual_state_json, personality_json, goals_json, player_knowledge_json, gm_state_json) VALUES (
   ${sql(c.id)}, ${sql(SIM_ID)}, ${sql(c.name)}, ${sql(c.isCanon)}, ${sql(c.isPlayer)}, ${sql(c.locationId)},
   ${sqlJson(c.appearance)}, ${sqlJson(c.visualState)}, ${sqlJson(c.personality)}, ${sqlJson(c.goals)},
-  ${sqlJson(c.playerKnowledge)}, ${sqlJson(c.gmState)}, ${sqlJson(c.skills ?? {})}, ${sqlJson(c.wardrobe ?? [])}
+  ${sqlJson(c.playerKnowledge)}, ${sqlJson(c.gmState)}
 );`);
 }
 lines.push('');
 
-const inventory = [
-  { id: 'inv_pocket_watch', ownerId: PLAYER_ID, name: "Taschenuhr des Vaters", description: 'Eine einfache, aber gut erhaltene Taschenuhr — eines der wenigen Dinge, die von seinem Vater geblieben sind.' },
-  { id: 'inv_old_book', ownerId: PLAYER_ID, name: 'Altes Buch', description: 'Ein abgegriffenes Buch, an dem Matthias das Lesen geübt hat.' },
-];
-
-for (const item of inventory) {
-  lines.push(`INSERT INTO inventory (id, simulation_id, owner_id, name, description) VALUES (
-  ${sql(item.id)}, ${sql(SIM_ID)}, ${sql(item.ownerId)}, ${sql(item.name)}, ${sql(item.description)}
-);`);
-}
-lines.push('');
-
-for (const issue of whistledownIssues) {
-  lines.push(`INSERT INTO whistledown_issues (id, simulation_id, issue_number, date, headline, body_json) VALUES (
-  ${sql(issue.id)}, ${sql(SIM_ID)}, ${sql(issue.issueNumber)}, ${sql(issue.date)}, ${sql(issue.headline)}, ${sqlJson(issue.body)}
-);`);
-}
-lines.push('');
-
-for (const entry of reputation) {
-  lines.push(`INSERT INTO reputation (simulation_id, character_id, scope, standing) VALUES (
-  ${sql(SIM_ID)}, ${sql(entry.characterId)}, ${sql(entry.scope)}, ${sql(entry.standing)}
-);`);
-}
-lines.push('');
-
-for (const obligation of obligations) {
-  lines.push(`INSERT INTO obligations (id, simulation_id, description, owed_to, deadline, status) VALUES (
-  ${sql(obligation.id)}, ${sql(SIM_ID)}, ${sql(obligation.description)}, ${sql(obligation.owedTo)}, ${sql(obligation.deadline)}, ${sql(obligation.status)}
-);`);
-}
-lines.push('');
+// inventory, whistledown_issues, reputation, obligations are seeded by
+// migrations 0005/0006/0007 respectively -- see header comment above.
 
 for (const r of relationships) {
   lines.push(`INSERT INTO relationships (simulation_id, from_id, to_id, type, dimensions_json, momentum, attention, public_stance, private_stance) VALUES (
