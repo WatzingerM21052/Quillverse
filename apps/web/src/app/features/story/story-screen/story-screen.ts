@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Scene, DialogueLine } from '../../../core/state/models/scene.model';
 import { ManualRelayService } from '../../../core/ai/manual-relay.service';
 import { DirectTurnApiService } from '../../../core/ai/direct-turn-api.service';
@@ -6,6 +6,10 @@ import { AiProvidersApiService } from '../../../core/ai/ai-providers-api.service
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { JournalApiService } from '../../../core/state/journal-api.service';
 import { Modal } from '../../../shared/ui/modal/modal';
+import { WaxSeal } from '../../../shared/ui/wax-seal/wax-seal';
+import { API_BASE_URL } from '../../../core/config/api.config';
+
+const PLACEHOLDER_SCHEME = 'asset://';
 
 /** Same priority as Settings' FALLBACK_ORDER — first connected provider wins, else Manual Relay. */
 const PROVIDER_PRIORITY = ['gemini', 'openai', 'anthropic'];
@@ -23,7 +27,7 @@ const PROVIDER_LINKS: ProviderLink[] = [
 
 @Component({
   selector: 'qv-story-screen',
-  imports: [Modal],
+  imports: [Modal, WaxSeal],
   templateUrl: './story-screen.html',
   styleUrl: './story-screen.scss',
 })
@@ -41,6 +45,13 @@ export class StoryScreen {
   protected readonly bookmarkBusy = signal(false);
   protected readonly bookmarkMessage = signal<string | null>(null);
   protected readonly favoritedQuoteText = signal<string | null>(null);
+
+  /** §19 (issue) Scene Background — the current location's generated image, when one exists. */
+  protected readonly sceneBackgroundUrl = computed(() => {
+    const baseAsset = this.store.current().locations[this.scene().locationId]?.baseAsset;
+    if (!baseAsset || baseAsset.startsWith(PLACEHOLDER_SCHEME)) return null;
+    return `${API_BASE_URL}${baseAsset}`;
+  });
 
   /** null until the provider list loads; a provider id once one is connected, so submitAction can skip Manual Relay. */
   protected readonly connectedProvider = signal<string | null>(null);

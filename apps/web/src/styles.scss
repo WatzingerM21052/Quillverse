@@ -42,6 +42,31 @@ body {
 /* §128 Reduced Motion — a baseline for Phase 7's animations before any exist,
    so nobody has to remember to add this once cinematic transitions/ambient
    animation (§24-25) actually land. */
+/*
+ * §6 Ornamentik ("feine Rahmen") — a single quiet flourish reused for every
+ * section heading app-wide instead of each screen inventing its own plain
+ * border-bottom. Global on purpose: Angular's component style encapsulation
+ * only scopes a component's own rules so they don't leak out, it doesn't
+ * block a global rule from reaching into components, so this layers onto
+ * every h2 without needing to touch 11 separate screen stylesheets.
+ * `.qv-no-ornament` opts a specific heading out (e.g. a name inside a small
+ * graph node, or a headline with its own distinct treatment already).
+ */
+h2:not(.qv-no-ornament) {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    bottom: -4px;
+    width: 5px;
+    height: 5px;
+    background: var(--qv-gold);
+    transform: translateX(-50%) rotate(45deg);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

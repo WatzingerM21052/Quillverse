@@ -12,8 +12,11 @@
   <section class="chapters">
     @for (chapter of chapters(); track chapter.id) {
       <article class="chapter-card">
-        <span class="chapter-card__number">Chapter {{ toRoman(chapter.number) }}</span>
-        <h2>{{ chapter.title }}</h2>
+        <div class="chapter-card__header">
+          <qv-wax-seal [size]="28" />
+          <span class="chapter-card__number">Chapter {{ toRoman(chapter.number) }}</span>
+        </div>
+        <h2 class="qv-no-ornament">{{ chapter.title }}</h2>
         <p>{{ chapter.summary }}</p>
         <span class="chapter-card__date">seit {{ chapter.startDate }}</span>
       </article>

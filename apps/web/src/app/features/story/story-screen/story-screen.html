@@ -39,7 +39,11 @@
   }
 
   <section class="story-stage">
-    <div class="story-stage__background"></div>
+    <div
+      class="story-stage__background"
+      [class.story-stage__background--photo]="sceneBackgroundUrl()"
+      [style.background-image]="sceneBackgroundUrl() ? 'url(' + sceneBackgroundUrl() + ')' : null"
+    ></div>
     <div class="story-stage__character story-stage__character--left"></div>
     <div class="story-stage__character story-stage__character--right"></div>
   </section>
@@ -69,7 +73,10 @@
         {{ bookmarkBusy() ? 'Merke Moment …' : '🔖 Remember this moment' }}
       </button>
       @if (bookmarkMessage()) {
-        <span class="scene-actions__message">{{ bookmarkMessage() }}</span>
+        <span class="scene-actions__message">
+          <qv-wax-seal [size]="18" />
+          {{ bookmarkMessage() }}
+        </span>
       }
     </div>
   </section>

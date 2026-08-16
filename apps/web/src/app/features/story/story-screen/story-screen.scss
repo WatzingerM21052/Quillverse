@@ -121,16 +121,24 @@
   &__background {
     position: absolute;
     inset: 0;
+
+    &--photo {
+      background-size: cover;
+      background-position: center;
+      /* darkened so dialogue boxes/narration stay readable over a real photo */
+      box-shadow: inset 0 0 0 2000px rgba(20, 12, 8, 0.45);
+    }
   }
 
+  /* Reserved for a future character-sprite feature (not part of this pass)
+     -- invisible for now rather than a visible empty rectangle sitting on
+     top of a real scene background. */
   &__character {
     position: absolute;
     bottom: 0;
     width: 28%;
     max-width: 320px;
     height: 80%;
-    background: rgba(255, 255, 255, 0.04);
-    border-radius: 8px 8px 0 0;
 
     &--left {
       left: 6%;
@@ -233,6 +241,9 @@
 }
 
 .scene-actions__message {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-family: var(--qv-font-serif);
   font-style: italic;
   font-size: 0.8rem;

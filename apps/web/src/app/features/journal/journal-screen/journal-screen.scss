@@ -57,6 +57,13 @@
   padding: 1.5rem;
   background: rgba(233, 223, 199, 0.05);
 
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    margin-bottom: 0.4rem;
+  }
+
   &__number {
     font-family: var(--qv-font-ui);
     font-size: 0.7rem;

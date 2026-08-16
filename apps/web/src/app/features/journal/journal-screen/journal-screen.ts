@@ -3,13 +3,14 @@ import { SimulationStateStore } from '../../../core/state/simulation-state.store
 import { JournalApiService } from '../../../core/state/journal-api.service';
 import { FavoriteQuote } from '../../../core/state/models/simulation-state.model';
 import { Modal } from '../../../shared/ui/modal/modal';
+import { WaxSeal } from '../../../shared/ui/wax-seal/wax-seal';
 import { API_BASE_URL } from '../../../core/config/api.config';
 
 const PLACEHOLDER_SCHEME = 'asset://';
 
 @Component({
   selector: 'qv-journal-screen',
-  imports: [Modal],
+  imports: [Modal, WaxSeal],
   templateUrl: './journal-screen.html',
   styleUrl: './journal-screen.scss',
 })

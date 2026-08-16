@@ -19,6 +19,21 @@
 
   @if (selectedLocation(); as location) {
     <qv-modal [title]="location.name" (closed)="close()">
+      <div class="location-image">
+        @if (locationImageUrl(location.baseAsset); as url) {
+          <img [src]="url" [alt]="location.name" />
+        } @else {
+          <div class="location-image__placeholder">
+            <button type="button" [disabled]="generatingImage()" (click)="generateImage()">
+              {{ generatingImage() ? 'Erzeuge Bild …' : 'Bild generieren' }}
+            </button>
+          </div>
+        }
+      </div>
+      @if (imageError()) {
+        <p class="api-key-error">{{ imageError() }}</p>
+      }
+
       @if (location.travel; as travel) {
         <dl class="travel-info">
           <dt>Entfernung</dt>
