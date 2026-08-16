@@ -107,7 +107,8 @@ const CHILD_TABLES = [
 ] as const;
 
 /** Every child-table insert for one snapshot, targeting `simulationId` — shared by restore (overwrite) and fork (new id). */
-function buildChildInsertStatements(db: D1Database, simulationId: string, snapshot: SimulationStateResponse): D1PreparedStatement[] {
+/** Exported for reuse by db/import-simulation.ts (§A42 ZIP import) — same "insert every child row for one snapshot" logic, different source for the snapshot. */
+export function buildChildInsertStatements(db: D1Database, simulationId: string, snapshot: SimulationStateResponse): D1PreparedStatement[] {
   const statements: D1PreparedStatement[] = [];
 
   for (const character of Object.values(snapshot.characters)) {

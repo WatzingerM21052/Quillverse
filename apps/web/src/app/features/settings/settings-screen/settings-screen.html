@@ -131,10 +131,42 @@
               </ul>
             }
 
+            <h2>Backup exportieren</h2>
             <p class="settings__hint">
-              ZIP-Export/-Import (Compact/Markdown/Full Archive, addendum-v1.1 A34-A45) ist noch nicht
-              gebaut — Save Points sind aktuell der einzige Backup-Mechanismus.
+              Compact Save (A36): JSON + lesbare Markdown-Zusammenfassung als ZIP-Datei, ohne Bilder.
+              Volles Archiv mit Assets (A38) folgt später.
             </p>
+            <button type="button" class="backup-export-button" [disabled]="exporting()" (click)="exportCompactSave()">
+              {{ exporting() ? 'Erzeuge ZIP …' : 'Compact Save herunterladen' }}
+            </button>
+            @if (exportError()) {
+              <p class="api-key-error">{{ exportError() }}</p>
+            }
+
+            <h2>Backup importieren</h2>
+            <p class="settings__hint">
+              Ein Import überschreibt nie deinen aktiven Spielstand (A43) — er landet immer als
+              eigene, neue Zeitlinie in der Save Selection unten.
+            </p>
+            @if (!importPreview()) {
+              <input type="file" accept=".zip" (change)="onImportFileSelected($event)" />
+            } @else {
+              <div class="fork-create">
+                <input
+                  type="text"
+                  [value]="importPreview()!.label"
+                  (input)="setImportLabel($any($event.target).value)"
+                  placeholder="Name der importierten Zeitlinie"
+                />
+                <button type="button" [disabled]="importing()" (click)="confirmImport()">
+                  {{ importing() ? 'Importiere …' : 'Als neue Zeitlinie importieren' }}
+                </button>
+                <button type="button" [disabled]="importing()" (click)="cancelImport()">Abbrechen</button>
+              </div>
+            }
+            @if (importError()) {
+              <p class="api-key-error">{{ importError() }}</p>
+            }
 
             <h2>Save Selection</h2>
             <p class="settings__hint">

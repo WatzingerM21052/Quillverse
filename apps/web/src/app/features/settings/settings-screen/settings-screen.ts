@@ -6,6 +6,8 @@ import { GmModeService } from '../../../core/gm/gm-mode.service';
 import { SavepointsApiService, SavepointSummary, SimulationSummary } from '../../../core/state/savepoints-api.service';
 import { SimulationStateStore } from '../../../core/state/simulation-state.store';
 import { ActiveSimulationService } from '../../../core/state/active-simulation.service';
+import { BackupApiService } from '../../../core/state/backup-api.service';
+import { buildBackupZip, backupFilename, parseBackupZip } from '../../../core/state/backup-zip.util';
 
 type SettingsSection = 'simulation' | 'appearance' | 'story' | 'ai' | 'gm' | 'backup' | 'privacy';
 
@@ -42,6 +44,7 @@ const FALLBACK_ORDER = ['Gemini', 'OpenAI', 'Claude', 'Manual Relay'];
 export class SettingsScreen {
   private readonly api = inject(AiProvidersApiService);
   private readonly savepointsApi = inject(SavepointsApiService);
+  private readonly backupApi = inject(BackupApiService);
   private readonly store = inject(SimulationStateStore);
   protected readonly activeSimulation = inject(ActiveSimulationService);
   protected readonly gmMode = inject(GmModeService);
@@ -264,6 +267,89 @@ export class SettingsScreen {
       this.providers.update((list) =>
         list.map((p) => (p.provider === providerId ? { ...p, connected: false, status: 'not-configured', keyHint: null } : p)),
       );
+    });
+  }
+
+  protected readonly exporting = signal(false);
+  protected readonly exportError = signal<string | null>(null);
+
+  /** §A34-A41 Compact Save — assembled server-side, zipped client-side, downloaded directly (no server-side zip storage). */
+  protected exportCompactSave(): void {
+    this.exporting.set(true);
+    this.exportError.set(null);
+
+    this.backupApi.exportData().subscribe({
+      next: (data) => {
+        const zip = buildBackupZip(data);
+        // zip.buffer could be larger than zip itself if it's a view into a pooled
+        // ArrayBuffer -- slice the exact byte range so the Blob doesn't include
+        // stray bytes, and get a plain ArrayBuffer to satisfy BlobPart's stricter type.
+        const exactBytes = zip.buffer.slice(zip.byteOffset, zip.byteOffset + zip.byteLength) as ArrayBuffer;
+        const blob = new Blob([exactBytes], { type: 'application/zip' });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = backupFilename(data.manifest.simulationName, data.manifest.worldDate);
+        link.click();
+        URL.revokeObjectURL(url);
+        this.exporting.set(false);
+      },
+      error: (err) => {
+        this.exportError.set(err?.error?.error ?? 'Export fehlgeschlagen.');
+        this.exporting.set(false);
+      },
+    });
+  }
+
+  protected readonly importPreview = signal<{ manifest: unknown; simulation: unknown; label: string } | null>(null);
+  protected readonly importing = signal(false);
+  protected readonly importError = signal<string | null>(null);
+
+  /** §A42 step 1-5 (read manifest -> check version -> validate JSON -> preview) — the actual import/persist only happens on confirmImport(). */
+  protected async onImportFileSelected(event: Event): Promise<void> {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    this.importError.set(null);
+    this.importPreview.set(null);
+
+    try {
+      const bytes = new Uint8Array(await file.arrayBuffer());
+      const { manifest, simulation } = parseBackupZip(bytes);
+      const label = (manifest as { simulationName?: string }).simulationName ?? 'Imported Timeline';
+      this.importPreview.set({ manifest, simulation, label: `${label} (Import)` });
+    } catch (err) {
+      this.importError.set(err instanceof Error ? err.message : 'ZIP-Datei konnte nicht gelesen werden.');
+    }
+  }
+
+  protected setImportLabel(label: string): void {
+    this.importPreview.update((preview) => (preview ? { ...preview, label } : preview));
+  }
+
+  protected cancelImport(): void {
+    this.importPreview.set(null);
+    this.importError.set(null);
+  }
+
+  /** §A43 — always a new timeline, the active save is never touched. */
+  protected confirmImport(): void {
+    const preview = this.importPreview();
+    if (!preview) return;
+
+    this.importing.set(true);
+    this.importError.set(null);
+
+    this.backupApi.import(preview.manifest as never, preview.simulation as never, preview.label).subscribe({
+      next: () => {
+        this.importing.set(false);
+        this.importPreview.set(null);
+        this.refreshTimelines();
+      },
+      error: (err) => {
+        this.importError.set(err?.error?.error ?? 'Import fehlgeschlagen.');
+        this.importing.set(false);
+      },
     });
   }
 }
