@@ -12,15 +12,25 @@ share memory otherwise.
 
 ---
 
-## Status snapshot (2026-08-16, end of session)
+## Status snapshot (2026-08-20, current session)
 
-Last commit: `54f7cd4` (Task 6 of the Continuity Guard batch, see below). `API Checks` CI has been green
-throughout this session (last confirmed after the issue #26 Quick Wins batch, commit `d37e111`; the
-Continuity Guard batch below adds new backend code/tests — confirm CI is still green on the *next*
-session's first action, since this session's local `npm test` passed but a push+CI-confirm wasn't done
-before stopping — see "Immediate next steps" below). Working tree clean. Everything through `54f7cd4`
-is committed; confirm it's pushed as the very next action next session (this session ran out of budget
-right at the finish line — see below).
+Last pushed commit before this visual-design task: `9c12c8c` (worklog handoff after the Continuity
+Guard batch). Both `API Checks` and `Deploy to GitHub Pages` completed successfully for that push.
+The Continuity Guard implementation through `54f7cd4` is therefore committed, pushed, tested, and
+deployed; only its process-level final whole-batch review remains outstanding (see "Immediate next
+steps").
+
+**Current task: Quillverse visual asset library.** The user asked for a project-local `pictures/`
+library containing universal templates (maps, characters, locations, story scenes, textures,
+ornaments, placeholders) plus a concrete Bridgerton test pack. The Quillverse master brand must remain
+world-neutral; Bridgerton/Regency styling belongs only to that world pack. Brainstorming chose
+**A — Living Manuscript** as the primary brand direction (abstract quill + open book/narrative portal +
+optional subtle Q, ink blue/ivory/muted gold). Comparison examples for **B — Celestial Archive** and
+**C — Storybook Crest** are also required. Logo, favicon, and banner are review-gated: create drafts in
+`pictures/review-required/`, show them to the user, and do not integrate or replace any app asset until
+explicit approval. Approved design spec:
+`docs/superpowers/specs/2026-08-20-visual-asset-library-design.md`. No images or `pictures/` directories
+have been generated yet; the next gate is user review of that written spec, then a writing-plans pass.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -33,10 +43,15 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Confirm the push landed and CI is green.** `git log origin/main..HEAD` should be empty; if not,
-   push. Then check `gh run list --limit 3` for `API Checks` on the latest commit (`54f7cd4`) — this
-   batch added new backend routes/services/tests, so don't assume green without checking.
-2. **Run the final whole-batch review for the Continuity Guard plan.** The SDD workspace is still at
+1. **Visual asset library:** ask the user to review
+   `docs/superpowers/specs/2026-08-20-visual-asset-library-design.md`. Once approved, invoke
+   `superpowers:writing-plans`. The first implementation milestone must scaffold `pictures/` and
+   generate only the A/B/C Gate-1 concept package; stop for visual user approval before producing final
+   brand derivatives or the larger universal/Bridgerton libraries. Use the built-in `image_gen` tool,
+   one call per distinct asset, copy project-bound outputs into `pictures/`, and record exact prompts in
+   `pictures/docs/asset-catalog.md` / `prompts.md`.
+2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
+   Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger
    (`progress.md`) — read it first, it has the exact commit ranges and a summary of every fix round.
    Per `superpowers:subagent-driven-development`: run
@@ -46,7 +61,7 @@ do first — see "Immediate next steps."
    the ledger's deferred-minor lines (2 of them — see the ledger) so it can triage what needs fixing
    before merge. If it finds issues: ONE fix dispatch with the complete findings list, ONE scoped
    re-review, adjudicate any residuals per the breaker rules.
-3. **If the final review is clean:** delete the workspace (`rm -rf
+3. **If the Continuity final review is clean:** delete the workspace (`rm -rf
    .superpowers/sdd/2026-08-16-continuity-guard-model-profiles`) and use
    `superpowers:finishing-a-development-branch` (this project has no branch/worktree — see the
    "Conventions" section below — so this mostly means "confirm tests pass, confirm pushed, done").
