@@ -9,6 +9,9 @@ The post-review three-variant refinement prompts are recorded separately in
 `refinement-round-2026-08-21.md` so the historical Gate-1 prompt ledger remains
 easy to audit.
 
+Gate 2A I2 derivatives and universal map/character/location template prompts
+are recorded in `universal-template-round-2026-08-21.md`.
+
 ## A-LOGO-01 — Book, quill, negative-space Q
 
 ```text

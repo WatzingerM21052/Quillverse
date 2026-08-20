@@ -78,6 +78,19 @@ technical failures are under `Experimentelles`. No code, Angular/API source, pro
 deployment configuration was changed. Before production use, I2 still needs a dedicated edge/fringe and
 favicon-size cleanup pass followed by explicit approval.
 
+**Gate 2A visual batch started 2026-08-21.** The user delegated visual decisions
+and asked for exceptionally strong designs. This batch remains image-only and
+creates exactly twelve review assets: three I2 applications (clean master,
+micro-favicon, app tile), three universal map bases, three consistent universal
+character-composition references, and three universal location-composition
+references. Exact prompts and destination paths are frozen before generation in
+`pictures/docs/universal-template-round-2026-08-21.md`. The anonymous character
+headshot becomes the identity anchor for its half-body and four-expression
+follow-ups. Universal assets stay world-neutral and contain no text, labels,
+pins, UI, franchise motifs, or Regency-specific identity. No application code or
+production asset may be changed. The Bridgerton concrete test pack follows only
+after this universal batch is generated, audited, and visually reviewed.
+
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
 reviewed; 3 of them needed a fix round (all fixed and re-reviewed clean — see "Done this session" below
