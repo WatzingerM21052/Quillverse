@@ -56,19 +56,27 @@ production app asset or source file was changed. The next visual checkpoint is o
 round: A1-derived simplified icon, organic replacement for A banner 1, calmer A banner 2, and a
 transparent regeneration of the B-V1 form. Do not integrate anything into the app yet.
 
-**Refinement round completed 2026-08-21; awaiting grouped user review.** The user requested three
-variants per target to make visual feedback easier. All twelve active outputs now exist under
-`pictures/review-required/refinement-2026-08-21/`: three A1-derived icons, three organic banner-1
-replacements, three calmer banner-2 variants, and three B-V1/omega regenerations. Every active file was
-inspected locally. All six active square icon/logo candidates have genuine transparent corners (alpha
-0). Both transparent groups first produced three opaque-checkerboard R1 failures each; all six failures
-were preserved under `pictures/Experimentelles/refinement-2026-08-21/technical-failures` subtrees, then
-replaced with fresh reference-free R2 generations. Exact prompts, correction history, dimensions, and
-visual-purpose notes are in `pictures/docs/refinement-round-2026-08-21.md`; every file is indexed in
-`pictures/docs/asset-catalog.md`. Existing favorites remain untouched. No code, Angular/API source,
-production app asset, or deployment configuration was changed. Next action is user selection/feedback
-across the four three-image groups; only the selected small mark should receive a final edge/fringe and
-tiny-size cleanup pass.
+**Refinement round completed and reviewed 2026-08-21.** The user requested three
+variants per target to make visual feedback easier. All twelve outputs remain preserved in
+the refinement library: three A1-derived icons, three organic banner-1 replacements, three calmer
+banner-2 variants, and three B-V1/omega regenerations. Every file was inspected locally. All six fresh
+square icon/logo outputs had genuine transparent corners (alpha 0). Both transparent groups first
+produced three opaque-checkerboard R1 failures each; all six failures were preserved under matching
+numbered `pictures/Experimentelles/refinement-2026-08-21/*/technical-failures/` folders, then replaced
+with fresh reference-free R2 generations. Exact prompts, correction history, dimensions, and visual-
+purpose notes are in `pictures/docs/refinement-round-2026-08-21.md`; every file is indexed in
+`pictures/docs/asset-catalog.md`. Existing favorites remain untouched.
+
+Second-round choices are now recorded: I2/Q portal is the preferred icon (I1 good, I3 acceptable backup);
+B1.1/page doorway is the likely organic-banner favorite but all three were rated “MEGA”; B2.1/two-world
+path is the likely calmer-banner favorite but all three were rated “hammermäßig”. O1 is only the most
+usable new B/Omega study and still does not beat the original V1 form; O2/O3 are non-preferred. The
+folders were reorganized without deleting anything: numbered groups `01`–`04` plus explicit status
+subfolders (`preferred`, `strong-alternatives`, `alternatives`, `needs-refinement`, `not-preferred`,
+`technical-failures`). Active A candidates and O1 stay under `review-required`; O2/O3 and all six
+technical failures are under `Experimentelles`. No code, Angular/API source, production app asset, or
+deployment configuration was changed. Before production use, I2 still needs a dedicated edge/fringe and
+favicon-size cleanup pass followed by explicit approval.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -81,11 +89,11 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset library:** present the completed 12-image refinement round as four clearly numbered
-   three-image groups and collect the user's favorite plus revision notes for each group. Do not promote
-   or integrate any candidate automatically. After selection, clean only the chosen small mark at edge/
-   fringe and favicon sizes, then ask for explicit approval again before producing final brand
-   derivatives, universal templates, or the Bridgerton test pack. App integration remains out of scope.
+1. **Visual asset library:** preferences are captured and the folder hierarchy is finalized. At the next
+   visual session, either (a) perform the dedicated I2 edge/fringe + favicon-size cleanup and request
+   final brand-asset approval, or (b) if the user prefers to defer production branding, continue with
+   the already-planned universal map/character/location templates and then the Bridgerton test pack.
+   Do not integrate any candidate into the app without a separate explicit approval.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger

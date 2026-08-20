@@ -1,8 +1,10 @@
 # Core Brand Refinement Round — 2026-08-21
 
 This review round creates exactly three variants for each of four approved
-refinement targets. Existing favorites remain unchanged, every output stays
-under `pictures/review-required/`, and nothing is integrated into the app.
+refinement targets. Existing favorites remain unchanged, every output is
+preserved, and nothing is integrated into the app. After user review, active
+candidates remain under `pictures/review-required/`; rejected alternatives and
+technical failures live under `pictures/Experimentelles/`.
 
 Built-in `image_gen` is used once per distinct variant. Reference images are
 project-local files and are inspected before generation.
@@ -11,18 +13,18 @@ project-local files and are inspected before generation.
 
 | Prompt ID | Output |
 |---|---|
-| A1-ICON-R1-01 | `review-required/refinement-2026-08-21/a1-icons/a1-icon-book-doorway-quill.png` |
-| A1-ICON-R1-02 | `review-required/refinement-2026-08-21/a1-icons/a1-icon-q-portal.png` |
-| A1-ICON-R1-03 | `review-required/refinement-2026-08-21/a1-icons/a1-icon-page-window.png` |
-| A-BANNER1-R1-01 | `review-required/refinement-2026-08-21/a-banner-1-organic/organic-page-doorway.png` |
-| A-BANNER1-R1-02 | `review-required/refinement-2026-08-21/a-banner-1-organic/ink-ribbon-portal.png` |
-| A-BANNER1-R1-03 | `review-required/refinement-2026-08-21/a-banner-1-organic/living-pages-horizon.png` |
-| A-BANNER2-R1-01 | `review-required/refinement-2026-08-21/a-banner-2-calm/two-worlds-clear-path.png` |
-| A-BANNER2-R1-02 | `review-required/refinement-2026-08-21/a-banner-2-calm/three-worlds-paper-ribbons.png` |
-| A-BANNER2-R1-03 | `review-required/refinement-2026-08-21/a-banner-2-calm/single-horizon-storyflow.png` |
-| B-OMEGA-R1-01 | `review-required/refinement-2026-08-21/b-omega-logos/omega-book-faithful.png` |
-| B-OMEGA-R1-02 | `review-required/refinement-2026-08-21/b-omega-logos/omega-negative-space.png` |
-| B-OMEGA-R1-03 | `review-required/refinement-2026-08-21/b-omega-logos/omega-archive-simplified.png` |
+| A1-ICON-R2-01 | `review-required/refinement-2026-08-21/01-a1-icons/alternatives/a1-icon-book-doorway-quill.png` |
+| A1-ICON-R2-02 | `review-required/refinement-2026-08-21/01-a1-icons/preferred/a1-icon-q-portal.png` |
+| A1-ICON-R2-03 | `review-required/refinement-2026-08-21/01-a1-icons/alternatives/a1-icon-page-window.png` |
+| A-BANNER1-R1-01 | `review-required/refinement-2026-08-21/02-a-banner-1-organic/preferred/organic-page-doorway.png` |
+| A-BANNER1-R1-02 | `review-required/refinement-2026-08-21/02-a-banner-1-organic/strong-alternatives/ink-ribbon-portal.png` |
+| A-BANNER1-R1-03 | `review-required/refinement-2026-08-21/02-a-banner-1-organic/strong-alternatives/living-pages-horizon.png` |
+| A-BANNER2-R1-01 | `review-required/refinement-2026-08-21/03-a-banner-2-calm/preferred/two-worlds-clear-path.png` |
+| A-BANNER2-R1-02 | `review-required/refinement-2026-08-21/03-a-banner-2-calm/strong-alternatives/three-worlds-paper-ribbons.png` |
+| A-BANNER2-R1-03 | `review-required/refinement-2026-08-21/03-a-banner-2-calm/strong-alternatives/single-horizon-storyflow.png` |
+| B-OMEGA-R2-01 | `review-required/refinement-2026-08-21/04-b-omega/needs-refinement/omega-book-faithful.png` |
+| B-OMEGA-R2-02 | `Experimentelles/refinement-2026-08-21/04-b-omega/not-preferred/omega-negative-space.png` |
+| B-OMEGA-R2-03 | `Experimentelles/refinement-2026-08-21/04-b-omega/not-preferred/omega-archive-simplified.png` |
 
 ## A1 icon variants
 
@@ -248,7 +250,7 @@ Avoid: generic astrology app icon, ornate feather detail, fantasy-game badge, lu
 
 All three reference-based icon generations rendered an opaque checkerboard
 (corner alpha 255). The files are preserved under
-`Experimentelles/refinement-2026-08-21/a1-icons/technical-failures/`. Their
+`Experimentelles/refinement-2026-08-21/01-a1-icons/technical-failures/`. Their
 active replacements use fresh reference-free prompts to prevent the icon-study
 board background from propagating.
 
@@ -286,7 +288,7 @@ No text, no wordmark, no literal scenery, no stars, no crown, no flowers, no moc
 
 All three reference-based B-logo generations rendered an opaque checkerboard
 (corner alpha 255). The files are preserved under
-`Experimentelles/refinement-2026-08-21/b-omega-logos/technical-failures/` as
+`Experimentelles/refinement-2026-08-21/04-b-omega/technical-failures/` as
 useful form studies only. Their active replacements use fresh reference-free
 prompts so that the defective V1 canvas cannot propagate again.
 
@@ -326,12 +328,12 @@ All twelve active review outputs were generated, copied to the paths in the
 matrix at the top of this document, and visually inspected from their local
 files. No source or application asset was changed.
 
-| Group | Active files | Technical result | Visual comparison purpose |
-|---|---:|---|---|
-| A1 icons | 3 | 1254x1254 PNG; all four corners alpha 0 | doorway/book, Q-portal, and compact page-window readings |
-| A banner 1 organic | 3 | wide opaque PNG; 1693x929, 1774x887, 1734x907 | layered page doorway, single Q ribbon, and painterly living-page horizon |
-| A banner 2 calm | 3 | wide opaque PNG; 1774x887, 1870x841, 1774x887 | two-world painterly path, three explicit ribbons, and one reduced horizon/path |
-| B omega logos | 3 | 1254x1254, 1312x1199, 1254x1254 PNG; all four corners alpha 0 | V1-faithful heart-book, strongest omega negative space, and simplified app mark |
+| Group | Preserved outputs | Active after review | Technical result | Visual comparison purpose |
+|---|---:|---:|---|---|
+| A1 icons | 3 | 3 | 1254x1254 PNG; all four corners alpha 0 | doorway/book, Q-portal, and compact page-window readings |
+| A banner 1 organic | 3 | 3 | wide opaque PNG; 1693x929, 1774x887, 1734x907 | layered page doorway, single Q ribbon, and painterly living-page horizon |
+| A banner 2 calm | 3 | 3 | wide opaque PNG; 1774x887, 1870x841, 1774x887 | two-world painterly path, three explicit ribbons, and one reduced horizon/path |
+| B omega logos | 3 | 1 | 1254x1254, 1312x1199, 1254x1254 PNG; all four corners alpha 0 | V1-faithful heart-book, strongest omega negative space, and simplified app mark |
 
 The reference-based R1 attempts for both transparent groups baked an opaque
 checkerboard (six files total, corner alpha 255). They remain preserved as form
@@ -339,3 +341,22 @@ studies under `Experimentelles/refinement-2026-08-21/`; only their fresh R2
 replacements are active review candidates. True corner transparency is not yet
 production approval: after the user chooses a direction, the selected small mark
 still needs a dedicated edge/fringe and reduced-size legibility cleanup pass.
+
+## User review decision (2026-08-21)
+
+- **I2 / Q portal** is the selected small-icon direction (“würde ich nehmen,
+  ist super”). I1 remains a good active alternative; I3 remains an acceptable
+  but lower-enthusiasm backup.
+- All three organic banner-1 variants were rated “MEGA”. **B1.1 / organic page
+  doorway** is the current likely favorite, without demoting B1.2 or B1.3.
+- All three calmer banner-2 variants were rated “hammermäßig”. **B2.1 / two
+  worlds, clear path** is the current likely favorite, while B2.2 and B2.3
+  remain strong alternatives.
+- **O1 / faithful heart-book omega** is only the most usable of the three new B
+  studies and still does not clearly beat the original V1 form reference. O2 and
+  O3 were rated quite poor and moved to `Experimentelles/.../not-preferred/`.
+
+The folder hierarchy now mirrors that decision with numbered groups and explicit
+status folders: `preferred`, `strong-alternatives`, `alternatives`,
+`needs-refinement`, `not-preferred`, and `technical-failures`. Selection remains
+a design preference, not permission for application integration.

@@ -41,16 +41,41 @@ subfolders. No app file or production asset was changed.
    campaign/chapter/collection style reference rather than automatically making
    it the universal core banner.
 
-## Next visual checkpoint
+## Refinement-round feedback
 
-Before final brand derivatives or app integration, prepare one focused
-refinement round:
+The requested three-variants-per-target round is complete. User feedback:
 
-- an A1-derived simplified icon/favmark;
-- one organic A banner replacement;
-- one calmer A banner-2 variant;
-- one transparent B-V1-form regeneration.
+- **I1:** looks good.
+- **I2:** selected — “würde ich nehmen, ist super”. This is now the preferred
+  small-icon direction.
+- **I3:** acceptable, but with noticeably less enthusiasm (“ok aber joa”).
+- **B1.1, B1.2, B1.3:** all rated “MEGA”; B1.1 is the likely favorite, though
+  the user explicitly considers all three worth retaining.
+- **B2.1, B2.2, B2.3:** all rated “hammermäßig”; B2.1 is the likely favorite,
+  with all three retained as strong active candidates.
+- **O1:** most usable of the new B/Omega group, but still does not clearly beat
+  the original V1 form.
+- **O2 and O3:** rated quite poor; preserved under `Experimentelles` rather than
+  kept as active review candidates.
 
-The already successful A1, icon study, B banner, C logo, and C banner remain
-unchanged during that round. Universal templates and the Bridgerton test pack
-follow only after the refined core set is approved.
+The original B V1 remains the emotional/form target even though its opaque
+checkerboard prevents direct use. O1 is evidence that a technically clean
+version is possible, but the B direction needs a new form pass if it is pursued.
+
+## Current visual checkpoint
+
+No new image generation is required before the next user decision. The preferred
+A candidates are now:
+
+- master identity: A1;
+- small icon: I2 / Q portal;
+- organic banner: B1.1 / page doorway, with B1.2 and B1.3 as equally valued
+  strong alternatives;
+- pages-to-worlds banner: B2.1 / two worlds and clear path, with B2.2 and B2.3
+  as strong alternatives.
+
+Before any app integration, the selected small icon still needs a dedicated
+edge/fringe and favicon-size cleanup pass followed by explicit final approval.
+Universal templates and the Bridgerton test pack remain the next asset-library
+phase after that decision. Existing A1, B banner, C logo, and C banner remain
+unchanged and preserved.

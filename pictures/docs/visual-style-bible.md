@@ -70,3 +70,20 @@ The audit confirmed for every current candidate:
 All non-final variants and checkerboard-background failures remain preserved in
 `pictures/Experimentelles/`. Technical failures are never used directly, while
 form references may guide fresh generations.
+
+## Refinement status after second user review
+
+- **Preferred small mark:** I2, the simplified page/Q portal with muted-gold nib
+  tail. It best translates the A1 identity into a compact software mark.
+- **Preferred organic banner:** B1.1, the open book growing into a luminous page
+  doorway. B1.2 and B1.3 are also strongly endorsed and remain active alternates.
+- **Preferred pages-to-worlds banner:** B2.1, the two-world forest/coast scene
+  joined by one clear path. B2.2 and B2.3 remain strongly endorsed alternates.
+- **B/Omega direction:** none of the fresh variants supersedes the original V1
+  form reference. O1 is the most usable clean-alpha study but still needs a form
+  redesign; O2 and O3 are non-preferred experiments.
+
+The refinement hierarchy is recorded directly in numbered status folders under
+`review-required/refinement-2026-08-21/` and
+`Experimentelles/refinement-2026-08-21/`. These preferences refine the visual
+system but still do not authorize production integration.

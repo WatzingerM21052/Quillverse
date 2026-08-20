@@ -30,4 +30,10 @@ app-icon favorite. This preference is not permission to modify the application.
 The resulting three-variants-per-target comparison round lives under
 `review-required/refinement-2026-08-21/`. Its exact prompt ledger, output matrix,
 technical-failure log, and local visual audit are in
-`docs/refinement-round-2026-08-21.md`. No refinement candidate is approved yet.
+`docs/refinement-round-2026-08-21.md`. Numbered group folders preserve review
+order; their status subfolders (`preferred`, `strong-alternatives`,
+`alternatives`, `needs-refinement`) make the current ranking visible without
+opening the catalog. Rejected studies and generation failures use matching
+numbered groups under `Experimentelles/` with `not-preferred` and
+`technical-failures` status folders. No refinement candidate is approved for
+app integration yet.

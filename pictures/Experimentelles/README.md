@@ -10,6 +10,11 @@ useful later. Nothing here is approved for production or application use.
   language is valuable enough to guide a clean regeneration.
 - `technical-failures/`: outputs with measurable defects such as an opaque
   checkerboard instead of genuine PNG transparency.
+- `not-preferred/`: technically valid images explicitly rejected or strongly
+  deprioritized during user review.
+
+Dated refinement rounds may use numbered group folders before these status
+folders so their structure mirrors the active review set without mixing the two.
 
 The original B Celestial Archive V1 is intentionally filed as a form reference,
 not discarded: the user preferred its book silhouette and perceived indirect
