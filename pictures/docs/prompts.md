@@ -141,3 +141,57 @@ Constraints: no text; no letters; no crown; no royal heraldry; no people; no wat
 Avoid: Regency invitation, aristocratic family arms, overdecorated gold, photorealistic product mockup
 ```
 
+## Generation corrections recorded during review
+
+The original A-LOGO-02 and A-LOGO-03 generations rendered a checkerboard as
+opaque pixels instead of returning real transparency. Those files remain clearly
+marked `rejected` for auditability. The accepted review candidates were generated
+with the following fresh technical correction prompts.
+
+### A-LOGO-02-R1 — unsuccessful reference edit
+
+```text
+Edit the supplied logo-mark concept while preserving its simple circular turning-page and diagonal-quill geometry, ink-blue/ivory palette, tiny muted-gold nib accent, proportions, and text-free vector-friendly character.
+
+Required correction: remove the entire visible gray-and-white checkerboard pattern. The canvas outside the mark and every intended opening inside the mark must be genuine PNG transparency with alpha 0, not a drawn checkerboard and not white, gray, black, or any other background.
+
+Keep one centered isolated mark with generous transparent padding. Flat colors only. No text, letters, wordmark, mockup, shadows, scenery, stars, crest, crown, flowers, 3D, or watermark.
+```
+
+Result: rejected. The reference edit preserved the opaque checkerboard.
+
+### A-LOGO-02-R2 — accepted fresh RGBA generation
+
+```text
+Create a new PNG logo asset, not a mockup and not a transparency preview.
+
+Use case: logo-brand
+Asset type: square universal literary platform logo mark
+Symbol: two broad turning pages form a calm circular portal; one very simple diagonal quill stroke crosses the circle; no literal landscape and no letters
+Visual treatment: extremely simple flat vector-style geometry, three solid colors only, strong outer silhouette, centered with generous empty padding
+Palette: deep ink blue, warm ivory, one tiny muted-gold nib accent
+
+TECHNICAL OUTPUT REQUIREMENT: deliver an RGBA PNG whose entire canvas outside the symbol is truly transparent (alpha channel value 0). Do not draw, print, paint, or simulate a gray-white checkerboard. Do not use any white, gray, black, colored, paper, square, or textured background. The openings around and inside the symbol must also be actual transparent pixels.
+
+No text, no wordmark, no letters, no stars, no crest, no crown, no flowers, no mockup, no 3D, no shadows, no gradients, no watermark, no scenery. Original design only.
+```
+
+Result: review candidate. Corner alpha verified as 0.
+
+### A-LOGO-03-R1 — accepted fresh RGBA generation
+
+```text
+Create a new PNG logo asset, not a mockup and not a transparency preview.
+
+Use case: logo-brand
+Asset type: square universal literary platform logo mark
+Symbol: one continuous bold ink-ribbon stroke forms a subtle uppercase Q; its tail becomes a simple fountain-pen nib; the inner negative space cleanly suggests one open page or portal
+Visual treatment: extremely simple flat vector-style calligraphic geometry, few solid shapes, strong silhouette, centered and readable at favicon size, generous empty padding
+Palette: deep ink blue dominant, warm ivory as part of the symbol, one small muted-gold nib accent
+
+TECHNICAL OUTPUT REQUIREMENT: deliver an RGBA PNG whose entire canvas outside the symbol is truly transparent (alpha channel value 0). Do not draw, print, paint, or simulate a gray-white checkerboard. Do not use any background color or texture. Intended openings must be actual transparent pixels.
+
+No text, no wordmark, no extra letters beyond the abstract Q shape, no seal, no crown, no stars, no flowers, no mockup, no 3D, no shadows, no gradients, no watermark. Avoid ornate monogram hairlines and generic standalone feather icons. Original design only.
+```
+
+Result: review candidate. Corner alpha verified as 0.
