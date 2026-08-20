@@ -36,19 +36,25 @@ complete `pictures/` folder scaffold and its README, asset catalog, prompt ledge
 and future universal/Bridgerton placeholders now exist. All six primary A — Living Manuscript review
 assets have been generated and inspected: three logo marks, two wordless wide banners, and one
 three-option app-icon/favicon study board. All three active logo candidates have true transparent
-corners (alpha 0). Three failed checkerboard-background attempts are versioned and catalogued as
-`rejected` rather than silently overwritten. No production app asset or source file was changed. Gate
-1 is complete and internally audited. The B — Celestial Archive comparison pair is also complete: one transparent mark and
-one wide banner; two opaque checkerboard attempts are catalogued as `rejected`. The C — Storybook
-Crest comparison pair is complete as well: one transparent crest and one archival wide banner; its
-opaque first logo attempt is catalogued as `rejected`. All ten planned Gate-1 review concepts now
-exist and passed the final inventory, dimensions/alpha, visual-quality, and code-scope audits. Exactly
-ten catalog rows remain `needs-review`; six physically retained failed generations are explicitly
-`rejected`. The Gate-1 implementation range is `f80595a..00403bd`, following the design and plan
-commits `bd7e917` and `87ac0da`. No app integration occurred. Next is visual user
-selection among A1/A2/A3, A banner 1/2, and the three icon treatments, plus any B/C element worth
-borrowing or one-change refinement request. Do not write the Gate-2 plan or generate universal/
-Bridgerton assets until that response.
+corners (alpha 0). The initial Gate-1 implementation range is `f80595a..00403bd`, following the design
+and plan commits `bd7e917` and `87ac0da`.
+
+**User review received 2026-08-21.** A1 is the emphatic master-logo favorite; A2 remains a positive
+backup and A3 is not preferred. The top-center portal/book/quill treatment from the icon study is the
+favored small-icon direction. A banner 1 should be replaced rather than polished because its blocky
+perspective reads Minecraft-like and disconnected; A banner 2 is the stronger basis but needs a much
+clearer, calmer first read. The original B-logo V1 form is preferred over clean V3 because of its book
+shape and indirect omega impression, but V1 is technically opaque and may only guide a fresh
+transparent regeneration. B banner is strongly liked, C logo is usable but not exceptional, and C
+banner is a standout. Full feedback and design synthesis:
+`pictures/docs/review-feedback-2026-08-21.md`.
+
+Every generated file remains preserved. Non-final alternatives, valuable form references, and opaque
+checkerboard failures were moved from the active review folders into purpose-specific subfolders under
+`pictures/Experimentelles/`; active corrected variants now have clean versionless filenames. No
+production app asset or source file was changed. The next visual checkpoint is one focused refinement
+round: A1-derived simplified icon, organic replacement for A banner 1, calmer A banner 2, and a
+transparent regeneration of the B-V1 form. Do not integrate anything into the app yet.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -61,11 +67,12 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset library:** Gate 1 is complete and internally audited. Present the ten current images
-   under `pictures/review-required/` and stop for visual user approval. Ask for the preferred A logo,
-   A banner, and icon treatment; which B/C element (if any) should be borrowed; and any single-change
-   refinements. Do not write the Gate-2 plan, generate final brand derivatives or the larger universal/
-   Bridgerton libraries, or modify/replace any production app asset until the user responds.
+1. **Visual asset library:** user review is captured and the library is reorganized. If the user agrees
+   with the synthesis, plan and execute one tightly scoped refinement round only: derive a simplified
+   icon from A1/top-center icon study, replace A banner 1 with an organic A1-consistent composition,
+   calm A banner 2, and regenerate the preferred B-V1 form with true alpha. Preserve all existing
+   favorites unchanged. Review those four results before final derivatives, universal templates, the
+   Bridgerton test pack, or any app integration.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger

@@ -29,12 +29,12 @@ Comparison only. Uses a bookplate/crest structure to show a more archival and
 prestigious alternative. It must avoid royalty, family arms, university-badge
 styling, and Regency-specific heraldry.
 
-## Gate-1 status
+## Gate-1 status after user review
 
-All ten planned current candidates are generated and internally audited. They
-remain `needs-review`; no concept is approved for app use, and no production
-icon, favicon, banner, manifest, Angular file, D1/R2 record, or deployed asset
-was replaced during this gate.
+All ten planned candidates were generated, internally audited, and reviewed by
+the user. The review establishes preferences and refinement targets, not
+permission for app use: no production icon, favicon, banner, manifest, Angular
+file, D1/R2 record, or deployed asset was replaced.
 
 The audit confirmed for every current candidate:
 
@@ -45,27 +45,28 @@ The audit confirmed for every current candidate:
 - all active square logo marks have genuine transparent corners (alpha 0);
 - every wide banner provides usable calm space for later deterministic type.
 
-## Review guide
+## Selected direction and refinement targets
 
-Direction A remains the primary brand direction, but Gate 1 does not select an
-A variant on the user's behalf:
+- **A1 — Book / quill / Q / doorway** is the clear master-logo favorite. Its
+  detailed storytelling composition should be preserved as the identity anchor.
+- **A2 — Circular pages / quill** remains a positive secondary alternative.
+- **A3 — Ink-ribbon Q / page / nib** is not preferred and now lives under
+  `Experimentelles/alternatives/`.
+- **Top-center icon-study treatment** is the current small-icon favorite. It is
+  a better starting point for favicon scale than reducing the detailed A1 mark
+  mechanically.
+- **A banner 1** requires replacement: its rigid block perspective reads too
+  Minecraft-like and emotionally disconnected from A1.
+- **A banner 2** is the stronger A banner basis, but needs fewer competing worlds
+  and a clearer first-glance hierarchy.
+- **B original logo form (V1)** is the preferred B composition because its book
+  silhouette and indirect omega impression are more memorable. It remains only
+  a form reference until regenerated with genuine transparency.
+- **B banner** remains a strong magical/celestial comparison.
+- **C logo** is usable but not a priority for refinement.
+- **C banner** is a standout archival/editorial reference worth preserving for
+  campaigns, chapters, collections, or world-pack presentation.
 
-- **A1 — Book / quill / Q / doorway:** the richest and most literal summary of
-  stories becoming explorable worlds.
-- **A2 — Circular pages / quill:** a lighter, more dynamic literary symbol with
-  less literal scenery.
-- **A3 — Ink-ribbon Q / page / nib:** the most compact and software-like mark,
-  with the strongest favicon potential.
-- **A banner 1 — Archive doorway:** restrained, architectural, dark, and calm.
-- **A banner 2 — Pages into worlds:** broader, more illustrative, and better at
-  communicating many possible genres.
-- **A icon study:** top = portal/book/quill, lower left = compact Q/nib, lower
-  right = ultra-simple book doorway.
-
-Direction B is intentionally the most magical/celestial comparison. Direction
-C is intentionally the most tactile, archival, and decorative comparison. Their
-useful elements may be borrowed later, but neither replaces A without an
-explicit design decision.
-
-Physically retained checkerboard-background failures are catalogued as
-`rejected` generation evidence and are not part of the ten current candidates.
+All non-final variants and checkerboard-background failures remain preserved in
+`pictures/Experimentelles/`. Technical failures are never used directly, while
+form references may guide fresh generations.
