@@ -39,8 +39,11 @@ three-option app-icon/favicon study board. All three active logo candidates have
 corners (alpha 0). Three failed checkerboard-background attempts are versioned and catalogued as
 `rejected` rather than silently overwritten. No production app asset or source file was changed. Gate
 1 is in progress. The B — Celestial Archive comparison pair is also complete: one transparent mark and
-one wide banner; two opaque checkerboard attempts are catalogued as `rejected`. Next are the two C —
-Storybook Crest comparison concepts, then the final audit and visual user approval checkpoint.
+one wide banner; two opaque checkerboard attempts are catalogued as `rejected`. The C — Storybook
+Crest comparison pair is complete as well: one transparent crest and one archival wide banner; its
+opaque first logo attempt is catalogued as `rejected`. All ten planned Gate-1 review concepts now
+exist. Next is the final inventory/quality/code-scope audit, catalog polish, push, and visual user
+approval checkpoint.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -55,9 +58,9 @@ do first — see "Immediate next steps."
 
 1. **Visual asset library:** continue inline execution of
    `docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md`. The scaffold and metadata are
-   complete, all six primary A concepts are checked, and the two B comparison concepts are checked;
-   generate the two C comparison concepts, inspect each output, copy it into
-   `pictures/review-required/`, and keep catalog dimensions/notes current. Stop for
+   complete and all ten planned A/B/C review concepts have been generated and checked. Run the final
+   inventory, metadata, image-dimension/alpha, and no-app-code-change audits; then commit/push the
+   review packet and stop for
    visual user approval before producing final brand derivatives or the larger universal/Bridgerton
    libraries. Do not modify or replace any production app asset or source file.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the

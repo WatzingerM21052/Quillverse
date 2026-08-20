@@ -178,6 +178,19 @@ No text, no wordmark, no letters, no stars, no crest, no crown, no flowers, no m
 
 Result: review candidate. Corner alpha verified as 0.
 
+### C-LOGO-01-R1 — accepted fresh transparent generation
+
+```text
+Create one isolated logo symbol on a transparent void. Return an RGBA PNG. Every pixel not belonging to the symbol must be absent with alpha 0, including all four corners. There must be no visible canvas, no white surface, no gray surface, and absolutely no checkerboard pattern.
+
+The symbol is a restrained circular literary bookplate crest for a universal storytelling platform: a clean deep-ink-blue outer ring with fine muted-gold linework; a simple warm-ivory open book at the bottom; one vertical simplified quill through the center; one compact abstract Q curve integrated behind the quill. The crest is symmetrical, archival, premium, flat and vector-friendly, with a strong silhouette and generous fully transparent padding.
+
+No wordmark, no text, no extra letters, no crown, no coat-of-arms animals, no flowers, no shield, no royal imagery, no university-badge cues, no mockup, no 3D, no shadow, no gradient, no watermark, no background. Original design only.
+```
+
+Result: review candidate. Corner alpha verified as 0. The original C-LOGO-01
+output remains catalogued as rejected because its checkerboard was opaque.
+
 ### B-LOGO-01-R1 — unsuccessful fresh RGBA generation
 
 ```text
