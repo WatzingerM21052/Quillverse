@@ -33,12 +33,13 @@ explicit approval. Approved design spec:
 and delegated detailed visual decisions. Gate-1 implementation plan:
 `docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md`. Inline execution was selected. The
 complete `pictures/` folder scaffold and its README, asset catalog, prompt ledger, visual style bible,
-and future universal/Bridgerton placeholders now exist. A-LOGO-01..03 have been generated, visually
-inspected, and technically checked; all three active review candidates have true transparent corners
-(alpha 0). Three failed checkerboard-background attempts are versioned and catalogued as `rejected`
-rather than silently overwritten. No production app asset or source file was changed. Gate 1 is in
-progress; next are the two A banners and A icon study, followed by the four B/C comparison concepts,
-before stopping for visual user approval.
+and future universal/Bridgerton placeholders now exist. All six primary A — Living Manuscript review
+assets have been generated and inspected: three logo marks, two wordless wide banners, and one
+three-option app-icon/favicon study board. All three active logo candidates have true transparent
+corners (alpha 0). Three failed checkerboard-background attempts are versioned and catalogued as
+`rejected` rather than silently overwritten. No production app asset or source file was changed. Gate
+1 is in progress; next are the two B — Celestial Archive and two C — Storybook Crest comparison
+concepts, then the final audit and visual user approval checkpoint.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -53,9 +54,9 @@ do first — see "Immediate next steps."
 
 1. **Visual asset library:** continue inline execution of
    `docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md`. The scaffold and metadata are
-   complete and the three A logo candidates are checked; generate the two A banners and A icon study,
-   then the four B/C comparison concepts, inspect each output, copy it into
-   `pictures/review-required/`, and keep catalog dimensions/notes current. Stop for
+   complete and all six primary A concepts are checked; generate the four B/C comparison concepts,
+   inspect each output, copy it into `pictures/review-required/`, and keep catalog dimensions/notes
+   current. Stop for
    visual user approval before producing final brand derivatives or the larger universal/Bridgerton
    libraries. Do not modify or replace any production app asset or source file.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
