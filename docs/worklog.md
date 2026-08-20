@@ -12,7 +12,7 @@ share memory otherwise.
 
 ---
 
-## Status snapshot (2026-08-20, current session)
+## Status snapshot (2026-08-20/21, current session)
 
 Last pushed commit before this visual-design task: `9c12c8c` (worklog handoff after the Continuity
 Guard batch). Both `API Checks` and `Deploy to GitHub Pages` completed successfully for that push.
@@ -44,8 +44,8 @@ Crest comparison pair is complete as well: one transparent crest and one archiva
 opaque first logo attempt is catalogued as `rejected`. All ten planned Gate-1 review concepts now
 exist and passed the final inventory, dimensions/alpha, visual-quality, and code-scope audits. Exactly
 ten catalog rows remain `needs-review`; six physically retained failed generations are explicitly
-`rejected`. The implementation begins at `f80595a`; the final audit commit hash is recorded in the
-handoff entry immediately after it is created. No app integration occurred. Next is visual user
+`rejected`. The Gate-1 implementation range is `f80595a..00403bd`, following the design and plan
+commits `bd7e917` and `87ac0da`. No app integration occurred. Next is visual user
 selection among A1/A2/A3, A banner 1/2, and the three icon treatments, plus any B/C element worth
 borrowing or one-change refinement request. Do not write the Gate-2 plan or generate universal/
 Bridgerton assets until that response.
