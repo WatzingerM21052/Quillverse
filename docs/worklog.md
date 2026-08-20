@@ -29,8 +29,12 @@ optional subtle Q, ink blue/ivory/muted gold). Comparison examples for **B — C
 **C — Storybook Crest** are also required. Logo, favicon, and banner are review-gated: create drafts in
 `pictures/review-required/`, show them to the user, and do not integrate or replace any app asset until
 explicit approval. Approved design spec:
-`docs/superpowers/specs/2026-08-20-visual-asset-library-design.md`. No images or `pictures/` directories
-have been generated yet; the next gate is user review of that written spec, then a writing-plans pass.
+`docs/superpowers/specs/2026-08-20-visual-asset-library-design.md`. The user approved the written spec
+and delegated detailed visual decisions. Gate-1 implementation plan:
+`docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md`. No images or `pictures/` directories
+have been generated yet; the next action is choosing subagent-driven vs. inline execution. Gate 1 then
+creates the folder/docs scaffold and exactly ten A/B/C review concepts before stopping for visual user
+approval.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -43,12 +47,13 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset library:** ask the user to review
-   `docs/superpowers/specs/2026-08-20-visual-asset-library-design.md`. Once approved, invoke
-   `superpowers:writing-plans`. The first implementation milestone must scaffold `pictures/` and
-   generate only the A/B/C Gate-1 concept package; stop for visual user approval before producing final
-   brand derivatives or the larger universal/Bridgerton libraries. Use the built-in `image_gen` tool,
-   one call per distinct asset, copy project-bound outputs into `pictures/`, and record exact prompts in
+1. **Visual asset library:** execute
+   `docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md` using either
+   `superpowers:subagent-driven-development` (recommended for the structured tasks) or
+   `superpowers:executing-plans`. The milestone scaffolds `pictures/` and generates exactly the A/B/C
+   Gate-1 concept package; stop for visual user approval before producing final brand derivatives or
+   the larger universal/Bridgerton libraries. Use the built-in `image_gen` tool, one call per distinct
+   asset, copy project-bound outputs into `pictures/`, and record exact prompts in
    `pictures/docs/asset-catalog.md` / `prompts.md`.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
