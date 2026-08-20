@@ -38,12 +38,17 @@ assets have been generated and inspected: three logo marks, two wordless wide ba
 three-option app-icon/favicon study board. All three active logo candidates have true transparent
 corners (alpha 0). Three failed checkerboard-background attempts are versioned and catalogued as
 `rejected` rather than silently overwritten. No production app asset or source file was changed. Gate
-1 is in progress. The B — Celestial Archive comparison pair is also complete: one transparent mark and
+1 is complete and internally audited. The B — Celestial Archive comparison pair is also complete: one transparent mark and
 one wide banner; two opaque checkerboard attempts are catalogued as `rejected`. The C — Storybook
 Crest comparison pair is complete as well: one transparent crest and one archival wide banner; its
 opaque first logo attempt is catalogued as `rejected`. All ten planned Gate-1 review concepts now
-exist. Next is the final inventory/quality/code-scope audit, catalog polish, push, and visual user
-approval checkpoint.
+exist and passed the final inventory, dimensions/alpha, visual-quality, and code-scope audits. Exactly
+ten catalog rows remain `needs-review`; six physically retained failed generations are explicitly
+`rejected`. The implementation begins at `f80595a`; the final audit commit hash is recorded in the
+handoff entry immediately after it is created. No app integration occurred. Next is visual user
+selection among A1/A2/A3, A banner 1/2, and the three icon treatments, plus any B/C element worth
+borrowing or one-change refinement request. Do not write the Gate-2 plan or generate universal/
+Bridgerton assets until that response.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -56,13 +61,11 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset library:** continue inline execution of
-   `docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md`. The scaffold and metadata are
-   complete and all ten planned A/B/C review concepts have been generated and checked. Run the final
-   inventory, metadata, image-dimension/alpha, and no-app-code-change audits; then commit/push the
-   review packet and stop for
-   visual user approval before producing final brand derivatives or the larger universal/Bridgerton
-   libraries. Do not modify or replace any production app asset or source file.
+1. **Visual asset library:** Gate 1 is complete and internally audited. Present the ten current images
+   under `pictures/review-required/` and stop for visual user approval. Ask for the preferred A logo,
+   A banner, and icon treatment; which B/C element (if any) should be borrowed; and any single-change
+   refinements. Do not write the Gate-2 plan, generate final brand derivatives or the larger universal/
+   Bridgerton libraries, or modify/replace any production app asset until the user responds.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger
