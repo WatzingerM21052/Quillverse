@@ -56,14 +56,19 @@ production app asset or source file was changed. The next visual checkpoint is o
 round: A1-derived simplified icon, organic replacement for A banner 1, calmer A banner 2, and a
 transparent regeneration of the B-V1 form. Do not integrate anything into the app yet.
 
-**Refinement round approved 2026-08-21.** The user requested three variants per target to make visual
-feedback easier. The exact 12-output matrix and prompts are recorded in
-`pictures/docs/refinement-round-2026-08-21.md`; outputs belong under
-`pictures/review-required/refinement-2026-08-21/`. Existing favorites are immutable references during
-this round. Generate in this order: three A1-derived icons, three organic banner-1 replacements, three
-calmer banner-2 variants, then three B-V1/omega regenerations. Inspect every output, verify genuine
-alpha for all six square logo/icon variants, and move any failed attempt to `pictures/Experimentelles/`
-rather than overwriting it. No code or app asset changes are authorized.
+**Refinement round completed 2026-08-21; awaiting grouped user review.** The user requested three
+variants per target to make visual feedback easier. All twelve active outputs now exist under
+`pictures/review-required/refinement-2026-08-21/`: three A1-derived icons, three organic banner-1
+replacements, three calmer banner-2 variants, and three B-V1/omega regenerations. Every active file was
+inspected locally. All six active square icon/logo candidates have genuine transparent corners (alpha
+0). Both transparent groups first produced three opaque-checkerboard R1 failures each; all six failures
+were preserved under `pictures/Experimentelles/refinement-2026-08-21/technical-failures` subtrees, then
+replaced with fresh reference-free R2 generations. Exact prompts, correction history, dimensions, and
+visual-purpose notes are in `pictures/docs/refinement-round-2026-08-21.md`; every file is indexed in
+`pictures/docs/asset-catalog.md`. Existing favorites remain untouched. No code, Angular/API source,
+production app asset, or deployment configuration was changed. Next action is user selection/feedback
+across the four three-image groups; only the selected small mark should receive a final edge/fringe and
+tiny-size cleanup pass.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -76,11 +81,11 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset library:** execute the approved 12-image refinement round documented in
-   `pictures/docs/refinement-round-2026-08-21.md`: three A1/top-center-study icons, three organic A1
-   banner replacements, three calmer pages-into-worlds banners, and three transparent B-V1/omega
-   logos. Preserve all existing favorites unchanged and stop for grouped visual review before final
-   derivatives, universal templates, the Bridgerton test pack, or any app integration.
+1. **Visual asset library:** present the completed 12-image refinement round as four clearly numbered
+   three-image groups and collect the user's favorite plus revision notes for each group. Do not promote
+   or integrate any candidate automatically. After selection, clean only the chosen small mark at edge/
+   fringe and favicon sizes, then ask for explicit approval again before producing final brand
+   derivatives, universal templates, or the Bridgerton test pack. App integration remains out of scope.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger

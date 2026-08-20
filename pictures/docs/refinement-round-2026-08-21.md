@@ -241,3 +241,101 @@ Technical requirement: return an RGBA PNG; all pixels outside the mark must have
 Constraints: no text; no wordmark; no literal omega character; no extra stars; no crown; no crest; no mockup; no 3D; no shadows; no gradients; no watermark
 Avoid: generic astrology app icon, ornate feather detail, fantasy-game badge, luxury-fashion monogram
 ```
+
+## Correction log
+
+### A1 icon R1 transparency failure
+
+All three reference-based icon generations rendered an opaque checkerboard
+(corner alpha 255). The files are preserved under
+`Experimentelles/refinement-2026-08-21/a1-icons/technical-failures/`. Their
+active replacements use fresh reference-free prompts to prevent the icon-study
+board background from propagating.
+
+### A1-ICON-R2-01 — Book doorway and quill, fresh alpha generation
+
+```text
+Create one isolated app-icon symbol on a transparent void. Return an RGBA PNG. Every pixel not belonging to the symbol must be absent with alpha 0, including all four corners and the arched opening. There must be no visible canvas, white or gray surface, square tile, and absolutely no checkerboard pattern.
+
+The symbol is a simplified Living Manuscript mark: two bold deep-ink-blue open-book pages form one warm-ivory arched doorway, and one compact muted-gold quill stands in the threshold. Use exactly three flat solid colors, very few shapes, a strong centered silhouette, and generous fully transparent padding. It must remain readable at 16px and suggest a book becoming a doorway into a story without literal scenery.
+
+No text, no wordmark, no separate Q letter, no landscape, no stars, no crown, no flowers, no mockup, no device, no 3D, no gradient, no shadow, no watermark, no architectural blocks. Original universal literary software icon only.
+```
+
+### A1-ICON-R2-02 — Q portal, fresh alpha generation
+
+```text
+Create one isolated app-icon symbol on a transparent void. Return an RGBA PNG. Every pixel not belonging to the symbol must be absent with alpha 0, including all four corners and every intended opening. There must be no visible canvas, tile, background color, and absolutely no checkerboard pattern.
+
+The symbol is a simplified Living Manuscript mark: two broad deep-ink-blue page arcs create a subtle circular Q-shaped portal; the Q tail becomes one tiny muted-gold fountain-pen nib; one large warm-ivory doorway opening remains in the center. Use flat solid colors, bold geometry, balanced negative space, and generous transparent padding. It must read immediately at favicon size.
+
+No text, no wordmark, no extra letters, no landscape, no standalone feather, no stars, no crest, no crown, no mockup, no 3D, no gradient, no shadow, no watermark. Avoid ornate monogram hairlines and generic circular tech-logo styling. Original design only.
+```
+
+### A1-ICON-R2-03 — Page window, fresh alpha generation
+
+```text
+Create one isolated app-icon symbol on a transparent void. Return an RGBA PNG. Every pixel not belonging to the symbol must be absent with alpha 0, including all four corners. There must be no visible canvas, icon tile, white or gray square, and absolutely no checkerboard pattern.
+
+The symbol is a compact deep-ink-blue closed-book silhouette with one very large warm-ivory rounded page-window cut through its center. A single small muted-gold quill stroke crosses the window and curves into a simple path. Use flat solid colors, a near-square silhouette, minimal interior detail, soft corners, and generous fully transparent padding. It must feel editorial, distinctive, and software-ready at tiny size.
+
+No text, no wordmark, no literal scenery, no stars, no crown, no flowers, no mockup, no 3D, no bevel, no gradient, no shadow, no watermark. Avoid generic library-app clip art and rigid Minecraft-like block perspective. Original design only.
+```
+
+### B omega R1 transparency failure
+
+All three reference-based B-logo generations rendered an opaque checkerboard
+(corner alpha 255). The files are preserved under
+`Experimentelles/refinement-2026-08-21/b-omega-logos/technical-failures/` as
+useful form studies only. Their active replacements use fresh reference-free
+prompts so that the defective V1 canvas cannot propagate again.
+
+### B-OMEGA-R2-01 — Faithful heart-book omega, fresh alpha generation
+
+```text
+Create one original isolated literary logo symbol on a transparent void. Return a genuine RGBA PNG. Every pixel outside the symbol and every intended exterior opening must have alpha 0, including all four corners. There must be no visible canvas, white or gray tile, background surface, and absolutely no checkerboard pattern.
+
+Build a bold circular emblem from an open book: two broad warm-ivory page forms rise from the lower center, curve inward like a subtle heart, then continue as a midnight-ink-blue archive ring that quietly suggests an omega without drawing a literal Greek character. Inside the ring, keep one calm midnight-blue field, exactly three small muted-gold constellation stars, and one restrained dusty-violet quill following the right inner arc. Add a tiny muted-gold binding detail at the bottom. Use flat solid colors, a clean premium silhouette, balanced negative space, and generous transparent padding. The book must remain the first reading, with the omega impression discovered second.
+
+No text, no wordmark, no extra stars, no crown, no shield, no astrology wheel, no galaxy effects, no mockup, no 3D, no gradients, no shadows, no watermark. Original design only.
+```
+
+### B-OMEGA-R2-02 — Omega through negative space, fresh alpha generation
+
+```text
+Create one original isolated app-logo symbol on a transparent void. Return a genuine RGBA PNG. Every pixel not belonging to the symbol must be absent with alpha 0, including all four corners, the large central opening, and all exterior gaps. There must be no visible canvas, background color, square tile, and absolutely no checkerboard pattern.
+
+Two broad midnight-ink-blue open-book pages begin at one lower binding point and sweep upward into a nearly complete circular portal. Their lower interior negative space quietly forms an omega-like opening while still reading unmistakably as an open book. Place exactly three small muted-gold stars connected by two delicate gold segments in the open center. One simple dusty-violet quill follows the right arc without dominating it. Add only two warm-ivory page highlights. Use flat solid colors, a stable bold contour, few shapes, and generous transparent padding. It must remain recognizable at favicon size.
+
+Do not draw or paste a literal Greek omega. No text, no wordmark, no extra stars, no crown, no shield, no seal border, no astrology branding, no mockup, no 3D, no gradients, no shadows, no watermark. Original design only.
+```
+
+### B-OMEGA-R2-03 — Simplified archive omega, fresh alpha generation
+
+```text
+Create one original isolated software-logo mark on a transparent void. Return a genuine RGBA PNG. All pixels outside the mark and inside its large openings must have alpha 0, including all four corners. There must be no visible canvas, white or gray square, icon tile, background fill, and absolutely no checkerboard pattern.
+
+Reduce the Celestial Archive idea to one bold midnight-ink-blue omega-like book ring with an open top-right gap, two compact warm-ivory page tips opening from the bottom center, one simple dusty-violet quill stroke crossing the right gap, and exactly three tiny muted-gold constellation nodes joined by two short lines. The ring is formed by book-page geometry rather than a typed Greek character. Use only flat solid colors, very few shapes, large negative spaces, a centered circular silhouette, and generous transparent padding. Optimize for immediate recognition at 16px.
+
+No text, no wordmark, no literal typed omega, no extra stars, no crown, no crest, no astrology icon, no ornate feather detail, no mockup, no 3D, no bevel, no gradients, no shadows, no watermark. Original design only.
+```
+
+## Output audit (2026-08-21)
+
+All twelve active review outputs were generated, copied to the paths in the
+matrix at the top of this document, and visually inspected from their local
+files. No source or application asset was changed.
+
+| Group | Active files | Technical result | Visual comparison purpose |
+|---|---:|---|---|
+| A1 icons | 3 | 1254x1254 PNG; all four corners alpha 0 | doorway/book, Q-portal, and compact page-window readings |
+| A banner 1 organic | 3 | wide opaque PNG; 1693x929, 1774x887, 1734x907 | layered page doorway, single Q ribbon, and painterly living-page horizon |
+| A banner 2 calm | 3 | wide opaque PNG; 1774x887, 1870x841, 1774x887 | two-world painterly path, three explicit ribbons, and one reduced horizon/path |
+| B omega logos | 3 | 1254x1254, 1312x1199, 1254x1254 PNG; all four corners alpha 0 | V1-faithful heart-book, strongest omega negative space, and simplified app mark |
+
+The reference-based R1 attempts for both transparent groups baked an opaque
+checkerboard (six files total, corner alpha 255). They remain preserved as form
+studies under `Experimentelles/refinement-2026-08-21/`; only their fresh R2
+replacements are active review candidates. True corner transparency is not yet
+production approval: after the user chooses a direction, the selected small mark
+still needs a dedicated edge/fringe and reduced-size legibility cleanup pass.
