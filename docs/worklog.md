@@ -31,10 +31,11 @@ optional subtle Q, ink blue/ivory/muted gold). Comparison examples for **B — C
 explicit approval. Approved design spec:
 `docs/superpowers/specs/2026-08-20-visual-asset-library-design.md`. The user approved the written spec
 and delegated detailed visual decisions. Gate-1 implementation plan:
-`docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md`. No images or `pictures/` directories
-have been generated yet; the next action is choosing subagent-driven vs. inline execution. Gate 1 then
-creates the folder/docs scaffold and exactly ten A/B/C review concepts before stopping for visual user
-approval.
+`docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md`. Inline execution was selected. The
+complete `pictures/` folder scaffold and its README, asset catalog, prompt ledger, visual style bible,
+and future universal/Bridgerton placeholders now exist. No production app asset or source file was
+changed. Gate 1 is in progress; the next action is generating and visually checking A-LOGO-01..03,
+followed by the remaining seven A/B/C concepts, before stopping for visual user approval.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -47,14 +48,12 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset library:** execute
-   `docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md` using either
-   `superpowers:subagent-driven-development` (recommended for the structured tasks) or
-   `superpowers:executing-plans`. The milestone scaffolds `pictures/` and generates exactly the A/B/C
-   Gate-1 concept package; stop for visual user approval before producing final brand derivatives or
-   the larger universal/Bridgerton libraries. Use the built-in `image_gen` tool, one call per distinct
-   asset, copy project-bound outputs into `pictures/`, and record exact prompts in
-   `pictures/docs/asset-catalog.md` / `prompts.md`.
+1. **Visual asset library:** continue inline execution of
+   `docs/superpowers/plans/2026-08-20-visual-asset-library-gate-1.md`. The scaffold and metadata are
+   complete; generate exactly the ten A/B/C Gate-1 concepts, beginning with A-LOGO-01..03, inspect each
+   output, copy it into `pictures/review-required/`, and keep catalog dimensions/notes current. Stop for
+   visual user approval before producing final brand derivatives or the larger universal/Bridgerton
+   libraries. Do not modify or replace any production app asset or source file.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger
