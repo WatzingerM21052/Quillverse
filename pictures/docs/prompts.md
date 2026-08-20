@@ -178,6 +178,36 @@ No text, no wordmark, no letters, no stars, no crest, no crown, no flowers, no m
 
 Result: review candidate. Corner alpha verified as 0.
 
+### B-LOGO-01-R1 — unsuccessful fresh RGBA generation
+
+```text
+Create a new PNG logo asset, not a mockup and not a transparency preview.
+
+Use case: logo-brand comparison
+Asset type: square universal literary platform logo mark for the "Celestial Archive" direction
+Symbol: an open book curves into one circular archive portal; inside it is one sparse constellation made from exactly three small stars and thin muted-gold connecting lines; one simple dusty-violet quill arc suggests stories stored as many worlds
+Visual treatment: minimal flat vector-friendly geometry, strong silhouette, elegant and only slightly magical, centered, favicon-readable, generous empty padding
+Palette: midnight ink blue, warm ivory, muted gold, one restrained dusty-violet accent
+
+TECHNICAL OUTPUT REQUIREMENT: deliver an RGBA PNG whose entire canvas outside the symbol is truly transparent (alpha channel value 0). Do not draw or simulate a gray-white checkerboard and do not use any background color or texture.
+
+No wordmark, no text, no letters, no realistic sky, no crest, no crown, no mockup, no 3D, no shadows, no gradients, no watermark. Avoid astrology branding, galaxy effects, excessive sparkles, and fantasy-game emblem styling. Original design only.
+```
+
+Result: rejected. The output still had an opaque checkerboard and corner alpha 255.
+
+### B-LOGO-01-R2 — accepted fresh transparent generation
+
+```text
+Create one isolated logo symbol on a transparent void. Return an RGBA PNG. Every pixel not belonging to the symbol must be absent with alpha 0, including all four corners and the center opening. In the delivered PNG there must be no visible canvas, no white surface, no gray surface, and absolutely no checkerboard pattern.
+
+The symbol is a minimal Celestial Archive mark: two broad midnight-blue book pages curve upward into one circular portal; exactly three tiny muted-gold stars and two thin connecting lines float inside; one simple dusty-violet quill curve rises from the book. Add small warm-ivory page shapes. Use only flat solid shapes, a bold clean silhouette, generous fully transparent padding, and favicon-readable geometry.
+
+No text, no letters, no wordmark, no background, no sky, no seal, no crown, no mockup, no 3D, no shadow, no gradient, no glow, no watermark, no additional sparkles. Original universal literary software identity, not astrology and not a fantasy-game emblem.
+```
+
+Result: review candidate. Corner alpha verified as 0.
+
 ### A-LOGO-03-R1 — accepted fresh RGBA generation
 
 ```text
