@@ -5,6 +5,10 @@ verbatim before generation. If a hard-constraint failure requires a targeted
 regeneration, append that exact revised prompt under the same id with a `-v2`
 suffix; never rewrite the original prompt after the fact.
 
+The post-review three-variant refinement prompts are recorded separately in
+`refinement-round-2026-08-21.md` so the historical Gate-1 prompt ledger remains
+easy to audit.
+
 ## A-LOGO-01 — Book, quill, negative-space Q
 
 ```text
