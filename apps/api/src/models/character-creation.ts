@@ -54,3 +54,23 @@ export interface CharacterCreationDraft {
   };
   openingSummary: string;
 }
+
+/** The 7 free-text Character Creator fields eligible for the "Verbessern" action. */
+export type ImprovableField =
+  | 'appearanceNotes'
+  | 'personalityNotes'
+  | 'strengthsWeaknesses'
+  | 'backstory'
+  | 'personalGoals'
+  | 'family'
+  | 'farmDetails';
+
+export const IMPROVABLE_FIELDS: ImprovableField[] = [
+  'appearanceNotes',
+  'personalityNotes',
+  'strengthsWeaknesses',
+  'backstory',
+  'personalGoals',
+  'family',
+  'farmDetails',
+];
