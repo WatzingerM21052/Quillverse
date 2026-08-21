@@ -141,9 +141,10 @@ opened from their final paths and passed visual/dimension checks. The two
 superseded older-looking Matthias files were moved, not deleted, to
 `pictures/Experimentelles/world-packs/bridgerton/age-correction-2026-08-21/`.
 The age-correction ledger and catalog are current. No `apps/` or seed-data file
-was changed. Remaining visual decisions are user approval of the new age-18
-pair, later finalization of the Icon-1/Icon-3 light/dark pair, and a lusher
-Map-3 palette variant.
+was changed. The complete feedback/age-correction set is commit `87fb373` and is
+pushed to `origin/main`. Remaining visual decisions are user approval of the new
+age-18 pair, later finalization of the Icon-1/Icon-3 light/dark pair, and a
+lusher Map-3 palette variant.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
