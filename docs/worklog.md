@@ -12,6 +12,62 @@ share memory otherwise.
 
 ---
 
+## Character Creator "Verbessern" (field-improvement) batch — 2026-08-21, isolated worktree
+
+Built on branch `worktree-prompt-verbessern` (isolated git worktree at
+`.claude/worktrees/prompt-verbessern/`, deliberately separate from `main` because another session was
+actively committing to `main` at the same time this batch started — see that session's own note near
+commit `c42a924`). Full brainstorm → spec → plan → `superpowers:subagent-driven-development` cycle, same
+process as every other batch this project uses. Design spec:
+`docs/superpowers/specs/2026-08-21-prompt-verbessern-design.md`. Implementation plan:
+`docs/superpowers/plans/2026-08-21-prompt-verbessern-character-creator.md`.
+
+**What it adds:** a per-field `✨ Verbessern` action on the 7 free-text Character Creator inputs
+(Aussehen, Persönlichkeit, Stärken & Schwächen, Bisherige Lebensgeschichte, Persönliche Ziele, Familie,
+Hof), with a global Polieren/Ausformulieren mode switch. Backend: new stateless
+`POST /api/character-creation/improve-field` (schema: `apps/api/src/routes/character-creation.ts`,
+`character-field-improvement-prompt.ts`, `validate-field-improvement.ts`), reusing the same
+provider-fallback/JSON-repair-retry pattern as `/draft`. Frontend: suggestion-card UI
+(Übernehmen/Verwerfen) per field, independent loading/error state per field
+(`character-creator-screen.ts`/`.html`/`.scss`).
+
+**Review found and fixed one real bug in my own plan text (not an implementer error):** the plan's
+original per-field markup nested the `<button>` inside the `<label>` alongside the `<textarea>` — with
+no explicit `for`, the label implicitly bound to the button (first labelable descendant), so clicking a
+field's plain label text fired an unintended AI call instead of focusing the textarea, and the textarea
+lost its accessible name. Fixed by restructuring to `<div class="creator__field"><label
+class="creator__field-label-row" for="field-X">…</label><textarea id="field-X">` (label/textarea as
+siblings, linked via `for`/`id`) across all 7 fields; the plan's Task 8 SCSS was amended in place before
+that task ran. All 9 tasks passed task-scoped review (1 fix round each on Tasks 6 and 7, both clean on
+re-review); ledger at
+`.claude/worktrees/prompt-verbessern/.superpowers/sdd/2026-08-21-prompt-verbessern-character-creator/progress.md`.
+
+**Verification done:** `apps/api` full test suite green (43/43) after Task 4; `validate-field-improvement`
+unit tests (5/5, TDD); `ng build` clean; live-verified in a fresh isolated worktree — migrations applied
+to that worktree's own local D1 (`npm run db:migrate:local`), confirmed via curl that
+`/improve-field` correctly returns the same "no provider connected" 400 as `/draft` and correctly
+rejects missing-field/invalid-mode requests with 400. Live browser pass via Claude-in-Chrome (temporarily
+pointed `api.config.ts` at `http://127.0.0.1:8787` for this one test only, then `git checkout`-reverted
+immediately after — never committed): confirmed the label/button fix actually works (clicking a field's
+label text focuses the textarea, not the button), confirmed independent per-field loading/error state
+(two fields showing their own inline error simultaneously without interfering), confirmed the mode
+switch toggles, confirmed the existing "Vorschlag generieren" flow is unaffected (same error path,
+unchanged). No browser console errors.
+
+**Not verified — needs a connected AI provider:** the actual AI-generated improvement text (both modes)
+was not observed, since this isolated worktree's local D1 has no BYOK credentials of its own (by design —
+sharing the main worktree's live local D1 file with a second concurrent `wrangler dev` process was judged
+too risky given the other session's concurrent activity). Whoever picks this up next should either
+connect a provider in this worktree's own Settings screen and click through both modes once, or do that
+check after deploy.
+
+**Not merged, not pushed.** This branch sits on top of local `main` as of commit `f787835` (which
+already includes the other session's `c42a924`/`1b1ff80` visual-batch commits, per the earlier
+coordination note). Needs explicit user go-ahead before merging into `main` and pushing — same
+concurrent-session caution that applied when this branch was created.
+
+---
+
 ## Status snapshot (2026-08-20/21, current session)
 
 Last pushed commit before this visual-design task: `9c12c8c` (worklog handoff after the Continuity
