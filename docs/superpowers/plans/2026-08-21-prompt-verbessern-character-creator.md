@@ -960,13 +960,21 @@ git commit -m "Add Verbessern buttons, mode switch, and suggestion cards to Char
 - Modify: `apps/web/src/app/features/character-creator/character-creator-screen/character-creator-screen.scss`
 
 **Interfaces:**
-- Consumes: class names introduced in Task 7 (`creator__mode-switch`, `creator__mode-switch-btn`, `creator__mode-switch-btn--active`, `creator__field-label-row`, `creator__improve-btn`, `creator__suggestion`, `creator__suggestion-actions`, `creator__error--field`).
+- Consumes: class names introduced in Task 7 as amended by its fix round (`creator__mode-switch`, `creator__mode-switch-btn`, `creator__mode-switch-btn--active`, `creator__field`, `creator__field-label-row`, `creator__improve-btn`, `creator__suggestion`, `creator__suggestion-actions`, `creator__error--field`).
+
+**Note:** Task 7's review found that its original brief text (nesting the `<button>` inside the `<label>` alongside the `<textarea>`) broke label/control association — clicking a field's label text fired an unintended AI call instead of focusing the textarea. The fix (already applied in Task 7's commits) restructures each of the 7 field blocks to `<div class="creator__field"><label class="creator__field-label-row" for="field-X">...text + button...</label><textarea id="field-X" ...></textarea></div>` — the `<label>` no longer wraps the `<textarea>`, they're siblings inside a new `.creator__field` wrapper, linked via `for`/`id`. This task's styles account for that structure: `.creator__field` now carries the flex-column layout the old `<label>` used to provide, and `.creator__field-label-row` applies directly to the `<label>` element (not a nested `<span>`).
 
 - [ ] **Step 1: Append the new styles**
 
 Add to the end of `apps/web/src/app/features/character-creator/character-creator-screen/character-creator-screen.scss`:
 
 ```scss
+.creator__field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
 .creator__mode-switch {
   display: flex;
   align-items: center;
@@ -994,8 +1002,11 @@ Add to the end of `apps/web/src/app/features/character-creator/character-creator
   }
 }
 
-.creator__field-label-row {
+// Equal specificity to the existing `.creator__form label` rule (character-creator-screen.scss:40-47),
+// later in source order — wins the cascade and overrides that rule's `flex-direction: column` with `row`.
+label.creator__field-label-row {
   display: flex;
+  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;
