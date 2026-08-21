@@ -191,8 +191,25 @@ seed data, production asset, or integration changed.
 The user then reviewed Anne's doorway scene, Grace's gate scene, Thomas's
 arrival, and the complete four-person family scene and confirmed that they look
 good. All four new scenes are now `positive`; the family-scene review checkpoint
-is closed. Only the three real-alpha Anne/Grace/Thomas cutouts remain missing
-from this visual package.
+is closed. The three real-alpha Anne/Grace/Thomas cutouts were the last missing
+family assets and were completed in the deterministic follow-up below.
+
+**Deterministic Hale cutout completion finished 2026-08-21.** The user clarified
+that only the complete image set matters now, not product code, and explicitly
+authorized a local deterministic extraction method if it works. They clarified
+that “Luke” was a typo for Matthias: the intended result is the same isolated
+bust treatment as Matthias. Anne, Grace 16, and Thomas now exist as 1254x1254
+`Format32bppArgb` PNGs under the final package. The method flood-fills the painted
+light-neutral checker field, removes large enclosed components of the same
+material, converts them to real alpha, and decontaminates only the immediate
+antialiased boundary. Grace's first deterministic intermediate retained one
+enclosed checker region; it was preserved under `Experimentelles` and corrected
+without removing her loose hair. All three finals were checked on white and dark
+surfaces with no remaining checker or removed face/clothing. Exact thresholds,
+pixel counts, corner-alpha values, and validation are recorded in
+`pictures/docs/hale-final-family-round-2026-08-21.md`. This is image processing
+only: no Python, external API, source portrait overwrite, `apps/` change, or
+production integration.
 The completed family package was staged separately but was consumed by the
 concurrently running Character Creator planning commit `9eedfa0`, which also
 contains `docs/superpowers/plans/2026-08-21-prompt-verbessern-character-creator.md`.
@@ -211,12 +228,11 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset completion:** Icon family, Lush Sage preference, all four portraits, all five
-   individual/family scenes, and the visible Matthias cutout are now confirmed. Anne/Grace/Thomas
-   real-alpha cutouts remain the only missing family assets. Offer the documented
-   CLI/API fallback only if the user explicitly authorizes it and confirms `OPENAI_API_KEY` is set;
-   otherwise use a separately authorized deterministic extraction tool later. Do not integrate any
-   candidate into the app without separate approval.
+1. **Visual review only:** the image package is complete. Icon family, Lush Sage preference, all four
+   portraits, all five individual/family scenes, and the visible Matthias cutout are confirmed.
+   Anne/Grace/Thomas now also have locally validated real-alpha cutouts; show those three to the user
+   and change their catalog status from `needs-review` only after explicit visual confirmation. Do not
+   integrate any candidate into the app without separate approval.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger

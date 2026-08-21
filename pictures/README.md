@@ -41,10 +41,12 @@ active review candidates. Matthias's cutout needs edge refinement; failed
 Anne/Grace/Thomas alpha attempts live only under `Experimentelles`.
 
 The selected Hale-family review package is grouped under
-`world-packs/bridgerton/final-family-2026-08-21/`: four accepted portraits, all
-four individual story scenes, and one scene with the complete family together.
-Its README clearly distinguishes complete assets from the still-missing real-
-alpha Anne/Grace/Thomas cutouts. Exact prompts and audit:
+`world-packs/bridgerton/final-family-2026-08-21/`: four accepted portraits, four
+real-alpha character cutouts, all four individual story scenes, and one scene
+with the complete family together. Anne, Grace, and Thomas were finished with
+the user-authorized deterministic alpha pass after built-in generation returned
+painted checkerboards; all failed and intermediate versions remain preserved
+under `Experimentelles`. Exact prompts and audit:
 `docs/hale-final-family-round-2026-08-21.md`.
 
 The first user review is recorded in

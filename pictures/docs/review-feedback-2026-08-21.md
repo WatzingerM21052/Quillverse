@@ -151,3 +151,14 @@ The user reviewed all four newly presented story scenes and confirmed that they
 look good. Anne's doorway scene, Grace's gate scene, Thomas's arrival, and the
 complete four-person family scene therefore move from `needs-review` to
 `positive`. This remains visual approval only; no app integration was requested.
+
+## Deterministic family-cutout completion
+
+The user clarified that the earlier “Luke” wording meant Matthias and authorized
+the same practical outcome for the remaining family members. Anne, Grace, and
+Thomas now each have a genuine 32-bit ARGB bust cutout in the final family
+package. All were checked on white and dark surfaces. Grace's first deterministic
+intermediate exposed one enclosed checker region behind loose hair; that version
+was preserved under `Experimentelles` and the corrected final retains the hair
+while removing the region. The three final cutouts are technically complete and
+remain `needs-review` until the user confirms their visual preference.

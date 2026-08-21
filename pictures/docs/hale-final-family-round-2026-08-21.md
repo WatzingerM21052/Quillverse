@@ -1,7 +1,8 @@
 # Hale Final Family Package — 2026-08-21
 
-Status: scene generation, local audit, and user visual review complete. Built-in
-cutout generation remains technically blocked; no application or seed-data
+Status: complete image package generated and locally audited. Built-in cutout
+generation remained technically blocked, so the user authorized deterministic
+alpha extraction for Anne, Grace, and Thomas. No application or seed-data
 integration is authorized.
 
 ## User decisions carried forward
@@ -11,8 +12,8 @@ integration is authorized.
 - Matthias's age-18 portrait, dawn scene, and transparent-looking cutout are
   visually accepted. The existing technical edge note on the cutout remains.
 - Anne, Grace, and Thomas portraits are accepted unchanged.
-- This round creates only the missing cutouts, three individual story scenes,
-  and one final scene containing the complete Hale family.
+- This round created the missing cutouts, three individual story scenes, and one
+  final scene containing the complete Hale family.
 
 ## Output package
 
@@ -140,8 +141,9 @@ Avoid: missing or duplicated family member, face blending, age drift, Grace appe
 
 - Open every generated and copied output from its final project path.
 - Record dimensions and byte size.
-- Cutouts must be ARGB/RGBA and have alpha 0 at all four corners. An opaque
-  checkerboard is a technical failure and stays only under the matching
+- Cutouts must be ARGB/RGBA. Every empty corner must have alpha 0; a cropped
+  garment may legitimately reach a lower canvas corner. An opaque checkerboard
+  is a technical failure and stays only under the matching
   `pictures/Experimentelles/.../technical-failures/` folder.
 - Compare scenes with their portrait and farm references for identity, age,
   clothing, architecture, period details, forbidden text, and extra people.
@@ -161,6 +163,9 @@ byte-identical to their accepted source files.
 | `portraits/grace-hale-age-16.png` | 1254x1254 | Byte-identical accepted age-16 Grace portrait |
 | `portraits/thomas-hale.png` | 1254x1254 | Byte-identical accepted Thomas portrait |
 | `cutouts/matthias-hale-age-18.png` | 1230x1278 | Byte-identical visually accepted draft; existing edge contamination and corner alpha `0,0,3,223` remain documented |
+| `cutouts/anne-hale.png` | 1254x1254 | Genuine `Format32bppArgb`; empty-corner alpha `0,0,0,0`; no painted checkerboard |
+| `cutouts/grace-hale-age-16.png` | 1254x1254 | Genuine `Format32bppArgb`; empty-corner alpha `0,0,0,0`; enclosed checker region removed while preserving loose hair |
+| `cutouts/thomas-hale.png` | 1254x1254 | Genuine `Format32bppArgb`; top and lower-left corner alpha 0; lower-right remains opaque only because the cropped jacket legitimately reaches that corner |
 | `story-scenes/matthias-at-dawn-age-18.png` | 1536x1024 | Byte-identical accepted dawn scene |
 | `story-scenes/anne-at-the-farmhouse-door.png` | 1536x1024 | Anne remains age 47 and recognizable; exactly one person; practical linen/doorway beat and canonical farm are coherent |
 | `story-scenes/grace-at-the-farm-gate.png` | 1536x1024 | Grace remains clearly youthful and plausibly 16; exactly one person; gate, basket, road, and farm communicate curiosity |
@@ -171,15 +176,49 @@ No scene contains text, watermark, modern objects, aristocratic glamour, or an
 extra person. The user subsequently confirmed that the complete scene set looks
 good. This visual approval is not permission for application integration.
 
-## Cutout limitation
+## Built-in cutout-generation limitation — historical record
 
 The three R1 calls and the simplified Anne R2 control all returned
 `Format24bppRgb` with corner alpha `255,255,255,255`; the visible transparency
 pattern is painted into the RGB image. The four files are preserved only under
 `Experimentelles/world-packs/bridgerton/final-family-2026-08-21/technical-failures/`.
-No Anne, Grace, or Thomas cutout is promoted into the final package.
+At that stage no Anne, Grace, or Thomas cutout was promoted. The deterministic
+follow-up below subsequently completed all three without another image API.
 
-The image-generation skill's fallback route requires a locally configured
-`OPENAI_API_KEY` and explicit user permission. It was not used. A future
-authorized deterministic or CLI extraction pass is still required for those
-three real-alpha cutouts.
+## Deterministic cutout completion — authorized follow-up
+
+The user explicitly authorized a local deterministic extraction method as long
+as it produces working image files and asked to match the Matthias result. An
+earlier mention of “Luke” was subsequently clarified as a typo for Matthias.
+The reproducible method uses each strongest isolated R1 figure as the foreground
+source and converts only its painted neutral checker field into genuine PNG
+alpha.
+
+The extraction is performed in memory with .NET `System.Drawing`; no Python,
+external API, model download, application code, or source portrait modification
+is involved:
+
+1. Seed a flood fill from the top and side canvas edges.
+2. Classify connected very-light near-neutral pixels as definite painted
+   background (`min RGB >= 220`, channel spread `<= 15`).
+3. Remove both the edge-connected field and any large enclosed component of the
+   same checker material. This second rule was needed for one region trapped
+   between Grace's loose hair and neck.
+4. For the immediate foreground boundary, derive a short antialiased alpha ramp
+   from color distance to the neighboring removed background and decontaminate
+   RGB against that sampled background color.
+5. Preserve all non-boundary person pixels unchanged and save a new 32-bit ARGB
+   PNG under the final package's `cutouts/` folder.
+
+Every output was opened locally and passed these checks before promotion:
+`Format32bppArgb`, alpha 0 at every empty corner, no visible checker, no removed
+face/clothing area, and no obvious matte block on dark or light previews.
+
+| Output | Transparent pixels | Partial-alpha pixels | Opaque pixels | Corner alpha | Result |
+|---|---:|---:|---:|---|---|
+| `cutouts/anne-hale.png` | 843,456 | 4,059 | 725,001 | `0,0,0,0` | Passed local alpha and light/dark visual audit |
+| `cutouts/grace-hale-age-16.png` | 860,933 | 6,989 | 704,594 | `0,0,0,0` | Passed after archiving the first deterministic intermediate with an enclosed checker region |
+| `cutouts/thomas-hale.png` | 706,051 | 1,580 | 864,885 | `0,0,0,255` | Passed; the final corner is occupied by the correctly cropped jacket, not background |
+
+The three final files are technically complete and await only the user's visual
+preference review. No application code or production asset was changed.
