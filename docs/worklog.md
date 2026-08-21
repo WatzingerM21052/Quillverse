@@ -246,6 +246,23 @@ already contains unrelated Character Creator planning commits plus the completed
 Hale-family commits through `5184de8`, so this image batch must not be pushed
 implicitly as if it were an isolated visual-only publication.
 
+**Historical-neutral ornament alternative completed 2026-08-21.** The user
+called the Living Manuscript ornaments/banners “MEGA” and explicitly kept the
+existing colorful botanical/paper set as the primary Quillverse direction. They
+requested a separate fallback that simply feels like old times: realistic aged
+parchment, historical ink, plain wax, restrained engraving and old cartography,
+without fantasy, botanical romance, branding, or a world-specific theme. Seven
+assets now live only under
+`pictures/universal/ornaments/historical-neutral-2026-08-21/`: parchment panel,
+chapter divider, unbranded wax seal, four-corner engraving sheet, antique compass
+rose, dialogue rule, and archival relationship background. The five overlay
+assets are native ARGB; the two backgrounds are intentionally opaque. Every file
+was inspected together as a contact sheet and no technical failure occurred.
+The primary set remains untouched and is now cataloged as `user-favorite`; this
+new folder remains `needs-review`. Exact direction and audit:
+`pictures/docs/historical-neutral-ornaments-round-2026-08-21.md`. Image/docs only,
+no application integration.
+
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
 reviewed; 3 of them needed a fix round (all fixed and re-reviewed clean — see "Done this session" below

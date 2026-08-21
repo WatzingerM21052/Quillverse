@@ -60,6 +60,14 @@ Exact prompts, dimensions, validation results, and handoff:
 `docs/visual-expansion-round-2026-08-21.md`. Nothing from this expansion is wired
 into the application.
 
+The user selected `universal/ornaments/expansion-2026-08-21/` as the primary
+Quillverse ornament direction. A separate, deliberately quieter fallback lives
+under `universal/ornaments/historical-neutral-2026-08-21/`: seven realistic
+aged-parchment, ink, wax, engraving, map, and archive assets without fantasy,
+botanical romance, branding, or world-specific motifs. It is an alternative,
+not a replacement. Exact direction and audit:
+`docs/historical-neutral-ornaments-round-2026-08-21.md`.
+
 The first user review is recorded in
 `docs/review-feedback-2026-08-21.md`. A1 is the current preferred master-logo
 concept, while the top-center treatment on the icon study is the current favicon/
