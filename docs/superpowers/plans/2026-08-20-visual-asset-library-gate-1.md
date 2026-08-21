@@ -1,5 +1,11 @@
 # Visual Asset Library Gate 1 Implementation Plan
 
+> **Historical plan / current-storage note (2026-08-21):** The steps below
+> intentionally retain their original Gate-1 paths and `needs-review` language.
+> That review is complete and `pictures/review-required/` no longer exists.
+> Use `pictures/README.md` for navigation and
+> `pictures/docs/asset-catalog.md` for current paths and status.
+
 Status: completed historical plan. Gate 1 was generated, reviewed, and followed
 by the later Gate 2, expansion, ornament, and completion rounds. Unchecked boxes
 below are retained as the original execution recipe and are not current TODOs.

@@ -17,21 +17,21 @@ integration is authorized.
 
 ## Output package
 
-All selected and new family assets are grouped under
-`world-packs/bridgerton/final-family-2026-08-21/` without overwriting their
-historical source files.
+The former dated family package is now flattened into the canonical functional
+folders under `world-packs/bridgerton/`. Historical source/package copies remain
+under `archive/superseded/world-packs/bridgerton/`.
 
 | Prompt ID | Output |
 |---|---|
-| COPY-PORTRAIT-01 | `portraits/matthias-hale-age-18.png` |
-| COPY-PORTRAIT-02 | `portraits/anne-hale.png` |
-| COPY-PORTRAIT-03 | `portraits/grace-hale-age-16.png` |
-| COPY-PORTRAIT-04 | `portraits/thomas-hale.png` |
+| COPY-PORTRAIT-01 | `characters/portraits/matthias-hale-age-18.png` |
+| COPY-PORTRAIT-02 | `characters/portraits/anne-hale.png` |
+| COPY-PORTRAIT-03 | `characters/portraits/grace-hale-age-16.png` |
+| COPY-PORTRAIT-04 | `characters/portraits/thomas-hale.png` |
 | COPY-SCENE-01 | `story-scenes/matthias-at-dawn-age-18.png` |
-| COPY-CUTOUT-01 | `cutouts/matthias-hale-age-18.png` |
-| REG-CUTOUT-ANNE-FINAL | `cutouts/anne-hale.png` |
-| REG-CUTOUT-GRACE-FINAL | `cutouts/grace-hale-age-16.png` |
-| REG-CUTOUT-THOMAS-FINAL | `cutouts/thomas-hale.png` |
+| COPY-CUTOUT-01 | `characters/cutouts/matthias-hale-age-18.png` |
+| REG-CUTOUT-ANNE-FINAL | `characters/cutouts/anne-hale.png` |
+| REG-CUTOUT-GRACE-FINAL | `characters/cutouts/grace-hale-age-16.png` |
+| REG-CUTOUT-THOMAS-FINAL | `characters/cutouts/thomas-hale.png` |
 | REG-SCENE-ANNE-FINAL | `story-scenes/anne-at-the-farmhouse-door.png` |
 | REG-SCENE-GRACE-FINAL | `story-scenes/grace-at-the-farm-gate.png` |
 | REG-SCENE-THOMAS-FINAL | `story-scenes/thomas-arrives-at-hale-farm.png` |
@@ -144,7 +144,7 @@ Avoid: missing or duplicated family member, face blending, age drift, Grace appe
 - Cutouts must be ARGB/RGBA. Every empty corner must have alpha 0; a cropped
   garment may legitimately reach a lower canvas corner. An opaque checkerboard
   is a technical failure and stays only under the matching
-  `pictures/Experimentelles/.../technical-failures/` folder.
+  `pictures/archive/technical-failures/` branch.
 - Compare scenes with their portrait and farm references for identity, age,
   clothing, architecture, period details, forbidden text, and extra people.
 - The ensemble must contain exactly four distinct family members.
@@ -181,7 +181,7 @@ good. This visual approval is not permission for application integration.
 The three R1 calls and the simplified Anne R2 control all returned
 `Format24bppRgb` with corner alpha `255,255,255,255`; the visible transparency
 pattern is painted into the RGB image. The four files are preserved only under
-`Experimentelles/world-packs/bridgerton/final-family-2026-08-21/technical-failures/`.
+`archive/technical-failures/world-packs/bridgerton/characters/cutouts/final-family-pass/`.
 At that stage no Anne, Grace, or Thomas cutout was promoted. The deterministic
 follow-up below subsequently completed all three without another image API.
 

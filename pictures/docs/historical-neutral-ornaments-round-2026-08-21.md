@@ -9,7 +9,7 @@ neutral historical option.
 
 ## Direction lock
 
-The existing `universal/ornaments/expansion-2026-08-21/` Living Manuscript set
+The existing `universal/ornaments/living-manuscript/` Living Manuscript set
 remains the primary Quillverse ornament direction. This round adds a separate
 alternative, not a replacement.
 
@@ -21,7 +21,7 @@ celestial lore, botanical romance, steampunk, or modern graphic design.
 
 ## Output folder and matrix
 
-Final folder: `pictures/universal/ornaments/historical-neutral-2026-08-21/`
+Final folder: `pictures/universal/ornaments/historical-neutral/`
 
 1. `aged-parchment-panel.png` — quiet opaque writing surface.
 2. `hand-ruled-chapter-divider.png` — transparent ink divider.
@@ -48,8 +48,8 @@ Final folder: `pictures/universal/ornaments/historical-neutral-2026-08-21/`
 - Open every final file from the project folder.
 - Verify dimensions and pixel format.
 - Inspect transparent outputs over a checkerboard.
-- Archive technical generation failures under the matching `Experimentelles`
-  tree rather than promoting them.
+- Archive technical generation failures under `archive/technical-failures/`
+  rather than promoting them.
 - Update the asset catalog, picture-library README, and persistent worklog.
 - Do not change files under `apps/`.
 

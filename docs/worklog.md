@@ -12,6 +12,34 @@ share memory otherwise.
 
 ---
 
+## Picture-library reorganization (2026-08-21, current handoff)
+
+The image-only work is complete and the library has been reorganized by stable
+function instead of temporary review round. The obsolete top-level
+`pictures/review-required/` and mixed-language `pictures/Experimentelles/`
+trees were retired. The current entry points are:
+
+- `pictures/brand/`: final logos/wordmarks/icons, reviewed concepts and banners,
+  and presentation artwork;
+- `pictures/universal/`: reusable characters, locations, maps, ornaments,
+  placeholders, story stage, and texture;
+- `pictures/world-packs/bridgerton/`: canonical Hale portraits, cutouts,
+  expressions, locations, variants, interiors, map, objects, and scenes;
+- `pictures/archive/`: alternatives, form references, superseded/source copies,
+  and technical failures, organized by reason;
+- `pictures/docs/`: current catalog, style bible, prompt ledger, review history,
+  generation audits, and a documentation index.
+
+All **217 PNG files** remain preserved: 42 brand, 31 universal, 73 world-pack,
+and 71 archive files. No application source, Angular asset, API file, seed data,
+or production configuration was changed. User review is complete; there are no
+outstanding image generations, image fixes, or image feedback requests. Image-
+library approval still does not authorize application integration. Start future
+visual work at `pictures/README.md`, then use `pictures/docs/asset-catalog.md`
+for exact status and provenance.
+
+---
+
 ## Status snapshot (2026-08-20/21, current session)
 
 Last pushed commit before this visual-design task: `9c12c8c` (worklog handoff after the Continuity

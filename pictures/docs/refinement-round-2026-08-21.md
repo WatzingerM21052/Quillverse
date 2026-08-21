@@ -1,10 +1,10 @@
 # Core Brand Refinement Round — 2026-08-21
 
-This review round creates exactly three variants for each of four approved
-refinement targets. Existing favorites remain unchanged, every output is
-preserved, and nothing is integrated into the app. After user review, active
-candidates remain under `pictures/review-required/`; rejected alternatives and
-technical failures live under `pictures/Experimentelles/`.
+This review round created exactly three variants for each of four approved
+refinement targets. Existing favorites remained unchanged, every output is
+preserved, and nothing was integrated into the app. After completed user review,
+useful candidates live under `pictures/brand/concepts/`; rejected alternatives
+and technical failures live under the appropriate `pictures/archive/` branch.
 
 Built-in `image_gen` is used once per distinct variant. Reference images are
 project-local files and are inspected before generation.
@@ -13,18 +13,18 @@ project-local files and are inspected before generation.
 
 | Prompt ID | Output |
 |---|---|
-| A1-ICON-R2-01 | `review-required/refinement-2026-08-21/01-a1-icons/alternatives/a1-icon-book-doorway-quill.png` |
-| A1-ICON-R2-02 | `review-required/refinement-2026-08-21/01-a1-icons/preferred/a1-icon-q-portal.png` |
-| A1-ICON-R2-03 | `review-required/refinement-2026-08-21/01-a1-icons/alternatives/a1-icon-page-window.png` |
-| A-BANNER1-R1-01 | `review-required/refinement-2026-08-21/02-a-banner-1-organic/preferred/organic-page-doorway.png` |
-| A-BANNER1-R1-02 | `review-required/refinement-2026-08-21/02-a-banner-1-organic/strong-alternatives/ink-ribbon-portal.png` |
-| A-BANNER1-R1-03 | `review-required/refinement-2026-08-21/02-a-banner-1-organic/strong-alternatives/living-pages-horizon.png` |
-| A-BANNER2-R1-01 | `review-required/refinement-2026-08-21/03-a-banner-2-calm/preferred/two-worlds-clear-path.png` |
-| A-BANNER2-R1-02 | `review-required/refinement-2026-08-21/03-a-banner-2-calm/strong-alternatives/three-worlds-paper-ribbons.png` |
-| A-BANNER2-R1-03 | `review-required/refinement-2026-08-21/03-a-banner-2-calm/strong-alternatives/single-horizon-storyflow.png` |
-| B-OMEGA-R2-01 | `review-required/refinement-2026-08-21/04-b-omega/needs-refinement/omega-book-faithful.png` |
-| B-OMEGA-R2-02 | `Experimentelles/refinement-2026-08-21/04-b-omega/not-preferred/omega-negative-space.png` |
-| B-OMEGA-R2-03 | `Experimentelles/refinement-2026-08-21/04-b-omega/not-preferred/omega-archive-simplified.png` |
+| A1-ICON-R2-01 | `brand/concepts/living-manuscript/icons/alternatives/a1-icon-book-doorway-quill.png` |
+| A1-ICON-R2-02 | `brand/concepts/living-manuscript/icons/preferred/a1-icon-q-portal.png` |
+| A1-ICON-R2-03 | `brand/concepts/living-manuscript/icons/alternatives/a1-icon-page-window.png` |
+| A-BANNER1-R1-01 | `brand/concepts/living-manuscript/banners/organic/preferred/organic-page-doorway.png` |
+| A-BANNER1-R1-02 | `brand/concepts/living-manuscript/banners/organic/alternatives/ink-ribbon-portal.png` |
+| A-BANNER1-R1-03 | `brand/concepts/living-manuscript/banners/organic/alternatives/living-pages-horizon.png` |
+| A-BANNER2-R1-01 | `brand/concepts/living-manuscript/banners/worlds/preferred/two-worlds-clear-path.png` |
+| A-BANNER2-R1-02 | `brand/concepts/living-manuscript/banners/worlds/alternatives/three-worlds-paper-ribbons.png` |
+| A-BANNER2-R1-03 | `brand/concepts/living-manuscript/banners/worlds/alternatives/single-horizon-storyflow.png` |
+| B-OMEGA-R2-01 | `archive/alternatives/brand/celestial-archive/logos/omega-book-faithful.png` |
+| B-OMEGA-R2-02 | `archive/alternatives/brand/celestial-archive/logos/omega-negative-space.png` |
+| B-OMEGA-R2-03 | `archive/alternatives/brand/celestial-archive/logos/omega-archive-simplified.png` |
 
 ## A1 icon variants
 
@@ -250,7 +250,7 @@ Avoid: generic astrology app icon, ornate feather detail, fantasy-game badge, lu
 
 All three reference-based icon generations rendered an opaque checkerboard
 (corner alpha 255). The files are preserved under
-`Experimentelles/refinement-2026-08-21/01-a1-icons/technical-failures/`. Their
+`archive/technical-failures/brand/living-manuscript/refined-icons/`. Their
 active replacements use fresh reference-free prompts to prevent the icon-study
 board background from propagating.
 
@@ -288,7 +288,7 @@ No text, no wordmark, no literal scenery, no stars, no crown, no flowers, no moc
 
 All three reference-based B-logo generations rendered an opaque checkerboard
 (corner alpha 255). The files are preserved under
-`Experimentelles/refinement-2026-08-21/04-b-omega/technical-failures/` as
+`archive/technical-failures/brand/celestial-archive/omega-refinement/` as
 useful form studies only. Their active replacements use fresh reference-free
 prompts so that the defective V1 canvas cannot propagate again.
 
@@ -336,13 +336,11 @@ files. No source or application asset was changed.
 | B omega logos | 3 | 1 | 1254x1254, 1312x1199, 1254x1254 PNG; all four corners alpha 0 | V1-faithful heart-book, strongest omega negative space, and simplified app mark |
 
 The reference-based R1 attempts for both transparent groups baked an opaque
-checkerboard (six files total, corner alpha 255). They remain preserved as form
-studies under `Experimentelles/refinement-2026-08-21/`; only their fresh R2
-replacements are active review candidates. True corner transparency is not yet
-production approval: after the user chooses a direction, the selected small mark
-still needs a dedicated edge/fringe and reduced-size legibility cleanup pass.
-That cleanup and the 16/32/48/192/512 PNG derivatives were completed later in
-`visual-library-completion-round-2026-08-21.md`.
+checkerboard (six files total, corner alpha 255). They remain preserved under
+`archive/technical-failures/`; only their fresh R2 replacements remain useful
+concepts. True corner transparency was not production approval at this stage.
+The selected mark's later edge/fringe cleanup and 16/32/48/192/512 PNG
+derivatives are recorded in `visual-library-completion-round-2026-08-21.md`.
 
 ## User review decision (2026-08-21)
 
@@ -355,10 +353,10 @@ That cleanup and the 16/32/48/192/512 PNG derivatives were completed later in
   worlds, clear path** is the current likely favorite, while B2.2 and B2.3
   remain strong alternatives.
 - **O1 / faithful heart-book omega** is only the most usable of the three new B
-  studies and still does not clearly beat the original V1 form reference. O2 and
-  O3 were rated quite poor and moved to `Experimentelles/.../not-preferred/`.
+  studies and still does not clearly beat the original V1 form reference. O1,
+  O2, and O3 are preserved under `archive/alternatives/brand/celestial-archive/`.
 
-The folder hierarchy now mirrors that decision with numbered groups and explicit
-status folders: `preferred`, `strong-alternatives`, `alternatives`,
-`needs-refinement`, `not-preferred`, and `technical-failures`. Selection remains
-a design preference, not permission for application integration.
+The current hierarchy mirrors that decision with `preferred/` and
+`alternatives/` inside the useful concept groups and reason-first branches in
+`archive/`. Selection remains a design preference, not permission for
+application integration.

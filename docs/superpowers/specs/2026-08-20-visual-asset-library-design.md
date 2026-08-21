@@ -1,5 +1,12 @@
 # Visual Asset Library — Design Specification
 
+> **Current-storage note (2026-08-21):** This specification preserves the
+> original Gate-1 review workflow and therefore mentions the former
+> `pictures/review-required/` layout. Review has since completed. The current
+> canonical structure is documented in `pictures/README.md`, and every current
+> file path is recorded in `pictures/docs/asset-catalog.md`. Do not recreate the
+> old review folder from the historical examples below.
+
 Date: 2026-08-20  
 Status: completed image library; final completion audit 2026-08-21
 Scope: project-local image library and review workflow, not app integration

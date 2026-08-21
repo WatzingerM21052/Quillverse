@@ -15,8 +15,8 @@ This remains an image-only task. No seed data or application code is changed.
 
 | Prompt ID | Output |
 |---|---|
-| REG-CHAR-01-AGE18 | `world-packs/bridgerton/characters/refinement-2026-08-21/matthias-hale-age-18.png` |
-| REG-SCENE-01-AGE18 | `world-packs/bridgerton/story-scenes/refinement-2026-08-21/matthias-at-dawn-age-18.png` |
+| REG-CHAR-01-AGE18 | `world-packs/bridgerton/characters/portraits/matthias-hale-age-18.png` |
+| REG-SCENE-01-AGE18 | `world-packs/bridgerton/story-scenes/matthias-at-dawn-age-18.png` |
 
 ## REG-CHAR-01-AGE18 — Matthias at exactly 18
 
@@ -67,7 +67,7 @@ paths, opened locally, and visually inspected.
 
 Grace remains the existing 1254x1254 `REG-CHAR-03` portrait and is visually
 locked to age 16. The superseded older-looking Matthias portrait and scene were
-preserved, not deleted, under
-`Experimentelles/world-packs/bridgerton/age-correction-2026-08-21/`.
+preserved, not deleted, under `archive/superseded/world-packs/bridgerton/` in
+the `characters/` and `story-scenes/` folders.
 
 No application or seed-data file was changed.

@@ -19,8 +19,8 @@
 - **C banner:** standout response — “richtig krass”.
 
 Every generated image remains preserved. Non-final and technically defective
-versions were moved under `pictures/Experimentelles/` with purpose-specific
-subfolders. No app file or production asset was changed.
+versions are filed under the reason-first `pictures/archive/` branches. No app
+file or production asset was changed.
 
 ## Design synthesis
 
@@ -55,8 +55,8 @@ The requested three-variants-per-target round is complete. User feedback:
   with all three retained as strong active candidates.
 - **O1:** most usable of the new B/Omega group, but still does not clearly beat
   the original V1 form.
-- **O2 and O3:** rated quite poor; preserved under `Experimentelles` rather than
-  kept as active review candidates.
+- **O2 and O3:** rated quite poor; preserved under `archive/alternatives/`
+  rather than kept as useful brand concepts.
 
 The original B V1 remains the emotional/form target even though its opaque
 checkerboard prevents direct use. O1 is evidence that a technically clean
@@ -121,8 +121,9 @@ remove only the circle and the background behind it; do not alter the people.
 - Matthias had a genuine-alpha age-18 cutout draft with colored edge residue;
   the later versioned deterministic cleanup supersedes that draft.
 - Anne, Grace, and Thomas did not produce valid alpha after four controlled
-  built-in strategies. Those outputs remain under `Experimentelles`; the later
-  user-authorized deterministic pass produced the accepted usable cutouts.
+  built-in strategies. Those outputs remain under
+  `archive/technical-failures/`; the later user-authorized deterministic pass
+  produced the accepted usable cutouts.
 
 No candidate has been approved or integrated into the application.
 
@@ -143,8 +144,8 @@ candid farmyard conversation. All four new scenes passed local visual and
 dimension checks and await user feedback.
 
 The new Anne/Grace/Thomas cutout controls still returned opaque RGB files. They
-remain technical failures under `Experimentelles`; real-alpha versions require
-a future explicitly authorized CLI or deterministic extraction pass.
+remain under `archive/technical-failures/`; the later authorized deterministic
+extraction produced the accepted real-alpha versions.
 
 The user reviewed all four newly presented story scenes and confirmed that they
 look good. Anne's doorway scene, Grace's gate scene, Thomas's arrival, and the
@@ -158,8 +159,8 @@ the same practical outcome for the remaining family members. Anne, Grace, and
 Thomas now each have a genuine 32-bit ARGB bust cutout in the final family
 package. All were checked on white and dark surfaces. Grace's first deterministic
 intermediate exposed one enclosed checker region behind loose hair; that version
-was preserved under `Experimentelles` and the corrected final retains the hair
-while removing the region. The three final cutouts are technically complete.
+was preserved under `archive/technical-failures/` and the corrected final retains
+the hair while removing the region. The three final cutouts are technically complete.
 The user later clarified that the cutouts had already been reviewed; their
 image-library status is therefore positive, with no remaining review request.
 

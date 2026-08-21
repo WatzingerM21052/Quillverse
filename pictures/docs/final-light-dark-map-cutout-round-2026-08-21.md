@@ -20,16 +20,16 @@ application integration is authorized.
 
 | Prompt ID | Source role | Planned output |
 |---|---|---|
-| I2-FINAL-PAIR-01 | I2 master mark + app tile: geometry/style references | `review-required/finalization-2026-08-21/02-light-dark-pair/quillverse-mark-transparent.png` |
-| I2-FINAL-PAIR-02 | I2 master mark + app tile: geometry/style references | `review-required/finalization-2026-08-21/02-light-dark-pair/quillverse-app-tile-light.png` |
-| I2-FINAL-PAIR-03 | I2 master mark + app tile: geometry/style references | `review-required/finalization-2026-08-21/02-light-dark-pair/quillverse-app-tile-dark.png` |
-| UNI-MAP-03-R1-A | manuscript map: edit target | `universal/maps/refinement-2026-08-21/manuscript-terrain-lush-sage.png` |
-| UNI-MAP-03-R1-B | manuscript map: edit target | `universal/maps/refinement-2026-08-21/manuscript-terrain-temperate-green.png` |
-| UNI-MAP-03-R1-C | manuscript map: edit target | `universal/maps/refinement-2026-08-21/manuscript-terrain-rainwashed.png` |
-| REG-CHAR-CUTOUT-01 | Matthias age-18 portrait: edit target | `world-packs/bridgerton/characters/cutouts-2026-08-21/matthias-hale-age-18-cutout.png` |
-| REG-CHAR-CUTOUT-02 | Anne portrait: edit target | `world-packs/bridgerton/characters/cutouts-2026-08-21/anne-hale-cutout.png` |
-| REG-CHAR-CUTOUT-03 | Grace age-16 portrait: edit target | `world-packs/bridgerton/characters/cutouts-2026-08-21/grace-hale-age-16-cutout.png` |
-| REG-CHAR-CUTOUT-04 | Thomas portrait: edit target | `world-packs/bridgerton/characters/cutouts-2026-08-21/thomas-hale-cutout.png` |
+| I2-FINAL-PAIR-01 | I2 master mark + app tile: geometry/style references | `archive/superseded/brand/living-manuscript/icons/quillverse-mark-transparent.png` |
+| I2-FINAL-PAIR-02 | I2 master mark + app tile: geometry/style references | `brand/concepts/living-manuscript/icons/tiles/quillverse-app-tile-light.png` |
+| I2-FINAL-PAIR-03 | I2 master mark + app tile: geometry/style references | `brand/concepts/living-manuscript/icons/tiles/quillverse-app-tile-dark.png` |
+| UNI-MAP-03-R1-A | manuscript map: edit target | `universal/maps/manuscript-variants/manuscript-terrain-lush-sage.png` |
+| UNI-MAP-03-R1-B | manuscript map: edit target | `universal/maps/manuscript-variants/manuscript-terrain-temperate-green.png` |
+| UNI-MAP-03-R1-C | manuscript map: edit target | `universal/maps/manuscript-variants/manuscript-terrain-rainwashed.png` |
+| REG-CHAR-CUTOUT-01 | Matthias age-18 portrait: edit target | `archive/superseded/world-packs/bridgerton/source-copies/cutouts/matthias-hale-age-18-cutout.png` |
+| REG-CHAR-CUTOUT-02 | Anne portrait: later accepted cutout | `world-packs/bridgerton/characters/cutouts/anne-hale.png` |
+| REG-CHAR-CUTOUT-03 | Grace age-16 portrait: later accepted cutout | `world-packs/bridgerton/characters/cutouts/grace-hale-age-16.png` |
+| REG-CHAR-CUTOUT-04 | Thomas portrait: later accepted cutout | `world-packs/bridgerton/characters/cutouts/thomas-hale.png` |
 
 ## Frozen prompts
 
@@ -138,7 +138,7 @@ Identity locks applied to the shared template:
 The R1 Matthias output returned genuine alpha. The R1 Anne, Grace, and Thomas
 outputs instead painted a white/light-gray checkerboard into opaque RGB pixels.
 Those three are preserved under the matching
-`Experimentelles/world-packs/bridgerton/characters/cutouts-2026-08-21/technical-failures/`
+`archive/technical-failures/world-packs/bridgerton/characters/cutouts/initial-pass/`
 folder and are used only as isolated-figure edit targets for this correction.
 
 ```text
@@ -227,11 +227,11 @@ mark, real-size PNG icon families, and a versioned edge-cleaned Matthias cutout.
 ## Preserved failures
 
 - Five icon-family failures are stored under
-  `Experimentelles/finalization-2026-08-21/02-light-dark-pair/technical-failures/`:
+  `archive/technical-failures/brand/living-manuscript/light-dark-pair/`:
   opaque checkerboard, geometry drift, render smear, and two black-corner files.
 - Twelve Anne/Grace/Thomas cutout failures (R1-R4 for each character) are stored
   under
-  `Experimentelles/world-packs/bridgerton/characters/cutouts-2026-08-21/technical-failures/`.
+  `archive/technical-failures/world-packs/bridgerton/characters/cutouts/initial-pass/`.
 - No source portrait was overwritten or deleted. Universal character references
   were intentionally left unchanged.
 
@@ -245,7 +245,7 @@ mark, real-size PNG icon families, and a versioned edge-cleaned Matthias cutout.
   crop, and pose drift.
 - Compare all map variants with Map 3 for geography drift and forbidden labels.
 - Keep any failed generation under a matching
-  `pictures/Experimentelles/.../technical-failures/` folder; never overwrite it.
+  `pictures/archive/technical-failures/` branch; never overwrite it.
 
 ## Generation corrections
 
@@ -253,7 +253,7 @@ mark, real-size PNG icon families, and a versioned edge-cleaned Matthias cutout.
 
 The first reference-based master output baked the transparency checkerboard into
 an opaque RGB image (`corner alpha 255`). It is preserved as
-`Experimentelles/finalization-2026-08-21/02-light-dark-pair/technical-failures/quillverse-mark-transparent-r1-opaque-checkerboard.png`.
+`archive/technical-failures/brand/living-manuscript/light-dark-pair/quillverse-mark-transparent-r1-opaque-checkerboard.png`.
 
 Fresh correction prompt, frozen before regeneration:
 
@@ -274,7 +274,7 @@ Constraints: no visible canvas; no checkerboard; no background color; no texture
 
 The first dark tile developed a large black/blue render artifact at the lower
 edge. It is preserved as
-`Experimentelles/finalization-2026-08-21/02-light-dark-pair/technical-failures/quillverse-app-tile-dark-r1-render-artifact.png`.
+`archive/technical-failures/brand/living-manuscript/light-dark-pair/quillverse-app-tile-dark-r1-render-artifact.png`.
 
 Correction prompt, frozen before regeneration using the successful light tile
 as the sole geometry reference:

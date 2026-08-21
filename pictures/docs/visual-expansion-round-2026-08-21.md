@@ -16,11 +16,11 @@ The user approved the full recommended image expansion in this order:
 6. Decorative UI artwork.
 7. Presentation artwork.
 
-Existing accepted assets remain untouched. New outputs live under
-`world-packs/bridgerton/expansion-2026-08-21/`; technical failures and superseded
-iterations move to the matching `Experimentelles` tree. Universal decorative
-assets remain visually world-neutral even when the concrete Regency pack uses
-them as a test case.
+Existing accepted assets remained untouched. The completed outputs now live in
+their functional folders under `world-packs/bridgerton/`; technical failures
+are preserved under `archive/technical-failures/`. Universal decorative assets
+remain visually world-neutral even when the concrete Regency pack uses them as
+a test case.
 
 ## Output matrix
 
@@ -158,7 +158,7 @@ replace the approved logo, favicon, banner, or application assets.
 - Confirm exact people counts and locked ages in multi-character scenes.
 - Validate genuine alpha for every transparent expression or object asset.
 - Archive any opaque checkerboard or visible hard-constraint failure under
-  `pictures/Experimentelles/.../technical-failures/`.
+  `pictures/archive/technical-failures/`.
 - Do not change files under `apps/`.
 
 ## Completed output inventory
@@ -167,13 +167,13 @@ The round produced exactly 66 final or review assets:
 
 | Group | Count | Final location | Review state |
 |---|---:|---|---|
-| Hale expression cutouts | 20 | `world-packs/bridgerton/expansion-2026-08-21/expressions/` | positive user review |
-| Established-location variants | 12 | `world-packs/bridgerton/expansion-2026-08-21/location-variants/` | positive user review |
-| Regency interiors | 8 | `world-packs/bridgerton/expansion-2026-08-21/interiors/` | positive user review |
-| Hale narrative scenes | 7 | `world-packs/bridgerton/expansion-2026-08-21/story-scenes/` | positive user review |
-| Transparent objects | 8 | `world-packs/bridgerton/expansion-2026-08-21/objects/` | positive user review |
-| Universal UI artwork | 7 | `universal/ornaments/expansion-2026-08-21/` | user favorite / primary direction |
-| Presentation artwork | 4 | `review-required/presentation/expansion-2026-08-21/` | positive user review |
+| Hale expression cutouts | 20 | `world-packs/bridgerton/characters/expressions/` | positive user review |
+| Established-location variants | 12 | `world-packs/bridgerton/locations/variants/` | positive user review |
+| Regency interiors | 8 | `world-packs/bridgerton/locations/interiors/` | positive user review |
+| Hale narrative scenes | 7 | `world-packs/bridgerton/story-scenes/` | positive user review |
+| Transparent objects | 8 | `world-packs/bridgerton/objects/` | positive user review |
+| Universal UI artwork | 7 | `universal/ornaments/living-manuscript/` | user favorite / primary direction |
+| Presentation artwork | 4 | `brand/presentation/` | positive user review |
 
 The presentation set consists of three 1024x1536 portrait covers/posters and one
 1672x941 README hero. Every location, interior, and narrative scene is
@@ -200,7 +200,7 @@ follow use: 1254x1254 square assets, 2172x724 horizontal flourishes, and one
   edges are transparent and reusable. Background assets retain deliberately calm
   central regions for interface overlays.
 - Presentation gate: the four cover/hero artworks are wordless, title-safe,
-  positively reviewed by the user, and stored only under `review-required/`;
+  positively reviewed by the user, and stored under `brand/presentation/`;
   none replaces an application brand asset.
 - Application scope: no file under `apps/` was touched by this batch.
 
@@ -208,7 +208,7 @@ follow use: 1254x1254 square assets, 2172x724 horizontal flourishes, and one
 
 The 16 generated non-neutral expression edits initially returned painted opaque
 checkerboards (`Format24bppRgb`). Every raw file is preserved under
-`Experimentelles/world-packs/bridgerton/expansion-2026-08-21/technical-failures/expressions/`.
+`archive/technical-failures/world-packs/bridgerton/characters/expressions/`.
 A deterministic local alpha extraction removed only the checker field, including
 large enclosed checker regions behind loose hair, and produced the final ARGB
 files. Neutral expressions are package copies of the accepted final cutouts.

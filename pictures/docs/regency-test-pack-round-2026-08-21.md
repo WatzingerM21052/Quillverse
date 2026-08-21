@@ -15,16 +15,16 @@ No output is integrated into the application.
 
 | Prompt ID | Output |
 |---|---|
-| REG-CHAR-01 | `world-packs/bridgerton/characters/review-2026-08-21/matthias-hale.png` |
-| REG-CHAR-02 | `world-packs/bridgerton/characters/review-2026-08-21/anne-hale.png` |
-| REG-CHAR-03 | `world-packs/bridgerton/characters/review-2026-08-21/grace-hale.png` |
-| REG-CHAR-04 | `world-packs/bridgerton/characters/review-2026-08-21/thomas-hale.png` |
-| REG-LOC-01 | `world-packs/bridgerton/locations/review-2026-08-21/hale-farm.png` |
-| REG-LOC-02 | `world-packs/bridgerton/locations/review-2026-08-21/village-market.png` |
-| REG-LOC-03 | `world-packs/bridgerton/locations/review-2026-08-21/regency-london.png` |
-| REG-LOC-04 | `world-packs/bridgerton/locations/review-2026-08-21/aubrey-hall.png` |
-| REG-MAP-01 | `world-packs/bridgerton/maps/review-2026-08-21/hale-region.png` |
-| REG-SCENE-01 | `world-packs/bridgerton/story-scenes/review-2026-08-21/matthias-at-dawn.png` |
+| REG-CHAR-01 | `archive/superseded/world-packs/bridgerton/characters/matthias-hale-older-v1.png` |
+| REG-CHAR-02 | `world-packs/bridgerton/characters/portraits/anne-hale.png` |
+| REG-CHAR-03 | `world-packs/bridgerton/characters/portraits/grace-hale-age-16.png` |
+| REG-CHAR-04 | `world-packs/bridgerton/characters/portraits/thomas-hale.png` |
+| REG-LOC-01 | `world-packs/bridgerton/locations/base/hale-farm.png` |
+| REG-LOC-02 | `world-packs/bridgerton/locations/base/village-market.png` |
+| REG-LOC-03 | `world-packs/bridgerton/locations/base/regency-london.png` |
+| REG-LOC-04 | `world-packs/bridgerton/locations/base/aubrey-hall.png` |
+| REG-MAP-01 | `world-packs/bridgerton/maps/hale-region.png` |
+| REG-SCENE-01 | `archive/superseded/world-packs/bridgerton/story-scenes/matthias-at-dawn-older-v1.png` |
 
 ## Character portrait series
 
@@ -222,7 +222,6 @@ The correction pass is recorded separately in
 `age-correction-round-2026-08-21.md`. Original outputs remain preserved.
 
 After the correction succeeded, the two superseded older-looking originals were
-moved to
-`Experimentelles/world-packs/bridgerton/age-correction-2026-08-21/`. Their
-original generation paths remain in this historical output matrix; the catalog
-contains their current archive paths and the active age-18 replacements.
+moved to `archive/superseded/world-packs/bridgerton/`. Their original generation
+paths remain in this historical output matrix; the catalog contains their
+current archive paths and the active age-18 replacements.

@@ -16,18 +16,18 @@ is not rendered by image generation.
 
 | Prompt ID | Output |
 |---|---|
-| I2-DERIV-01 | `review-required/finalization-2026-08-21/01-i2-derivatives/i2-master-mark.png` |
-| I2-DERIV-02 | `review-required/finalization-2026-08-21/01-i2-derivatives/i2-micro-favicon.png` |
-| I2-DERIV-03 | `review-required/finalization-2026-08-21/01-i2-derivatives/i2-app-tile.png` |
-| UNI-MAP-01 | `universal/maps/review-2026-08-21/atlas-terrain.png` |
-| UNI-MAP-02 | `universal/maps/review-2026-08-21/painterly-terrain.png` |
-| UNI-MAP-03 | `universal/maps/review-2026-08-21/manuscript-ink-terrain.png` |
-| UNI-CHAR-01 | `universal/characters/review-2026-08-21/neutral-headshot.png` |
-| UNI-CHAR-02 | `universal/characters/review-2026-08-21/conversational-half-body.png` |
-| UNI-CHAR-03 | `universal/characters/review-2026-08-21/four-expression-cameos.png` |
-| UNI-LOC-01 | `universal/locations/review-2026-08-21/exterior-threshold.png` |
-| UNI-LOC-02 | `universal/locations/review-2026-08-21/intimate-interior.png` |
-| UNI-LOC-03 | `universal/locations/review-2026-08-21/settlement-street.png` |
+| I2-DERIV-01 | `archive/superseded/brand/living-manuscript/icons/i2-master-mark.png` |
+| I2-DERIV-02 | `archive/alternatives/brand/living-manuscript/icons/i2-micro-favicon.png` |
+| I2-DERIV-03 | `brand/concepts/living-manuscript/icons/tiles/i2-app-tile.png` |
+| UNI-MAP-01 | `universal/maps/atlas-terrain.png` |
+| UNI-MAP-02 | `universal/maps/painterly-terrain.png` |
+| UNI-MAP-03 | `archive/superseded/universal/maps/manuscript-ink-terrain.png` |
+| UNI-CHAR-01 | `universal/characters/neutral-headshot.png` |
+| UNI-CHAR-02 | `universal/characters/conversational-half-body.png` |
+| UNI-CHAR-03 | `universal/characters/four-expression-cameos.png` |
+| UNI-LOC-01 | `universal/locations/exterior-threshold.png` |
+| UNI-LOC-02 | `universal/locations/intimate-interior.png` |
+| UNI-LOC-03 | `universal/locations/settlement-street.png` |
 
 ## I2 derivatives
 

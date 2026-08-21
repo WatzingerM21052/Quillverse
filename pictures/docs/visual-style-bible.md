@@ -51,7 +51,7 @@ The audit confirmed for every current candidate:
   detailed storytelling composition should be preserved as the identity anchor.
 - **A2 — Circular pages / quill** remains a positive secondary alternative.
 - **A3 — Ink-ribbon Q / page / nib** is not preferred and now lives under
-  `Experimentelles/alternatives/`.
+  `archive/alternatives/brand/living-manuscript/logos/`.
 - **Top-center icon-study treatment** is the current small-icon favorite. It is
   a better starting point for favicon scale than reducing the detailed A1 mark
   mechanically.
@@ -68,8 +68,8 @@ The audit confirmed for every current candidate:
   campaigns, chapters, collections, or world-pack presentation.
 
 All non-final variants and checkerboard-background failures remain preserved in
-`pictures/Experimentelles/`. Technical failures are never used directly, while
-form references may guide fresh generations.
+`pictures/archive/`. Technical failures are never used directly, while form
+references may guide fresh generations.
 
 ## Refinement status after second user review
 
@@ -83,10 +83,10 @@ form references may guide fresh generations.
   form reference. O1 is the most usable clean-alpha study but still needs a form
   redesign; O2 and O3 are non-preferred experiments.
 
-The refinement hierarchy is recorded directly in numbered status folders under
-`review-required/refinement-2026-08-21/` and
-`Experimentelles/refinement-2026-08-21/`. These preferences refine the visual
-system but still do not authorize production integration.
+Useful refinements are organized by function under `brand/concepts/`; rejected,
+superseded, reference-only, and technically invalid work is organized by reason
+under `archive/`. These preferences refine the visual system but still do not
+authorize production integration.
 
 ## Final image-library lock
 
@@ -96,8 +96,7 @@ system but still do not authorize production integration.
   ink, wax, engraving, and cartography without fantasy or a specific world.
 - The cleaned I2-derived mark is the image-only compact master. Exact color and
   monochrome PNGs, deterministic Garamond wordmarks, and transparent/light/dark
-  16/32/48/192/512 PNG families live under
-  `universal/brand/final-assets-2026-08-21/`.
+  16/32/48/192/512 PNG families live under `brand/final/`.
 - B Celestial Archive and C Storybook Crest remain preserved comparison/campaign
   references, not unfinished primary-logo work.
 - The universal library now covers maps, portrait/cameo compositions, exterior,

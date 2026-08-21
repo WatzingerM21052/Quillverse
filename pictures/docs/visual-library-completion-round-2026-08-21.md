@@ -38,15 +38,15 @@ The genuine remaining specification gaps were:
 
 | Group | Output |
 |---|---|
-| brand master | `universal/brand/final-assets-2026-08-21/quillverse-mark-clean.png` |
-| monochrome master | `universal/brand/final-assets-2026-08-21/quillverse-mark-monochrome-ink.png` |
-| wordmarks | `universal/brand/final-assets-2026-08-21/quillverse-wordmark-horizontal*.png` |
-| icon families | `universal/brand/final-assets-2026-08-21/icons/{transparent,light,dark}/` |
-| Matthias | `world-packs/bridgerton/final-family-2026-08-21/cutouts/matthias-hale-age-18-clean.png` |
-| locations | `universal/locations/completion-2026-08-21/` |
-| story stage | `universal/story-scenes/completion-2026-08-21/neutral-story-stage.png` |
-| texture | `universal/textures/completion-2026-08-21/archival-paper-ink-texture.png` |
-| placeholders | `universal/placeholders/completion-2026-08-21/` |
+| brand master | `brand/final/logos/quillverse-mark-clean.png` |
+| monochrome master | `brand/final/logos/quillverse-mark-monochrome-ink.png` |
+| wordmarks | `brand/final/wordmarks/quillverse-wordmark-horizontal*.png` |
+| icon families | `brand/final/icons/{transparent,light,dark}/` |
+| Matthias | `world-packs/bridgerton/characters/cutouts/matthias-hale-age-18.png` |
+| locations | `universal/locations/` |
+| story stage | `universal/story-scenes/neutral-story-stage.png` |
+| texture | `universal/textures/archival-paper-ink-texture.png` |
+| placeholders | `universal/placeholders/` |
 
 Each icon family contains 16, 32, 48, 192, and 512 pixel PNGs. The transparent,
 light, and dark families therefore contain fifteen files total.
@@ -56,8 +56,8 @@ light, and dark families therefore contain fifteen files total.
 The built-in image editor was first used as required for both existing-image
 fixes. Both calls returned opaque `Format24bppRgb` images with a painted
 checkerboard despite explicit genuine-alpha constraints. They were never
-promoted and are preserved under matching `Experimentelles/.../technical-
-failures/` folders.
+promoted and are preserved under matching `archive/technical-failures/`
+branches.
 
 The user had already authorized deterministic alpha work for the Hale family.
 The completion pass therefore used the established safe method:
@@ -174,7 +174,7 @@ Avoid: spooky forest, horror, dramatic ruins, magical glow, specific architectur
   are alpha 0 and the lower-right alpha 223 is legitimate cropped clothing.
 - The fifteen icon files have exact expected square dimensions.
 - Both wordmarks are 2200x620 transparent PNGs with exact deterministic text.
-- The two failed built-in edits remain only under `Experimentelles`.
+- The two failed built-in edits remain only under `archive/technical-failures/`.
 - No path under `apps/` changed.
 
 This closes the remaining image-generation and image-fix items from the original
