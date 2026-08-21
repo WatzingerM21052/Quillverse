@@ -205,13 +205,13 @@ avoid creating more technically identical failures.
 
 | Output | Dimensions | Pixel format / alpha | Status | Audit |
 |---|---:|---|---|---|
-| `quillverse-mark-transparent.png` | 1254x1254 | ARGB; corners `0,0,0,0` | needs-review | Recognizable I2 open-book/Q/doorway/nib geometry; genuine transparent master; minor colored edge fringe remains visible at close zoom |
-| `quillverse-app-tile-light.png` | 1254x1254 | RGB; full-bleed ivory | needs-review | Coherent light counterpart; clean square edge-to-edge tile for later platform masking |
-| `quillverse-app-tile-dark.png` | 1254x1254 | RGB; full-bleed ink blue | needs-review | Coherent dark counterpart; previous smear and black-corner defects removed |
-| `manuscript-terrain-lush-sage.png` | 1536x1024 | RGB | needs-review | Best-balanced greener Map-3 continuation; dynamic manuscript geography retained |
-| `manuscript-terrain-temperate-green.png` | 1536x1024 | RGB | needs-review | Strongest fertile-green reading; roads and cultivated land remain legible |
-| `manuscript-terrain-rainwashed.png` | 1536x1024 | RGB | needs-review | Coolest, moodiest treatment; still readable and not desert-like |
-| `matthias-hale-age-18-cutout.png` | 1230x1278 | ARGB; corners `0,0,3,223` | needs-refinement | Real transparency and correct age-18 identity, but edge color contamination and a nontransparent lower-right corner prevent production use |
+| `quillverse-mark-transparent.png` | 1254x1254 | ARGB; corners `0,0,0,0` | superseded | Recognizable I2 geometry; later edge-cleaned without changing its alpha silhouette |
+| `quillverse-app-tile-light.png` | 1254x1254 | RGB; full-bleed ivory | positive | User-approved light counterpart; later resized into the final PNG icon family |
+| `quillverse-app-tile-dark.png` | 1254x1254 | RGB; full-bleed ink blue | positive | User-approved dark counterpart; later resized into the final PNG icon family |
+| `manuscript-terrain-lush-sage.png` | 1536x1024 | RGB | user-favorite | Selected favorite; dynamic manuscript geography retained |
+| `manuscript-terrain-temperate-green.png` | 1536x1024 | RGB | positive | Strongest fertile-green reading; roads and cultivated land remain legible |
+| `manuscript-terrain-rainwashed.png` | 1536x1024 | RGB | positive | Coolest, moodiest treatment; still readable and not desert-like |
+| `matthias-hale-age-18-cutout.png` | 1230x1278 | ARGB; corners `0,0,3,223` | superseded | Visually accepted draft; later replaced by the versioned edge-cleaned cutout |
 | Anne / Grace / Thomas cutouts | 1254x1254 each | RGB; corners `255,255,255,255` | technical-failure | R1-R4 all painted the checkerboard; no false cutout is promoted to the review folder |
 
 All three icon candidates and all three maps were opened from their final local
@@ -219,6 +219,10 @@ paths. The maps contain no labels, pins, compass, borders, UI, or text. The icon
 pair is internally coherent and the master contains real alpha. Matthias was
 also opened from the final path; the visible fringe and lower-right alpha defect
 are explicitly retained as review evidence rather than hidden or integrated.
+
+Later closure: the user positively reviewed the light/dark icons, all three lush
+maps, and the visible cutout. The image-library completion pass created a cleaned
+mark, real-size PNG icon families, and a versioned edge-cleaned Matthias cutout.
 
 ## Preserved failures
 

@@ -167,13 +167,13 @@ The round produced exactly 66 final or review assets:
 
 | Group | Count | Final location | Review state |
 |---|---:|---|---|
-| Hale expression cutouts | 20 | `world-packs/bridgerton/expansion-2026-08-21/expressions/` | needs review |
-| Established-location variants | 12 | `world-packs/bridgerton/expansion-2026-08-21/location-variants/` | needs review |
-| Regency interiors | 8 | `world-packs/bridgerton/expansion-2026-08-21/interiors/` | needs review |
-| Hale narrative scenes | 7 | `world-packs/bridgerton/expansion-2026-08-21/story-scenes/` | needs review |
-| Transparent objects | 8 | `world-packs/bridgerton/expansion-2026-08-21/objects/` | needs review |
-| Universal UI artwork | 7 | `universal/ornaments/expansion-2026-08-21/` | needs review |
-| Presentation artwork | 4 | `review-required/presentation/expansion-2026-08-21/` | explicit approval required |
+| Hale expression cutouts | 20 | `world-packs/bridgerton/expansion-2026-08-21/expressions/` | positive user review |
+| Established-location variants | 12 | `world-packs/bridgerton/expansion-2026-08-21/location-variants/` | positive user review |
+| Regency interiors | 8 | `world-packs/bridgerton/expansion-2026-08-21/interiors/` | positive user review |
+| Hale narrative scenes | 7 | `world-packs/bridgerton/expansion-2026-08-21/story-scenes/` | positive user review |
+| Transparent objects | 8 | `world-packs/bridgerton/expansion-2026-08-21/objects/` | positive user review |
+| Universal UI artwork | 7 | `universal/ornaments/expansion-2026-08-21/` | user favorite / primary direction |
+| Presentation artwork | 4 | `review-required/presentation/expansion-2026-08-21/` | positive user review |
 
 The presentation set consists of three 1024x1536 portrait covers/posters and one
 1672x941 README hero. Every location, interior, and narrative scene is
@@ -199,8 +199,9 @@ follow use: 1254x1254 square assets, 2172x724 horizontal flourishes, and one
 - UI readiness: object and ornament assets were inspected over a checkerboard;
   edges are transparent and reusable. Background assets retain deliberately calm
   central regions for interface overlays.
-- Presentation gate: the four cover/hero artworks are wordless, title-safe, and
-  stored only under `review-required/`; none replaces an approved brand asset.
+- Presentation gate: the four cover/hero artworks are wordless, title-safe,
+  positively reviewed by the user, and stored only under `review-required/`;
+  none replaces an application brand asset.
 - Application scope: no file under `apps/` was touched by this batch.
 
 ## Preserved technical failures
@@ -217,7 +218,8 @@ native alpha, so they required no technical-failure archive or repair pass.
 
 ## Handoff
 
-This round is complete as an image library. The next action is user visual review,
-especially of the four assets under `review-required/presentation/`. Integration,
-resizing into production favicon/app-icon formats, Angular changes, generated-image
-API wiring, and deployment remain separate future work requiring explicit scope.
+This round is complete as an image library and the user later reviewed the entire
+set positively, including the four presentation assets. Image-only favicon/app-
+icon derivatives were completed in the later visual-library completion pass.
+Angular changes, generated-image API wiring, deployment, and all application
+integration remain separate work requiring explicit scope.

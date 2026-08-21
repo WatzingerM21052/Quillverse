@@ -113,17 +113,16 @@ The user approved the recommended Icon-1/Icon-3 light/dark pass and the greener
 Map-3 pass. For character portraits the instruction was deliberately narrow:
 remove only the circle and the background behind it; do not alter the people.
 
-- A coherent transparent I2 master plus full-bleed light and dark tiles now
-  awaits review. The master has genuine alpha; minor close-zoom edge fringe
-  remains visible.
+- A coherent transparent I2 master plus full-bleed light and dark tiles was
+  awaiting review at this checkpoint. The user later approved the family and a
+  separate completion pass removed the master's close-zoom edge fringe.
 - Map 3 now has three fertile alternatives: lush sage (recommended balance),
   temperate green (strongest green), and rain-washed (coolest mood).
-- Matthias has a genuine-alpha age-18 cutout draft, but colored edge residue and
-  a nontransparent lower-right corner make it `needs-refinement`.
+- Matthias had a genuine-alpha age-18 cutout draft with colored edge residue;
+  the later versioned deterministic cleanup supersedes that draft.
 - Anne, Grace, and Thomas did not produce valid alpha after four controlled
-  strategies. Every output was technically RGB with a painted checkerboard and
-  is preserved only under `Experimentelles`; none is presented as a usable
-  cutout.
+  built-in strategies. Those outputs remain under `Experimentelles`; the later
+  user-authorized deterministic pass produced the accepted usable cutouts.
 
 No candidate has been approved or integrated into the application.
 
@@ -160,5 +159,19 @@ Thomas now each have a genuine 32-bit ARGB bust cutout in the final family
 package. All were checked on white and dark surfaces. Grace's first deterministic
 intermediate exposed one enclosed checker region behind loose hair; that version
 was preserved under `Experimentelles` and the corrected final retains the hair
-while removing the region. The three final cutouts are technically complete and
-remain `needs-review` until the user confirms their visual preference.
+while removing the region. The three final cutouts are technically complete.
+The user later clarified that the cutouts had already been reviewed; their
+image-library status is therefore positive, with no remaining review request.
+
+## Expansion and historical-alternative closure
+
+The user described the complete follow-up image set as “MEGA”, including its
+ornaments, banners, presentation art, Hale cutouts, scenes, variants, interiors,
+expressions, and reusable objects. The 66-image expansion therefore moves from
+batch-level `needs-review` to positive visual approval. Living Manuscript remains
+the primary ornament direction.
+
+The separate realistic historical-neutral parchment/ink/wax set was then called
+a genuinely strong alternative. It is approved as the neutral fallback while
+remaining subordinate to the primary Living Manuscript set. These decisions are
+image-library approvals only and do not authorize application integration.

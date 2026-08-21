@@ -341,6 +341,8 @@ studies under `Experimentelles/refinement-2026-08-21/`; only their fresh R2
 replacements are active review candidates. True corner transparency is not yet
 production approval: after the user chooses a direction, the selected small mark
 still needs a dedicated edge/fringe and reduced-size legibility cleanup pass.
+That cleanup and the 16/32/48/192/512 PNG derivatives were completed later in
+`visual-library-completion-round-2026-08-21.md`.
 
 ## User review decision (2026-08-21)
 

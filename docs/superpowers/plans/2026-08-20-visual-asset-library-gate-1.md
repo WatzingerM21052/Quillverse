@@ -1,5 +1,9 @@
 # Visual Asset Library Gate 1 Implementation Plan
 
+Status: completed historical plan. Gate 1 was generated, reviewed, and followed
+by the later Gate 2, expansion, ornament, and completion rounds. Unchecked boxes
+below are retained as the original execution recipe and are not current TODOs.
+
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
 **Goal:** Create and document the project-local `pictures/` library scaffold and ten review-only A/B/C brand concept images, then stop for user approval without integrating any asset into the app.

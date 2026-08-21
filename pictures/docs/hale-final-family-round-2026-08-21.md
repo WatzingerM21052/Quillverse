@@ -220,5 +220,6 @@ face/clothing area, and no obvious matte block on dark or light previews.
 | `cutouts/grace-hale-age-16.png` | 860,933 | 6,989 | 704,594 | `0,0,0,0` | Passed after archiving the first deterministic intermediate with an enclosed checker region |
 | `cutouts/thomas-hale.png` | 706,051 | 1,580 | 864,885 | `0,0,0,255` | Passed; the final corner is occupied by the correctly cropped jacket, not background |
 
-The three final files are technically complete and await only the user's visual
-preference review. No application code or production asset was changed.
+The three final files are technically complete and were subsequently confirmed
+by the user as already reviewed. Their current image-library status is positive.
+No application code or production asset was changed.

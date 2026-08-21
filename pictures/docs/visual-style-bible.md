@@ -87,3 +87,25 @@ The refinement hierarchy is recorded directly in numbered status folders under
 `review-required/refinement-2026-08-21/` and
 `Experimentelles/refinement-2026-08-21/`. These preferences refine the visual
 system but still do not authorize production integration.
+
+## Final image-library lock
+
+- Living Manuscript is the primary Quillverse direction. Its botanical/page/
+  parchment ornament set is the user's favorite main treatment.
+- Historical Neutral is the approved secondary treatment: realistic old paper,
+  ink, wax, engraving, and cartography without fantasy or a specific world.
+- The cleaned I2-derived mark is the image-only compact master. Exact color and
+  monochrome PNGs, deterministic Garamond wordmarks, and transparent/light/dark
+  16/32/48/192/512 PNG families live under
+  `universal/brand/final-assets-2026-08-21/`.
+- B Celestial Archive and C Storybook Crest remain preserved comparison/campaign
+  references, not unfinished primary-logo work.
+- The universal library now covers maps, portrait/cameo compositions, exterior,
+  interior, street, natural landscape, major event landmark, story stage,
+  textures, ornaments, and unknown-character/location placeholders.
+- The Hale/Regency pack now covers accepted family portraits and cutouts,
+  individual/ensemble scenes, expressions, locations and environmental variants,
+  interiors, narrative scenes, reusable objects, map art, and presentation art.
+
+The user's visual approvals are recorded in the catalog. They do not, by
+themselves, authorize application integration or replacement of deployed assets.

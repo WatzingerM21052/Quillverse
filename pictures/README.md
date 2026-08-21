@@ -68,6 +68,21 @@ botanical romance, branding, or world-specific motifs. It is an alternative,
 not a replacement. Exact direction and audit:
 `docs/historical-neutral-ornaments-round-2026-08-21.md`.
 
+The image-library completion pass lives under
+`universal/brand/final-assets-2026-08-21/` and dated
+`completion-2026-08-21/` folders beneath locations, story scenes, textures, and
+placeholders. It adds a cleaned transparent master mark, monochrome mark, two
+deterministic wordmarks, fifteen 16/32/48/192/512 PNG icon derivatives, a
+cleaned Matthias cutout, and the six universal functions that were genuinely
+missing from the original specification. Exact prompts, deterministic
+operations, preserved failures, and validation are recorded in
+`docs/visual-library-completion-round-2026-08-21.md`.
+
+The user has already positively reviewed the Hale cutouts, all four presentation
+artworks, the full 66-image expansion, and both ornament directions. Living
+Manuscript remains primary; historical-neutral remains the approved alternative.
+These image approvals do not authorize application integration.
+
 The first user review is recorded in
 `docs/review-feedback-2026-08-21.md`. A1 is the current preferred master-logo
 concept, while the top-center treatment on the icon study is the current favicon/

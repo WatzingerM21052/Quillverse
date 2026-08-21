@@ -204,8 +204,11 @@ Regency-generation attempt occurred.
 | REG-MAP-01 | 1536x1024 | Label-free overhead map matches the seeded sector logic: village/farm southwest, city northeast, estate southeast |
 | REG-SCENE-01 | 1536x1024 | Matthias and the farm retain their canonical identities in one restrained dawn scene; folded letter has no readable writing and the right/lower areas remain UI-friendly |
 
-The pack is internally coherent enough to test future asset pipelines, but every
-file remains `needs-review` and has not been integrated into the application.
+At this initial checkpoint the pack was internally coherent enough to test future
+asset pipelines but remained under review. Subsequent user feedback positively
+accepted the locations, map direction, Anne, Grace, and Thomas; Matthias was
+superseded by the accepted age-18 portrait and dawn scene. No file was integrated
+into the application.
 
 ## User review and age lock
 

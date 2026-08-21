@@ -14,8 +14,10 @@ this folder is wired into the application.
   Hale-farm life to Grace's first ball.
 - `objects/`: 8 transparent, reusable historical props.
 
-All files currently have `needs-review` status. The accepted character and
-location references remain in their earlier dated folders and were not replaced.
+The user subsequently reviewed the complete expansion positively ("alles MEGA").
+The accepted character and location references remain in their earlier dated
+folders and were not replaced. This is visual approval only, not application
+integration permission.
 The 16 opaque checkerboard expression sources are preserved in the matching
 `pictures/Experimentelles/world-packs/bridgerton/expansion-2026-08-21/` tree.
 

@@ -259,9 +259,40 @@ rose, dialogue rule, and archival relationship background. The five overlay
 assets are native ARGB; the two backgrounds are intentionally opaque. Every file
 was inspected together as a contact sheet and no technical failure occurred.
 The primary set remains untouched and is now cataloged as `user-favorite`; this
-new folder remains `needs-review`. Exact direction and audit:
+new folder was subsequently called a genuinely strong alternative and is now
+`positive`. Exact direction and audit:
 `pictures/docs/historical-neutral-ornaments-round-2026-08-21.md`. Image/docs only,
 no application integration.
+
+**Visual asset library completion pass finished 2026-08-21.** The user clarified
+that the Hale cutouts and all four presentation artworks had already been
+reviewed, delegated the remaining image-only work, and requested that only
+picture-related documentation be updated. Their earlier “alles MEGA” feedback
+now closes the 66-image expansion as positive; the Living Manuscript ornament
+set remains the primary user favorite and Historical Neutral the positive
+alternative.
+
+A fresh gap audit found that compact cameos, frames/ornaments, and parchment
+surfaces were already covered. Six genuine universal gaps were generated under
+dated `completion-2026-08-21/` folders: natural landscape, major landmark/event
+space, neutral story stage, archival paper/ink texture, unknown character, and
+unknown location. The selected I2-family mark was cleaned deterministically
+without changing geometry or alpha silhouette, a monochrome mark and two exact
+Garamond wordmarks were derived, and transparent/light/dark PNG families now
+exist at 16/32/48/192/512 pixels (15 icon files). Matthias received a versioned
+edge-cleaned ARGB cutout; his original remains preserved and cataloged as
+superseded. Two built-in edit attempts returned opaque painted checkerboards and
+were archived only under matching `Experimentelles/technical-failures` folders.
+Final validation also caught and corrected transparent interpolation pixels on
+the ten full-bleed light/dark tile derivatives; all tile corners are now opaque.
+
+Exact prompts, output matrix, deterministic processing rules, failure record,
+and validation are in
+`pictures/docs/visual-library-completion-round-2026-08-21.md`. The image design
+spec is marked complete, the historical Gate-1 plan is labeled as a completed
+recipe, and picture README/catalog/style/review docs reflect the final decisions.
+No application source, public production asset, code documentation, seed data,
+API, manifest, or deployment configuration was changed.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -274,12 +305,11 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual review only:** the complete image library and the 66-image expansion are generated and
-   technically audited. The four newest presentation pieces under
-   `pictures/review-required/presentation/expansion-2026-08-21/` are the next useful review set; after
-   that, review expressions, location variants, interiors, scenes, objects, and ornaments by group.
-   Keep every item at `needs-review` until explicit feedback. Do not integrate, resize into production
-   app formats, or replace any current app asset without a separate request.
+1. **Visual library is closed:** cutouts, presentation art, the 66-image
+   expansion, both ornament directions, final brand PNG derivatives, and the
+   universal completion set are generated, reviewed or curator-validated, and
+   documented. No image review is currently pending. Do not integrate or
+   replace any application asset without a separate request.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger

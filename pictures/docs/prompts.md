@@ -26,6 +26,11 @@ The selected four-person Hale package, three new individual scenes, final family
 scene, and final cutout-control attempts are recorded in
 `hale-final-family-round-2026-08-21.md`.
 
+Final image-library gap prompts, the two failed built-in transparency edits,
+deterministic brand/Matthias cleanup rules, wordmark construction, and icon-size
+derivatives are recorded in
+`visual-library-completion-round-2026-08-21.md`.
+
 ## A-LOGO-01 — Book, quill, negative-space Q
 
 ```text

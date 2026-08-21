@@ -15,4 +15,16 @@ Three greener continuations of the dynamic manuscript Map 3 are stored under
 Their exact edit prompts and comparison audit are in
 `../docs/final-light-dark-map-cutout-round-2026-08-21.md`.
 
-Status: review only; no application integration is authorized.
+The original specification's remaining universal functions were completed in
+dated `completion-2026-08-21/` folders: natural landscape, major landmark/event
+space, neutral story stage, archival paper/ink texture, unknown character, and
+unknown location. Existing cameos already cover compact portrait crops, while
+`ornaments/` covers frames and ornamentation without duplicate files.
+
+Final image-only brand derivatives are grouped under
+`brand/final-assets-2026-08-21/`: cleaned color and monochrome marks, exact
+Garamond wordmarks, and transparent/light/dark PNG icon families at
+16/32/48/192/512 pixels. No application asset has been replaced.
+
+Status: image library complete and internally validated; application integration
+is still a separate task.

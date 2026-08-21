@@ -3,6 +3,10 @@
 Status: generation complete; local visual and technical audit passed. Image-only
 scope; no application integration.
 
+User review: positive — the user called this a genuinely strong alternative.
+Living Manuscript remains the main design; this folder remains the deliberately
+neutral historical option.
+
 ## Direction lock
 
 The existing `universal/ornaments/expansion-2026-08-21/` Living Manuscript set

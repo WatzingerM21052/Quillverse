@@ -1,8 +1,14 @@
 # Visual Asset Library — Design Specification
 
 Date: 2026-08-20  
-Status: approved design; image generation not started  
+Status: completed image library; final completion audit 2026-08-21
 Scope: project-local image library and review workflow, not app integration
+
+Implementation closure: all Gate 1 concepts, selected brand derivatives,
+universal composition functions, the Hale/Regency test pack, the 66-image
+expansion, both ornament directions, presentation art, icon PNG families, and
+the final image fixes were generated and documented. The only excluded work is
+application integration, which was never part of this image-only specification.
 
 ## 1. Goal
 
