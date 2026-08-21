@@ -389,34 +389,18 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual library is closed:** cutouts, presentation art, the 66-image
-   expansion, both ornament directions, final brand PNG derivatives, and the
-   universal completion set are generated, reviewed or curator-validated, and
-   documented. No image review is currently pending. Do not integrate or
-   replace any application asset without a separate request.
-2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
-   Continuity Guard plan. The SDD workspace is still at
-   `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger
-   (`progress.md`) — read it first, it has the exact commit ranges and a summary of every fix round.
-   Per `superpowers:subagent-driven-development`: run
-   `scripts/review-package docs/superpowers/plans/2026-08-16-continuity-guard-model-profiles.md 8f3f387 54f7cd4`
-   (or the actual merge-base if that's shifted), dispatch the final reviewer on the most capable
-   available model using `superpowers:requesting-code-review`'s `code-reviewer.md` template, point it at
-   the ledger's deferred-minor lines (2 of them — see the ledger) so it can triage what needs fixing
-   before merge. If it finds issues: ONE fix dispatch with the complete findings list, ONE scoped
-   re-review, adjudicate any residuals per the breaker rules.
-3. **If the Continuity final review is clean:** delete the workspace (`rm -rf
-   .superpowers/sdd/2026-08-16-continuity-guard-model-profiles`) and use
-   `superpowers:finishing-a-development-branch` (this project has no branch/worktree — see the
-   "Conventions" section below — so this mostly means "confirm tests pass, confirm pushed, done").
-4. **Then**: `gh issue comment 25` (or close it — check the issue body once more against what shipped,
-   same as the Quick Wins batch's issue-closing step) and update this file's "Planned / open" +
-   "Execution roadmap" sections to move Batch 1 out of "next" — same pattern as this file already shows
-   for the Quick Wins batch.
-5. **After that**, the roadmap's Batch 2 (Story Mode interaction UX: §20 Action Mode chips, §22-23
-   scene/time transition cards) is next in the existing execution order — *unless* the user wants one of
-   the newly-noted Design Rework items below prioritized instead; ask rather than assume, the same way
-   scope was checked at the start of both batches this session.
+1. **Visual library is closed and integration is a tracked TODO, not started:** cutouts, presentation
+   art, the 66-image expansion, both ornament directions, final brand PNG derivatives, and the universal
+   completion set are generated, reviewed or curator-validated, and documented. No image review is
+   currently pending. Application integration (logo/favicon/banner swap, location art, etc.) has not
+   started — see the "New backlog items" entry below, deliberately deferred until this item finished.
+   Do not integrate or replace any application asset without a separate request.
+2. **Continuity Guard (issue #25) is fully done, including its final whole-batch review and fix wave —
+   deployed 2026-08-21.** See roadmap item 1 below for the summary; nothing left to do here.
+3. **Next in the roadmap's existing execution order: Batch 2 (Story Mode interaction UX — §20 Action
+   Mode chips, §22-23 scene/time transition cards)** — *unless* the user wants the picture-library
+   integration or one of the newly-noted Design Rework items below prioritized instead; ask rather than
+   assume, the same way scope was checked at the start of every batch so far.
 
 ## New backlog items noted by the user at end of session (2026-08-16, not yet scoped)
 
@@ -620,10 +604,6 @@ UI-doc sections the issues below actually cite.
   is correct today but coupled to the header's exact DOM shape; `story-screen.html` has two
   near-identical `@if (!focusMode.active())` blocks that need disambiguating by surrounding content, not
   the bare condition text, if either is edited again.
-- **#25 — Continuity Guard second-pass check (§106).** Optional, cheap second AI call before commit —
-  "does this response contradict current state?" — for important scenes only, not every turn.
-  `validate-turn-response.ts` only checks structural/schema correctness. Likely reuses the repair-retry
-  pattern already built for §188 (issue #9, closed).
 - **#20 — Mobile optimization pass.** `§130 MOBILE` wants a stacked Story Mode layout (scene image →
   portrait → dialogue → input) with bottom-bar nav; `§131 TABLET`/`§132 DESKTOP` cover the other
   breakpoints. `.shell__rail--mobile` exists but is unverified in practice; Character Creator's long
@@ -663,8 +643,11 @@ Each batch below should get its own brainstorm → spec → plan → subagent-dr
 process as the Quick Wins batch), not one giant plan — that pattern worked well and caught real bugs a
 single-pass implementation likely would have missed.
 
-1. ~~**Continuity Guard + Model Profiles**~~ — **done this session** (see "Done this session" item 7),
-   pending only the final whole-batch review (see "Immediate next steps" at the top of this file).
+1. ~~**Continuity Guard + Model Profiles**~~ — **done, 2026-08-21.** Final whole-batch review (opus)
+   caught and fixed two more Important issues beyond the 6 tasks' own reviews: an unguarded logging call
+   in the guard's error-recovery path (could turn a successful turn into a 500) and a `<select>`
+   value-binding timing bug (Continuity provider/model pickers in Settings never displayed the persisted
+   selection). Both fixed, re-reviewed clean, deployed. Issue #25 closed.
 2. **Story Mode interaction UX** — `§20` Action Mode chips + `§22-23` scene/time transition cards. Same
    screen as Focus Mode (just shipped), same file family (`story-screen.*`) — bundle to minimize
    re-orientation cost.
