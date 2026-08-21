@@ -164,6 +164,8 @@ cutout was promoted. Exact prompts, corrections, measurements, and audit:
 review feedback, and folder navigation are current. Universal character assets
 without the circular Hale presentation remain unchanged. No app code, seed
 data, production asset, or integration was changed.
+The complete image/audit/catalog set is commit `06f83d1`; publication status is
+recorded by the immediately following worklog handoff commit.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
