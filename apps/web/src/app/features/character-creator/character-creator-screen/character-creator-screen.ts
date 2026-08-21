@@ -69,7 +69,7 @@ export class CharacterCreatorScreen {
     });
   }
 
-  /** §131 "Frage nach eventuellen Korrektionen" — regenerate against the same (or adjusted) answers rather than editing the draft field by field. */
+  /** §131 "Frage nach eventuellen Korrekturen" — regenerate against the same (or adjusted) answers rather than editing the draft field by field. */
   protected regenerate(): void {
     this.generateDraft();
   }
