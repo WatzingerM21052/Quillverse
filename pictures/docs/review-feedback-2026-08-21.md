@@ -126,3 +126,23 @@ remove only the circle and the background behind it; do not alter the people.
   cutout.
 
 No candidate has been approved or integrated into the application.
+
+## User confirmation and final family package
+
+The user then confirmed:
+
+- the final I2 light/dark family looks good;
+- all three lush maps are good, with **Lush Sage** the favorite;
+- Matthias's age-18 portrait and dawn scene fit well;
+- the visible Matthias cutout result looks good;
+- Anne, Grace, and Thomas portraits already fit and must remain unchanged.
+
+The missing family scene package was generated from those locked identities:
+Anne at the farmhouse doorway, Grace age 16 at the farm gate, Thomas arriving
+with a restrained merchant cart, and exactly all four Hales together in a
+candid farmyard conversation. All four new scenes passed local visual and
+dimension checks and await user feedback.
+
+The new Anne/Grace/Thomas cutout controls still returned opaque RGB files. They
+remain technical failures under `Experimentelles`; real-alpha versions require
+a future explicitly authorized CLI or deterministic extraction pass.

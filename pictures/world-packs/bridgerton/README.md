@@ -21,6 +21,14 @@ remained opaque checkerboard renders after four strategies; those files are
 preserved only under the matching `pictures/Experimentelles/` path and must not
 be treated as usable cutouts.
 
+The current selected family set is now gathered under
+`final-family-2026-08-21/`. It contains byte-identical copies of all four
+accepted portraits and Matthias's accepted scene/cutout draft, three new
+identity-locked individual scenes, and `story-scenes/hale-family-together.png`
+with exactly all four Hales. Anne/Grace/Thomas real-alpha cutouts are still
+missing; the package README and
+`../../docs/hale-final-family-round-2026-08-21.md` document the limitation.
+
 This folder may use Regency-specific visual language. Those motifs must not
 leak into the universal Quillverse master brand. All files remain review-only
 and are not wired into the application.

@@ -40,6 +40,13 @@ the preserved failure log are in
 active review candidates. Matthias's cutout needs edge refinement; failed
 Anne/Grace/Thomas alpha attempts live only under `Experimentelles`.
 
+The selected Hale-family review package is grouped under
+`world-packs/bridgerton/final-family-2026-08-21/`: four accepted portraits, all
+four individual story scenes, and one scene with the complete family together.
+Its README clearly distinguishes complete assets from the still-missing real-
+alpha Anne/Grace/Thomas cutouts. Exact prompts and audit:
+`docs/hale-final-family-round-2026-08-21.md`.
+
 The first user review is recorded in
 `docs/review-feedback-2026-08-21.md`. A1 is the current preferred master-logo
 concept, while the top-center treatment on the icon study is the current favicon/

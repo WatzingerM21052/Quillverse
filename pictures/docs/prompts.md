@@ -22,6 +22,10 @@ The final I2 light/dark pair, three lush Map-3 variants, and Hale portrait-cutou
 attempts — including all alpha failures — are recorded in
 `final-light-dark-map-cutout-round-2026-08-21.md`.
 
+The selected four-person Hale package, three new individual scenes, final family
+scene, and final cutout-control attempts are recorded in
+`hale-final-family-round-2026-08-21.md`.
+
 ## A-LOGO-01 — Book, quill, negative-space Q
 
 ```text

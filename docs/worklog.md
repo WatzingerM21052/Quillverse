@@ -167,6 +167,28 @@ data, production asset, or integration was changed.
 The complete image/audit/catalog set is commit `06f83d1`; publication status is
 recorded by the immediately following worklog handoff commit.
 
+**Final Hale-family package generated and audited 2026-08-21.** The user has
+visually accepted the complete I2 icon family, all three lush Map-3 variants
+with `lush-sage` as favorite, Matthias's age-18 portrait/dawn scene/visible
+cutout result, and the unchanged Anne/Grace age-16/Thomas portraits. One dated
+family folder now groups byte-identical copies of those four portraits,
+Matthias's scene and cutout, three new identity-locked individual scenes, and
+one ensemble scene generated last. Anne stands at the farmhouse doorway with
+mended linen; Grace remains clearly 16 at the farm gate; Thomas arrives with a
+restrained merchant cart; the ensemble contains exactly Thomas, Anne, Grace 16,
+and Matthias 18 with no duplicate or extra person. Every scene is 1536x1024,
+was opened from its final path, and passed local identity/age/period/people-count
+checks. The six copied assets are hash-identical to their accepted sources.
+Built-in cutout generation still cannot deliver real alpha for Anne, Grace, or
+Thomas: three R1 calls plus a simplified Anne R2 control all returned 24-bit RGB
+with painted transparency. Those four outputs live only under the matching
+`pictures/Experimentelles/` technical-failures folder; none was promoted. The
+documented CLI fallback requires a locally configured `OPENAI_API_KEY` and
+explicit user permission, so it was not used. Exact prompts, output matrix,
+measurements, and audit:
+`pictures/docs/hale-final-family-round-2026-08-21.md`. No application code,
+seed data, production asset, or integration changed.
+
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
 reviewed; 3 of them needed a fix round (all fixed and re-reviewed clean — see "Done this session" below
@@ -178,12 +200,13 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset review:** Ask the user to choose among the completed final I2 light/dark family and
-   the three lush Map-3 variants; lush sage is the current recommended balance. Also review the new
-   Matthias age-18 portrait/scene and the imperfect transparent cutout. Anne/Grace/Thomas cutouts need
-   a non-generative/deterministic extraction method in a separately authorized future pass because
-   built-in generation repeatedly painted fake checkerboards. Only after explicit approval should any
-   deterministic favicon sizing, edge cleanup, cutout tooling, or app integration happen.
+1. **Visual asset review:** Ask the user to review the three new individual scenes and
+   `hale-family-together.png` under the dated final-family folder. Icon family, Lush Sage preference,
+   all four portraits, Matthias's dawn scene, and the visible Matthias cutout are already confirmed.
+   Anne/Grace/Thomas real-alpha cutouts remain the only missing family assets. Offer the documented
+   CLI/API fallback only if the user explicitly authorizes it and confirms `OPENAI_API_KEY` is set;
+   otherwise use a separately authorized deterministic extraction tool later. Do not integrate any
+   candidate into the app without separate approval.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger
