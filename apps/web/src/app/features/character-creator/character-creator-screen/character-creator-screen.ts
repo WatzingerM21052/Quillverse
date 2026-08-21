@@ -4,9 +4,17 @@ import {
   CharacterCreationApiService,
   CharacterCreationAnswers,
   CharacterCreationDraft,
+  ImprovableField,
+  ImprovementMode,
   ToneReferences,
 } from '../../../core/ai/character-creation-api.service';
 import { ActiveSimulationService } from '../../../core/state/active-simulation.service';
+
+interface FieldImprovementState {
+  loading: boolean;
+  suggestion: string | null;
+  error: string | null;
+}
 
 /** §131 ANFANGSINITIALISIERUNG / §170-176 Character Creator — an AI-assisted interview, not a bare form: answers are optional, the AI fills gaps and proposes a full draft to review. */
 @Component({
@@ -28,6 +36,10 @@ export class CharacterCreatorScreen {
   protected readonly generating = signal(false);
   protected readonly confirming = signal(false);
   protected readonly error = signal<string | null>(null);
+
+  /** Global mode for every field's "Verbessern" action — shared, not per-field, per approved design. */
+  protected readonly improveMode = signal<ImprovementMode>('expand');
+  protected readonly fieldImprovements = signal<Partial<Record<ImprovableField, FieldImprovementState>>>({});
 
   protected setAnswer<K extends keyof CharacterCreationAnswers>(key: K, value: CharacterCreationAnswers[K]): void {
     this.answers.update((current) => ({ ...current, [key]: value }));
@@ -57,7 +69,7 @@ export class CharacterCreatorScreen {
     });
   }
 
-  /** §131 "Frage nach eventuellen Korrekturen" — regenerate against the same (or adjusted) answers rather than editing the draft field by field. */
+  /** §131 "Frage nach eventuellen Korrektionen" — regenerate against the same (or adjusted) answers rather than editing the draft field by field. */
   protected regenerate(): void {
     this.generateDraft();
   }
@@ -80,6 +92,47 @@ export class CharacterCreatorScreen {
         this.error.set(err?.error?.error ?? 'Die Zeitlinie konnte nicht erstellt werden.');
         this.confirming.set(false);
       },
+    });
+  }
+
+  /** Improves one field's text (Polieren/Ausformulieren, per the global improveMode) without touching the rest of the form. */
+  protected improveField(field: ImprovableField): void {
+    const value = (this.answers()[field] ?? '').trim();
+    if (!value) return;
+
+    this.fieldImprovements.update((state) => ({
+      ...state,
+      [field]: { loading: true, suggestion: null, error: null },
+    }));
+
+    this.api.improveField(field, value, this.improveMode(), this.answers()).subscribe({
+      next: ({ improvedText }) => {
+        this.fieldImprovements.update((state) => ({
+          ...state,
+          [field]: { loading: false, suggestion: improvedText, error: null },
+        }));
+      },
+      error: (err) => {
+        this.fieldImprovements.update((state) => ({
+          ...state,
+          [field]: { loading: false, suggestion: null, error: err?.error?.error ?? 'Der Text konnte nicht verbessert werden.' },
+        }));
+      },
+    });
+  }
+
+  protected acceptSuggestion(field: ImprovableField): void {
+    const suggestion = this.fieldImprovements()[field]?.suggestion;
+    if (!suggestion) return;
+    this.setAnswer(field, suggestion);
+    this.dismissSuggestion(field);
+  }
+
+  protected dismissSuggestion(field: ImprovableField): void {
+    this.fieldImprovements.update((state) => {
+      const next = { ...state };
+      delete next[field];
+      return next;
     });
   }
 }
