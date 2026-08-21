@@ -1,13 +1,15 @@
 import { Hono } from 'hono';
 import { buildCharacterCreationPrompt } from '../services/character-creation-prompt';
+import { buildFieldImprovementPrompt } from '../services/character-field-improvement-prompt';
 import { validateCharacterCreationDraft } from '../services/validate-character-creation-draft';
+import { validateFieldImprovement } from '../services/validate-field-improvement';
 import { createSimulationFromDraft } from '../db/create-simulation';
 import type { TonePreferences as ToneReferences } from '../models';
 import { logAiCall } from '../db/ai-calls';
 import { PROVIDER_ADAPTERS } from '../providers/registry';
 import { PROVIDER_IDS } from '../providers/types';
 import { getDecryptedCredential, getSelectedModel } from './ai-providers';
-import type { CharacterCreationAnswers, CharacterCreationDraft } from '../models/character-creation';
+import { IMPROVABLE_FIELDS, type CharacterCreationAnswers, type CharacterCreationDraft, type ImprovableField } from '../models/character-creation';
 
 export const characterCreationRoute = new Hono<{ Bindings: Env }>();
 
@@ -19,6 +21,12 @@ const REPAIR_INSTRUCTION =
 // fixed pseudo-id so §156 usage tracking still counts these requests
 // against the daily quota display.
 const DRAFT_LOG_ID = 'character-creation-draft';
+
+const FIELD_IMPROVE_LOG_ID = 'character-creation-field-improve';
+
+function isImprovableField(value: unknown): value is ImprovableField {
+  return typeof value === 'string' && (IMPROVABLE_FIELDS as string[]).includes(value);
+}
 
 /**
  * §131 ANFANGSINITIALISIERUNG — the AI conducts the interview and fills
@@ -62,6 +70,63 @@ characterCreationRoute.post('/draft', async (c) => {
 
       await logAiCall(c.env.DB, DRAFT_LOG_ID, provider, true, Date.now() - startedAt, null);
       return c.json({ draft: validation.draft, provider });
+    }
+  }
+
+  return c.json({ error: lastError }, anyProviderConnected ? 502 : 400);
+});
+
+/**
+ * Per-field "Verbessern" action — improves one Character Creator textarea's text (polish grammar/style,
+ * or expand a short note into a fuller Regency-toned passage), without touching the rest of the form.
+ * Same provider-fallback/repair-retry pattern as /draft, just against a one-string-field output contract.
+ */
+characterCreationRoute.post('/improve-field', async (c) => {
+  const body = await c
+    .req.json<{ field?: string; value?: string; mode?: string; answers?: CharacterCreationAnswers }>()
+    .catch(() => null);
+
+  const field = body?.field;
+  const value = body?.value?.trim();
+  const mode = body?.mode;
+
+  if (!isImprovableField(field) || !value || (mode !== 'polish' && mode !== 'expand')) {
+    return c.json({ error: 'field, a non-empty value, and mode ("polish" | "expand") are required.' }, 400);
+  }
+
+  const prompt = buildFieldImprovementPrompt(field, value, mode, body?.answers ?? {});
+
+  let anyProviderConnected = false;
+  let lastError = 'No AI provider is connected. Connect one in Settings to use the Character Creator.';
+
+  for (const provider of PROVIDER_IDS) {
+    const apiKey = await getDecryptedCredential(c.env, provider);
+    if (!apiKey) continue;
+    anyProviderConnected = true;
+    const modelId = await getSelectedModel(c.env, provider);
+
+    for (let attempt = 0; attempt < 2; attempt++) {
+      const attemptPrompt = attempt === 0 ? prompt : prompt + REPAIR_INSTRUCTION;
+      const startedAt = Date.now();
+
+      let responseText: string;
+      try {
+        responseText = await PROVIDER_ADAPTERS[provider].generateStory(apiKey, attemptPrompt, modelId ?? undefined);
+      } catch (err) {
+        lastError = err instanceof Error ? err.message : `${provider} request failed.`;
+        await logAiCall(c.env.DB, FIELD_IMPROVE_LOG_ID, provider, false, Date.now() - startedAt, 'generation_failed');
+        continue;
+      }
+
+      const validation = validateFieldImprovement(responseText);
+      if (!validation.ok) {
+        lastError = `${provider} response could not be parsed: ${validation.error}`;
+        await logAiCall(c.env.DB, FIELD_IMPROVE_LOG_ID, provider, false, Date.now() - startedAt, 'invalid_response');
+        continue;
+      }
+
+      await logAiCall(c.env.DB, FIELD_IMPROVE_LOG_ID, provider, true, Date.now() - startedAt, null);
+      return c.json({ improvedText: validation.improvedText, provider });
     }
   }
 

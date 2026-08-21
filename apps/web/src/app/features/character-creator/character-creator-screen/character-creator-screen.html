@@ -8,49 +8,264 @@
   </p>
 
   @if (!draft()) {
+    <div class="creator__mode-switch">
+      <span>Verbessern-Modus:</span>
+      <button
+        type="button"
+        class="creator__mode-switch-btn"
+        [class.creator__mode-switch-btn--active]="improveMode() === 'polish'"
+        [attr.aria-pressed]="improveMode() === 'polish'"
+        (click)="improveMode.set('polish')"
+      >
+        Polieren
+      </button>
+      <button
+        type="button"
+        class="creator__mode-switch-btn"
+        [class.creator__mode-switch-btn--active]="improveMode() === 'expand'"
+        [attr.aria-pressed]="improveMode() === 'expand'"
+        (click)="improveMode.set('expand')"
+      >
+        Ausformulieren
+      </button>
+    </div>
+
     <section class="creator__form">
       <h2>Charakter</h2>
       <label>Name<input type="text" (input)="setAnswer('characterName', $any($event.target).value)" /></label>
       <label>Alter<input type="text" (input)="setAnswer('age', $any($event.target).value)" /></label>
       <label>Geschlecht<input type="text" (input)="setAnswer('gender', $any($event.target).value)" /></label>
-      <label
-        >Aussehen<textarea rows="2" (input)="setAnswer('appearanceNotes', $any($event.target).value)"></textarea
-      ></label>
-      <label
-        >Persönlichkeit, Humor<textarea rows="2" (input)="setAnswer('personalityNotes', $any($event.target).value)"></textarea
-      ></label>
-      <label
-        >Stärken &amp; Schwächen<textarea
+
+      <div class="creator__field">
+        <div class="creator__field-label-row">
+          <label for="field-appearanceNotes">Aussehen</label>
+          <button
+            type="button"
+            class="creator__improve-btn"
+            [disabled]="!(answers().appearanceNotes ?? '').trim() || fieldImprovements().appearanceNotes?.loading"
+            (click)="improveField('appearanceNotes')"
+          >
+            {{ fieldImprovements().appearanceNotes?.loading ? 'Verbessere …' : '✨ Verbessern' }}
+          </button>
+        </div>
+        <textarea
+          id="field-appearanceNotes"
           rows="2"
+          [value]="answers().appearanceNotes ?? ''"
+          (input)="setAnswer('appearanceNotes', $any($event.target).value)"
+        ></textarea>
+      </div>
+      @if (fieldImprovements().appearanceNotes?.suggestion) {
+        <div class="creator__suggestion">
+          <p>{{ fieldImprovements().appearanceNotes?.suggestion }}</p>
+          <div class="creator__suggestion-actions">
+            <button type="button" (click)="acceptSuggestion('appearanceNotes')">Übernehmen</button>
+            <button type="button" (click)="dismissSuggestion('appearanceNotes')">Verwerfen</button>
+          </div>
+        </div>
+      }
+      @if (fieldImprovements().appearanceNotes?.error) {
+        <p class="creator__error creator__error--field">{{ fieldImprovements().appearanceNotes?.error }}</p>
+      }
+
+      <div class="creator__field">
+        <div class="creator__field-label-row">
+          <label for="field-personalityNotes">Persönlichkeit, Humor</label>
+          <button
+            type="button"
+            class="creator__improve-btn"
+            [disabled]="!(answers().personalityNotes ?? '').trim() || fieldImprovements().personalityNotes?.loading"
+            (click)="improveField('personalityNotes')"
+          >
+            {{ fieldImprovements().personalityNotes?.loading ? 'Verbessere …' : '✨ Verbessern' }}
+          </button>
+        </div>
+        <textarea
+          id="field-personalityNotes"
+          rows="2"
+          [value]="answers().personalityNotes ?? ''"
+          (input)="setAnswer('personalityNotes', $any($event.target).value)"
+        ></textarea>
+      </div>
+      @if (fieldImprovements().personalityNotes?.suggestion) {
+        <div class="creator__suggestion">
+          <p>{{ fieldImprovements().personalityNotes?.suggestion }}</p>
+          <div class="creator__suggestion-actions">
+            <button type="button" (click)="acceptSuggestion('personalityNotes')">Übernehmen</button>
+            <button type="button" (click)="dismissSuggestion('personalityNotes')">Verwerfen</button>
+          </div>
+        </div>
+      }
+      @if (fieldImprovements().personalityNotes?.error) {
+        <p class="creator__error creator__error--field">{{ fieldImprovements().personalityNotes?.error }}</p>
+      }
+
+      <div class="creator__field">
+        <div class="creator__field-label-row">
+          <label for="field-strengthsWeaknesses">Stärken &amp; Schwächen</label>
+          <button
+            type="button"
+            class="creator__improve-btn"
+            [disabled]="!(answers().strengthsWeaknesses ?? '').trim() || fieldImprovements().strengthsWeaknesses?.loading"
+            (click)="improveField('strengthsWeaknesses')"
+          >
+            {{ fieldImprovements().strengthsWeaknesses?.loading ? 'Verbessere …' : '✨ Verbessern' }}
+          </button>
+        </div>
+        <textarea
+          id="field-strengthsWeaknesses"
+          rows="2"
+          [value]="answers().strengthsWeaknesses ?? ''"
           (input)="setAnswer('strengthsWeaknesses', $any($event.target).value)"
-        ></textarea
-      ></label>
+        ></textarea>
+      </div>
+      @if (fieldImprovements().strengthsWeaknesses?.suggestion) {
+        <div class="creator__suggestion">
+          <p>{{ fieldImprovements().strengthsWeaknesses?.suggestion }}</p>
+          <div class="creator__suggestion-actions">
+            <button type="button" (click)="acceptSuggestion('strengthsWeaknesses')">Übernehmen</button>
+            <button type="button" (click)="dismissSuggestion('strengthsWeaknesses')">Verwerfen</button>
+          </div>
+        </div>
+      }
+      @if (fieldImprovements().strengthsWeaknesses?.error) {
+        <p class="creator__error creator__error--field">{{ fieldImprovements().strengthsWeaknesses?.error }}</p>
+      }
+
       <label>Bildung (Lesen/Schreiben)<input type="text" (input)="setAnswer('education', $any($event.target).value)" /></label>
       <label
         >Besondere Fähigkeiten<input type="text" (input)="setAnswer('specialSkills', $any($event.target).value)"
       /></label>
-      <label
-        >Bisherige Lebensgeschichte<textarea rows="3" (input)="setAnswer('backstory', $any($event.target).value)"></textarea
-      ></label>
-      <label
-        >Persönliche Ziele<textarea rows="2" (input)="setAnswer('personalGoals', $any($event.target).value)"></textarea
-      ></label>
+
+      <div class="creator__field">
+        <div class="creator__field-label-row">
+          <label for="field-backstory">Bisherige Lebensgeschichte</label>
+          <button
+            type="button"
+            class="creator__improve-btn"
+            [disabled]="!(answers().backstory ?? '').trim() || fieldImprovements().backstory?.loading"
+            (click)="improveField('backstory')"
+          >
+            {{ fieldImprovements().backstory?.loading ? 'Verbessere …' : '✨ Verbessern' }}
+          </button>
+        </div>
+        <textarea
+          id="field-backstory"
+          rows="3"
+          [value]="answers().backstory ?? ''"
+          (input)="setAnswer('backstory', $any($event.target).value)"
+        ></textarea>
+      </div>
+      @if (fieldImprovements().backstory?.suggestion) {
+        <div class="creator__suggestion">
+          <p>{{ fieldImprovements().backstory?.suggestion }}</p>
+          <div class="creator__suggestion-actions">
+            <button type="button" (click)="acceptSuggestion('backstory')">Übernehmen</button>
+            <button type="button" (click)="dismissSuggestion('backstory')">Verwerfen</button>
+          </div>
+        </div>
+      }
+      @if (fieldImprovements().backstory?.error) {
+        <p class="creator__error creator__error--field">{{ fieldImprovements().backstory?.error }}</p>
+      }
+
+      <div class="creator__field">
+        <div class="creator__field-label-row">
+          <label for="field-personalGoals">Persönliche Ziele</label>
+          <button
+            type="button"
+            class="creator__improve-btn"
+            [disabled]="!(answers().personalGoals ?? '').trim() || fieldImprovements().personalGoals?.loading"
+            (click)="improveField('personalGoals')"
+          >
+            {{ fieldImprovements().personalGoals?.loading ? 'Verbessere …' : '✨ Verbessern' }}
+          </button>
+        </div>
+        <textarea
+          id="field-personalGoals"
+          rows="2"
+          [value]="answers().personalGoals ?? ''"
+          (input)="setAnswer('personalGoals', $any($event.target).value)"
+        ></textarea>
+      </div>
+      @if (fieldImprovements().personalGoals?.suggestion) {
+        <div class="creator__suggestion">
+          <p>{{ fieldImprovements().personalGoals?.suggestion }}</p>
+          <div class="creator__suggestion-actions">
+            <button type="button" (click)="acceptSuggestion('personalGoals')">Übernehmen</button>
+            <button type="button" (click)="dismissSuggestion('personalGoals')">Verwerfen</button>
+          </div>
+        </div>
+      }
+      @if (fieldImprovements().personalGoals?.error) {
+        <p class="creator__error creator__error--field">{{ fieldImprovements().personalGoals?.error }}</p>
+      }
 
       <h2>Familie</h2>
-      <label
-        >Eltern, Geschwister, Verhältnis, Haushalt<textarea
+      <div class="creator__field">
+        <div class="creator__field-label-row">
+          <label for="field-family">Eltern, Geschwister, Verhältnis, Haushalt</label>
+          <button
+            type="button"
+            class="creator__improve-btn"
+            [disabled]="!(answers().family ?? '').trim() || fieldImprovements().family?.loading"
+            (click)="improveField('family')"
+          >
+            {{ fieldImprovements().family?.loading ? 'Verbessere …' : '✨ Verbessern' }}
+          </button>
+        </div>
+        <textarea
+          id="field-family"
           rows="3"
+          [value]="answers().family ?? ''"
           (input)="setAnswer('family', $any($event.target).value)"
-        ></textarea
-      ></label>
+        ></textarea>
+      </div>
+      @if (fieldImprovements().family?.suggestion) {
+        <div class="creator__suggestion">
+          <p>{{ fieldImprovements().family?.suggestion }}</p>
+          <div class="creator__suggestion-actions">
+            <button type="button" (click)="acceptSuggestion('family')">Übernehmen</button>
+            <button type="button" (click)="dismissSuggestion('family')">Verwerfen</button>
+          </div>
+        </div>
+      }
+      @if (fieldImprovements().family?.error) {
+        <p class="creator__error creator__error--field">{{ fieldImprovements().family?.error }}</p>
+      }
 
       <h2>Hof</h2>
-      <label
-        >Größe, Besitz/Pacht, Tiere, Schulden, Einkommen<textarea
+      <div class="creator__field">
+        <div class="creator__field-label-row">
+          <label for="field-farmDetails">Größe, Besitz/Pacht, Tiere, Schulden, Einkommen</label>
+          <button
+            type="button"
+            class="creator__improve-btn"
+            [disabled]="!(answers().farmDetails ?? '').trim() || fieldImprovements().farmDetails?.loading"
+            (click)="improveField('farmDetails')"
+          >
+            {{ fieldImprovements().farmDetails?.loading ? 'Verbessere …' : '✨ Verbessern' }}
+          </button>
+        </div>
+        <textarea
+          id="field-farmDetails"
           rows="3"
+          [value]="answers().farmDetails ?? ''"
           (input)="setAnswer('farmDetails', $any($event.target).value)"
-        ></textarea
-      ></label>
+        ></textarea>
+      </div>
+      @if (fieldImprovements().farmDetails?.suggestion) {
+        <div class="creator__suggestion">
+          <p>{{ fieldImprovements().farmDetails?.suggestion }}</p>
+          <div class="creator__suggestion-actions">
+            <button type="button" (click)="acceptSuggestion('farmDetails')">Übernehmen</button>
+            <button type="button" (click)="dismissSuggestion('farmDetails')">Verwerfen</button>
+          </div>
+        </div>
+      }
+      @if (fieldImprovements().farmDetails?.error) {
+        <p class="creator__error creator__error--field">{{ fieldImprovements().farmDetails?.error }}</p>
+      }
 
       <h2>Gewünschter Ton</h2>
       <label

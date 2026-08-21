@@ -28,6 +28,17 @@ export interface ToneReferences {
   narrativePace?: string;
 }
 
+export type ImprovableField =
+  | 'appearanceNotes'
+  | 'personalityNotes'
+  | 'strengthsWeaknesses'
+  | 'backstory'
+  | 'personalGoals'
+  | 'family'
+  | 'farmDetails';
+
+export type ImprovementMode = 'polish' | 'expand';
+
 export interface CharacterCreationDraft {
   schemaVersion: 1;
   player: {
@@ -52,6 +63,18 @@ export class CharacterCreationApiService {
     return this.http.post<{ draft: CharacterCreationDraft; provider: string }>(
       `${API_BASE_URL}/api/character-creation/draft`,
       answers,
+    );
+  }
+
+  improveField(
+    field: ImprovableField,
+    value: string,
+    mode: ImprovementMode,
+    answers: CharacterCreationAnswers,
+  ): Observable<{ improvedText: string; provider: string }> {
+    return this.http.post<{ improvedText: string; provider: string }>(
+      `${API_BASE_URL}/api/character-creation/improve-field`,
+      { field, value, mode, answers },
     );
   }
 
