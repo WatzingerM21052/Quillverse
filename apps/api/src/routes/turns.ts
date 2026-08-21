@@ -140,7 +140,11 @@ async function maybeRunContinuityGuard(
     const retryAttempt = await generateWithRepair(env.DB, simulationId, provider, apiKey, correctedText, modelId);
     return retryAttempt.ok ? { attempt: retryAttempt, continuityRetried: true } : { attempt, continuityRetried: false };
   } catch {
-    await logAiCall(env.DB, simulationId, continuityProfile.provider, false, Date.now() - startedAt, 'continuity_check_failed');
+    try {
+      await logAiCall(env.DB, simulationId, continuityProfile.provider, false, Date.now() - startedAt, 'continuity_check_failed');
+    } catch {
+      /* logging must never fail the turn */
+    }
     return { attempt, continuityRetried: false };
   }
 }

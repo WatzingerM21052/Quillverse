@@ -64,13 +64,10 @@
                     } @else if (models()[provider.provider]?.length) {
                       <label class="provider-card__model-picker">
                         <span>Modell</span>
-                        <select
-                          [value]="selectedModels()[provider.provider] ?? ''"
-                          (change)="selectModel(provider.provider, $any($event.target).value)"
-                        >
-                          <option value="">Automatisch (empfohlen)</option>
+                        <select (change)="selectModel(provider.provider, $any($event.target).value)">
+                          <option value="" [selected]="(selectedModels()[provider.provider] ?? '') === ''">Automatisch (empfohlen)</option>
                           @for (model of models()[provider.provider]; track model.id) {
-                            <option [value]="model.id">{{ model.displayName }}</option>
+                            <option [value]="model.id" [selected]="model.id === selectedModels()[provider.provider]">{{ model.displayName }}</option>
                           }
                         </select>
                       </label>
@@ -96,11 +93,11 @@
             </p>
             <label class="provider-card__model-picker">
               <span>Anbieter</span>
-              <select [value]="continuitySelectValue()" (change)="setContinuityProvider($any($event.target).value)">
-                <option value="">Aus</option>
+              <select (change)="setContinuityProvider($any($event.target).value)">
+                <option value="" [selected]="continuitySelectValue() === ''">Aus</option>
                 @for (provider of providers(); track provider.provider) {
                   @if (provider.connected) {
-                    <option [value]="provider.provider">{{ displayName[provider.provider] }}</option>
+                    <option [value]="provider.provider" [selected]="provider.provider === continuitySelectValue()">{{ displayName[provider.provider] }}</option>
                   }
                 }
               </select>
@@ -111,10 +108,10 @@
               } @else if (models()[cp]?.length) {
                 <label class="provider-card__model-picker">
                   <span>Modell</span>
-                  <select [value]="continuityModelId() ?? ''" (change)="setContinuityModelId($any($event.target).value)">
-                    <option value="">Automatisch</option>
+                  <select (change)="setContinuityModelId($any($event.target).value)">
+                    <option value="" [selected]="(continuityModelId() ?? '') === ''">Automatisch</option>
                     @for (model of models()[cp]; track model.id) {
-                      <option [value]="model.id">{{ model.displayName }}</option>
+                      <option [value]="model.id" [selected]="model.id === continuityModelId()">{{ model.displayName }}</option>
                     }
                   </select>
                 </label>
