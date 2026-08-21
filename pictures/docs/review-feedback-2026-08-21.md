@@ -106,3 +106,23 @@ Grace's existing portrait already reads correctly and remains unchanged.
 Matthias receives a versioned age-18 portrait and scene correction under the
 Gate 2C prompt ledger. Existing files remain preserved. Per the image-only scope,
 this decision does not modify seed/application data.
+
+## Final mini-pass instruction and result
+
+The user approved the recommended Icon-1/Icon-3 light/dark pass and the greener
+Map-3 pass. For character portraits the instruction was deliberately narrow:
+remove only the circle and the background behind it; do not alter the people.
+
+- A coherent transparent I2 master plus full-bleed light and dark tiles now
+  awaits review. The master has genuine alpha; minor close-zoom edge fringe
+  remains visible.
+- Map 3 now has three fertile alternatives: lush sage (recommended balance),
+  temperate green (strongest green), and rain-washed (coolest mood).
+- Matthias has a genuine-alpha age-18 cutout draft, but colored edge residue and
+  a nontransparent lower-right corner make it `needs-refinement`.
+- Anne, Grace, and Thomas did not produce valid alpha after four controlled
+  strategies. Every output was technically RGB with a painted checkerboard and
+  is preserved only under `Experimentelles`; none is presented as a usable
+  cutout.
+
+No candidate has been approved or integrated into the application.

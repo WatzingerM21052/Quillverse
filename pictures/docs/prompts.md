@@ -18,6 +18,10 @@ recorded in `regency-test-pack-round-2026-08-21.md`.
 Gate 2C's exact, versioned age-correction prompts for Matthias 18 / Grace 16 are
 recorded in `age-correction-round-2026-08-21.md`.
 
+The final I2 light/dark pair, three lush Map-3 variants, and Hale portrait-cutout
+attempts — including all alpha failures — are recorded in
+`final-light-dark-map-cutout-round-2026-08-21.md`.
+
 ## A-LOGO-01 — Book, quill, negative-space Q
 
 ```text

@@ -13,6 +13,14 @@ remains active. Matthias's corrected portrait and story scene live in dated
 `refinement-2026-08-21/` folders; the superseded older-looking versions are
 preserved under `pictures/Experimentelles/world-packs/bridgerton/`.
 
+The circle/background-removal pass is documented in
+`../../docs/final-light-dark-map-cutout-round-2026-08-21.md`. Matthias has one
+genuine-alpha cutout draft under `characters/cutouts-2026-08-21/`, currently
+marked `needs-refinement` because of edge contamination. Anne, Grace, and Thomas
+remained opaque checkerboard renders after four strategies; those files are
+preserved only under the matching `pictures/Experimentelles/` path and must not
+be treated as usable cutouts.
+
 This folder may use Regency-specific visual language. Those motifs must not
 leak into the universal Quillverse master brand. All files remain review-only
 and are not wired into the application.

@@ -146,6 +146,25 @@ pushed to `origin/main`. Remaining visual decisions are user approval of the new
 age-18 pair, later finalization of the Icon-1/Icon-3 light/dark pair, and a
 lusher Map-3 palette variant.
 
+**Final visual mini-pass completed and audited 2026-08-21.** The user approved
+the recommended Icon-1/Icon-3 light/dark refinement and greener Map-3 revision,
+and added one strict portrait instruction: remove only the circular presentation
+and background while locking every person detail. The active review set now has
+a genuine-alpha I2 master, matched full-bleed light/dark tiles, and three lusher
+Map-3 variants (balanced sage, strongest temperate green, and cool rain-washed).
+The icon family and maps passed local dimension/format and visual checks; minor
+close-zoom fringe on the transparent mark still needs review. Matthias has one
+real-alpha age-18 cutout draft, but colored edge contamination and corner alpha
+`0,0,3,223` make it `needs-refinement`, not production-ready. Anne, Grace, and
+Thomas each failed four controlled alpha strategies: every result is 24-bit RGB
+with a painted checkerboard. All twelve failures are retained only under the
+matching `pictures/Experimentelles/` technical-failures folder and no false
+cutout was promoted. Exact prompts, corrections, measurements, and audit:
+`pictures/docs/final-light-dark-map-cutout-round-2026-08-21.md`. The catalog,
+review feedback, and folder navigation are current. Universal character assets
+without the circular Hale presentation remain unchanged. No app code, seed
+data, production asset, or integration was changed.
+
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
 reviewed; 3 of them needed a fix round (all fixed and re-reviewed clean — see "Done this session" below
@@ -157,11 +176,12 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset review:** Gate 2A/B/C are generated and audited. Ask for approval of the new Matthias
-   age-18 portrait/scene. The current direction is already narrowed to Icon 1 + Icon 3 as a possible
-   light/dark pair, Universal Map 1 as default, Map 2 as alternative, and a future lusher recolor of
-   Map 3's dynamic composition. Only after explicit approval, perform deterministic favicon/app-icon
-   sizing and edge cleanup. Do not integrate any candidate into the app without separate approval.
+1. **Visual asset review:** Ask the user to choose among the completed final I2 light/dark family and
+   the three lush Map-3 variants; lush sage is the current recommended balance. Also review the new
+   Matthias age-18 portrait/scene and the imperfect transparent cutout. Anne/Grace/Thomas cutouts need
+   a non-generative/deterministic extraction method in a separately authorized future pass because
+   built-in generation repeatedly painted fake checkerboards. Only after explicit approval should any
+   deterministic favicon sizing, edge cleanup, cutout tooling, or app integration happen.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger
