@@ -91,6 +91,33 @@ pins, UI, franchise motifs, or Regency-specific identity. No application code or
 production asset may be changed. The Bridgerton concrete test pack follows only
 after this universal batch is generated, audited, and visually reviewed.
 
+**Gate 2A generated; Gate 2B Regency pack started 2026-08-21.** All twelve Gate
+2A review assets now exist locally and were individually inspected: three I2
+applications, three label-free overhead maps, a three-image identity-locked
+universal character series, and three UI-aware universal locations. The next
+pack is derived directly from `sim_default` and the visual design spec, not from
+a generic Regency moodboard: Matthias, Anne, Grace, and Thomas Hale; Hale farm,
+village market, Regency London, and Aubrey Hall; one map matching the seeded
+southwest/northeast/southeast sectors; and one Matthias-at-dawn story scene.
+Its complete ten-image matrix and exact frozen prompts are in
+`pictures/docs/regency-test-pack-round-2026-08-21.md`. No source code or
+production app asset is in scope.
+
+**Gate 2A + Gate 2B generation completed 2026-08-21.** Twenty-two new review
+images are now stored under the dated Gate 2 folders: 12 universal/brand
+derivative assets and 10 seed-specific Regency assets. Every image was opened
+from its final local path and visually checked. The four Hale portraits share
+crop, light, medium, and plausible family traits without face cloning. The four
+locations form a coherent social ladder from the cash-strapped Hale farm to
+Aubrey Hall. The label-free Hale-region map matches the seed's southwest farm/
+village, northeast London, and southeast estate sectors. The final story scene
+successfully preserves both Matthias and the Hale farm. Central navigation docs
+and the asset catalog now index all outputs; exact prompts and audits live in
+the two Gate 2 ledgers. No hard-constraint failure occurred, nothing was deleted,
+and no file under `apps/` was touched. Remaining work in this task is repository
+integrity verification, commit/push, and user visual feedback; app integration
+still requires a separate explicit approval.
+
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
 reviewed; 3 of them needed a fix round (all fixed and re-reviewed clean — see "Done this session" below
@@ -102,11 +129,12 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset library:** preferences are captured and the folder hierarchy is finalized. At the next
-   visual session, either (a) perform the dedicated I2 edge/fringe + favicon-size cleanup and request
-   final brand-asset approval, or (b) if the user prefers to defer production branding, continue with
-   the already-planned universal map/character/location templates and then the Bridgerton test pack.
-   Do not integrate any candidate into the app without a separate explicit approval.
+1. **Visual asset review:** Gate 2A and Gate 2B are generated, catalogued, and locally audited. Show or
+   revisit the 22 dated review outputs and collect decisions, especially (a) which I2 derivative should
+   become the production icon basis, (b) which universal map style is preferred, and (c) whether the
+   Hale family/location treatment is the right canonical visual tone. Only after explicit approval,
+   perform deterministic favicon/app-icon sizing and edge cleanup. Do not integrate any candidate into
+   the app without a separate explicit approval.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger

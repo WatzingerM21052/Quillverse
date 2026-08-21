@@ -10,8 +10,8 @@ image until the user explicitly approves it.
 
 ## Families
 
-- `review-required/`: active A/B/C brand concepts and the current 12-image
-  refinement comparison set, all still under visual review.
+- `review-required/`: active A/B/C brand concepts, the 12-image refinement
+  comparison set, and the three I2 derivative candidates, all under review.
 - `Experimentelles/`: retained non-final alternatives, useful form references,
   and technical generation failures. These files are preserved deliberately but
   are not active production candidates.
@@ -19,8 +19,12 @@ image until the user explicitly approves it.
 - `world-packs/bridgerton/`: concrete Regency test assets.
 - `docs/`: catalog, style bible, and exact prompts.
 
-Gate 1 contains brand concepts only. Universal and Bridgerton images begin only
-after the core brand refinement review.
+Gate 2A now contains three world-neutral maps, one identity-consistent
+three-image character set, and three reusable location-composition references.
+Gate 2B contains the current seed-derived Hale/Regency test pack: four
+characters, four locations, one regional map, and one story scene. Exact prompts
+and audits are in `docs/universal-template-round-2026-08-21.md` and
+`docs/regency-test-pack-round-2026-08-21.md`.
 
 The first user review is recorded in
 `docs/review-feedback-2026-08-21.md`. A1 is the current preferred master-logo
@@ -37,3 +41,7 @@ opening the catalog. Rejected studies and generation failures use matching
 numbered groups under `Experimentelles/` with `not-preferred` and
 `technical-failures` status folders. No refinement candidate is approved for
 app integration yet.
+
+The same approval rule applies to every Gate 2 asset. Their dated `review-*`
+folders make that status explicit; none has been copied into an application
+asset folder.

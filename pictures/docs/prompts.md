@@ -12,6 +12,9 @@ easy to audit.
 Gate 2A I2 derivatives and universal map/character/location template prompts
 are recorded in `universal-template-round-2026-08-21.md`.
 
+Gate 2B exact prompts for the seed-derived Hale-family Regency test pack are
+recorded in `regency-test-pack-round-2026-08-21.md`.
+
 ## A-LOGO-01 — Book, quill, negative-space Q
 
 ```text

@@ -1,7 +1,7 @@
 # Gate 2A — Core derivatives and universal templates
 
 Date: 2026-08-21  
-Status: generation in progress; every output requires visual review  
+Status: generation complete; every output requires visual review
 Mode: built-in `image_gen`, one call per distinct image
 
 This batch follows the approved Living Manuscript direction and the second user
@@ -219,3 +219,27 @@ Color palette: warm plaster, muted slate and dusty blue, restrained sage, natura
 Constraints: no people; no text; no shop names; no signs; no logo; no cars; no electric wires; no specific royal, religious, or franchise symbol; no watermark
 Avoid: cyberpunk, high fantasy city, Regency-exclusive townhouse row, generic medieval game street, cluttered market stalls, extreme perspective
 ```
+
+## Output audit
+
+Generation completed on 2026-08-21. Every file was copied into the project,
+opened locally, and visually inspected. No hard-constraint failure required a
+regeneration in this batch.
+
+| Prompt ID | Dimensions | Technical / visual result |
+|---|---:|---|
+| I2-DERIV-01 | 1254x1254 | RGBA with all four corner alpha values 0; faithful clean I2 master candidate; minor antialias/fringe cleanup still belongs to a later production-derivative pass |
+| I2-DERIV-02 | 1254x1254 | RGBA with all four corner alpha values 0; strongest tiny-size silhouette of the three; still review-only |
+| I2-DERIV-03 | 1254x1254 | Intentionally opaque app-tile preview; bold centered I2 portal, no text |
+| UNI-MAP-01 | 1536x1024 | Strict overhead, label/pin/compass-free atlas; clearest UI-oriented option with multiple calm pin-safe regions |
+| UNI-MAP-02 | 1536x1024 | Strict overhead painterly terrain; strongest organic atmosphere while retaining open pin regions |
+| UNI-MAP-03 | 1536x1024 | Strict overhead manuscript treatment; no pseudo-writing or map furniture; strongest recolorable historical basis |
+| UNI-CHAR-01 | 1254x1254 | Original world-neutral identity anchor; one person, clean background, safe portrait crop |
+| UNI-CHAR-02 | 1254x1254 | Same identity, palette, garment, and lighting in a full-hands conversational pose |
+| UNI-CHAR-03 | 1254x1254 | Exactly four equal unlabeled cameos; identity and clothing remain stable across expressions |
+| UNI-LOC-01 | 1536x1024 | Text-free flexible exterior threshold with clear path and overlay space |
+| UNI-LOC-02 | 1536x1024 | Text-free intimate interior with clear conversational center and era-neutral materials |
+| UNI-LOC-03 | 1536x1024 | Text-free rain-washed settlement street with a deliberately calm lower dialogue zone |
+
+All twelve outputs remain review assets. None was copied into `apps/`, wired to
+Angular, uploaded, or treated as approved production artwork.
