@@ -210,12 +210,41 @@ pixel counts, corner-alpha values, and validation are recorded in
 `pictures/docs/hale-final-family-round-2026-08-21.md`. This is image processing
 only: no Python, external API, source portrait overwrite, `apps/` change, or
 production integration.
-The completed family package was staged separately but was consumed by the
-concurrently running Character Creator planning commit `9eedfa0`, which also
-contains `docs/superpowers/plans/2026-08-21-prompt-verbessern-character-creator.md`.
-Do not amend or rewrite that shared commit; this note is the separate visual
-handoff. `origin/main` still ends at `5c29aa5` until the user authorizes
-publishing the two unrelated Character Creator commits together with this work.
+
+**Full visual expansion completed and audited 2026-08-21.** After reviewing the
+completed Hale family package, the user approved the entire recommended
+image-only follow-up. Exactly 66 new final/review images now exist: 20 Hale
+expression cutouts, 12 identity-locked time/weather/season location variants, 8
+interiors, 7 key narrative scenes, 8 transparent objects, 7 world-neutral UI
+ornaments/backgrounds, and 4 presentation artworks. The presentation group
+contains a universal Quillverse cover, Hale family poster, Regency world-pack
+cover, and wide README/GitHub hero; all remain under `review-required/` pending
+the user's later visual decision.
+
+Every output was opened from its final project path and audited in grouped contact
+sheets. Count is 66/66. All locations, interiors, and scenes are 1536x1024; the
+three vertical presentation pieces are 1024x1536 and the hero is 1672x941. All
+20 expression files, all 8 objects, and all 5 transparent overlay ornaments have
+real `Format32bppArgb` alpha. The 16 generated non-neutral expression sources
+were opaque checkerboards; every raw source is preserved under the matching
+`pictures/Experimentelles/.../expansion-2026-08-21/technical-failures/` tree and
+the promoted versions were repaired with the same deterministic local extraction
+approach used for the accepted Hale cutouts. No object or ornament required that
+repair. Character identity and locked ages (Matthias 18, Grace 16, Anne 47,
+Thomas 51), requested family-member counts, location geometry, period materials,
+and title-safe/overlay-safe composition all passed visual review. Accepted source
+images remain untouched.
+
+The complete prompt ledger, output matrix, path map, technical-failure record,
+dimensions, and audit are in
+`pictures/docs/visual-expansion-round-2026-08-21.md`; folder navigation is in the
+expansion README and `pictures/README.md`; every new asset is indexed in
+`pictures/docs/asset-catalog.md`. This was image processing and documentation
+only: no file under `apps/`, seed data, deployment configuration, or production
+asset integration changed. `origin/main` still ends at `5c29aa5`; local `main`
+already contains unrelated Character Creator planning commits plus the completed
+Hale-family commits through `5184de8`, so this image batch must not be pushed
+implicitly as if it were an isolated visual-only publication.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
@@ -228,11 +257,12 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual review only:** the image package is complete. Icon family, Lush Sage preference, all four
-   portraits, all five individual/family scenes, and the visible Matthias cutout are confirmed.
-   Anne/Grace/Thomas now also have locally validated real-alpha cutouts; show those three to the user
-   and change their catalog status from `needs-review` only after explicit visual confirmation. Do not
-   integrate any candidate into the app without separate approval.
+1. **Visual review only:** the complete image library and the 66-image expansion are generated and
+   technically audited. The four newest presentation pieces under
+   `pictures/review-required/presentation/expansion-2026-08-21/` are the next useful review set; after
+   that, review expressions, location variants, interiors, scenes, objects, and ornaments by group.
+   Keep every item at `needs-review` until explicit feedback. Do not integrate, resize into production
+   app formats, or replace any current app asset without a separate request.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger

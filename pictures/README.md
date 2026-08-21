@@ -49,6 +49,17 @@ painted checkerboards; all failed and intermediate versions remain preserved
 under `Experimentelles`. Exact prompts and audit:
 `docs/hale-final-family-round-2026-08-21.md`.
 
+The complete follow-up visual expansion lives under
+`world-packs/bridgerton/expansion-2026-08-21/`,
+`universal/ornaments/expansion-2026-08-21/`, and
+`review-required/presentation/expansion-2026-08-21/`. It adds 66 images: 20 Hale
+expressions, 12 location variants, 8 interiors, 7 key scenes, 8 transparent
+objects, 7 universal UI artworks, and 4 review-gated presentation pieces. The 16
+opaque expression sources remain under the matching `Experimentelles` tree.
+Exact prompts, dimensions, validation results, and handoff:
+`docs/visual-expansion-round-2026-08-21.md`. Nothing from this expansion is wired
+into the application.
+
 The first user review is recorded in
 `docs/review-feedback-2026-08-21.md`. A1 is the current preferred master-logo
 concept, while the top-center treatment on the icon study is the current favicon/
