@@ -206,3 +206,20 @@ Regency-generation attempt occurred.
 
 The pack is internally coherent enough to test future asset pipelines, but every
 file remains `needs-review` and has not been integrated into the application.
+
+## User review and age lock
+
+- Anne Hale and Thomas Hale: top; preserve unchanged.
+- Grace Hale: visual age locked to 16; the current portrait already fits.
+- Matthias Hale: visual age locked to 18; current portrait and dawn scene read
+  too old/wrinkled and require versioned replacements.
+- Locations, landscapes, and region map: top; preserve the current direction.
+
+The correction pass is recorded separately in
+`age-correction-round-2026-08-21.md`. Original outputs remain preserved.
+
+After the correction succeeded, the two superseded older-looking originals were
+moved to
+`Experimentelles/world-packs/bridgerton/age-correction-2026-08-21/`. Their
+original generation paths remain in this historical output matrix; the catalog
+contains their current archive paths and the active age-18 replacements.

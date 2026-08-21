@@ -243,3 +243,14 @@ regeneration in this batch.
 
 All twelve outputs remain review assets. None was copied into `apps/`, wired to
 Angular, uploaded, or treated as approved production artwork.
+
+## User review
+
+- I2 master and app tile: very good; possible light-/dark-surface pair.
+- I2 micro: not preferred.
+- Atlas map: preferred default direction.
+- Painterly map: positive alternative.
+- Manuscript map: dynamic and useful, but too desert-like/bleak; preserve the
+  composition and redo with a lusher palette.
+- Universal characters: positive.
+- Universal locations: great; preserve the current direction.

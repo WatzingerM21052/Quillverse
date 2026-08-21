@@ -120,6 +120,31 @@ and no file under `apps/` was touched. The frozen-prompt checkpoint is commit
 with the remote after push. Remaining work is user visual feedback only; app
 integration still requires a separate explicit approval.
 
+**Gate 2 user review + Gate 2C age correction started 2026-08-21.** Icon 1 and
+Icon 3 are both rated very good and may become a light-/dark-surface pair; Icon
+2 is not preferred. Universal Map 1 is the preferred default, Map 2 remains a
+positive alternative, and Map 3 should retain its more dynamic composition but
+lose the desert-like bleak sepia palette. Universal characters are positive;
+all location/land imagery is rated great/top. Anne and Thomas are top. The user
+explicitly locked visual ages to Matthias 18 and Grace 16. Grace already fits;
+Matthias's portrait and dawn scene need versioned age-18 replacements because
+he currently reads too old and wrinkled. Exact prompts and non-overwriting
+destinations are frozen in `pictures/docs/age-correction-round-2026-08-21.md`.
+This remains image-only: no `apps/` or seed-data change is authorized.
+
+**Gate 2C age correction generated 2026-08-21.** A new versioned Matthias
+portrait now reads clearly as 18 while preserving his eyes, hair, clothing,
+circular crop, lighting, and painterly identity. A matching corrected dawn scene
+preserves the Hale farm, letter moment, mood, and UI-safe composition with the
+same age-18 face. Grace remains the accepted age-16 portrait. Both new files were
+opened from their final paths and passed visual/dimension checks. The two
+superseded older-looking Matthias files were moved, not deleted, to
+`pictures/Experimentelles/world-packs/bridgerton/age-correction-2026-08-21/`.
+The age-correction ledger and catalog are current. No `apps/` or seed-data file
+was changed. Remaining visual decisions are user approval of the new age-18
+pair, later finalization of the Icon-1/Icon-3 light/dark pair, and a lusher
+Map-3 palette variant.
+
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
 reviewed; 3 of them needed a fix round (all fixed and re-reviewed clean — see "Done this session" below
@@ -131,12 +156,11 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset review:** Gate 2A and Gate 2B are generated, catalogued, and locally audited. Show or
-   revisit the 22 dated review outputs and collect decisions, especially (a) which I2 derivative should
-   become the production icon basis, (b) which universal map style is preferred, and (c) whether the
-   Hale family/location treatment is the right canonical visual tone. Only after explicit approval,
-   perform deterministic favicon/app-icon sizing and edge cleanup. Do not integrate any candidate into
-   the app without a separate explicit approval.
+1. **Visual asset review:** Gate 2A/B/C are generated and audited. Ask for approval of the new Matthias
+   age-18 portrait/scene. The current direction is already narrowed to Icon 1 + Icon 3 as a possible
+   light/dark pair, Universal Map 1 as default, Map 2 as alternative, and a future lusher recolor of
+   Map 3's dynamic composition. Only after explicit approval, perform deterministic favicon/app-icon
+   sizing and edge cleanup. Do not integrate any candidate into the app without separate approval.
 2. **Continuity process cleanup (still outstanding):** run the final whole-batch review for the
    Continuity Guard plan. The SDD workspace is still at
    `.superpowers/sdd/2026-08-16-continuity-guard-model-profiles/` with a full ledger

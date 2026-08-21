@@ -26,6 +26,12 @@ characters, four locations, one regional map, and one story scene. Exact prompts
 and audits are in `docs/universal-template-round-2026-08-21.md` and
 `docs/regency-test-pack-round-2026-08-21.md`.
 
+Gate 2C locks the visual ages to Matthias 18 / Grace 16. Grace remains unchanged;
+the active corrected Matthias portrait and dawn scene are versioned under the
+Regency pack's `refinement-2026-08-21/` folders. The older-looking originals are
+preserved under `Experimentelles/`. Exact prompts and audit:
+`docs/age-correction-round-2026-08-21.md`.
+
 The first user review is recorded in
 `docs/review-feedback-2026-08-21.md`. A1 is the current preferred master-logo
 concept, while the top-center treatment on the icon study is the current favicon/

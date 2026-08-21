@@ -15,6 +15,9 @@ are recorded in `universal-template-round-2026-08-21.md`.
 Gate 2B exact prompts for the seed-derived Hale-family Regency test pack are
 recorded in `regency-test-pack-round-2026-08-21.md`.
 
+Gate 2C's exact, versioned age-correction prompts for Matthias 18 / Grace 16 are
+recorded in `age-correction-round-2026-08-21.md`.
+
 ## A-LOGO-01 — Book, quill, negative-space Q
 
 ```text

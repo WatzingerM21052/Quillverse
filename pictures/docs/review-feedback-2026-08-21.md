@@ -79,3 +79,30 @@ edge/fringe and favicon-size cleanup pass followed by explicit final approval.
 Universal templates and the Bridgerton test pack remain the next asset-library
 phase after that decision. Existing A1, B banner, C logo, and C banner remain
 unchanged and preserved.
+
+## Gate 2 review feedback
+
+The user reviewed the I2 derivatives, universal templates, and Regency pack:
+
+- **Icon 1 / I2 master:** very good.
+- **Icon 2 / I2 micro:** not especially convincing; no longer the favored
+  simplification.
+- **Icon 3 / I2 app tile:** very good. Icon 1 and Icon 3 may form a useful
+  light-/dark-surface pair after deterministic small-size cleanup.
+- **Universal Map 1 / atlas:** preferred and the leading default-map direction.
+- **Universal Map 2 / painterly:** good atmospheric alternative.
+- **Universal Map 3 / manuscript:** the more dynamic composition is valuable,
+  but the current sand/sepia palette feels too desert-like and bleak. Preserve
+  its geography and ink energy in a later greener, lusher recolor/regeneration.
+- **Universal characters:** good; identity consistency is accepted positively.
+- **Universal and Regency locations/landscapes:** great/top; preserve their
+  framing and overall tone.
+- **Anne and Thomas Hale:** top; preserve unchanged.
+- **Matthias portrait and dawn scene:** generally good, but his face reads too
+  old and wrinkled next to Grace.
+
+The user then locked the visual ages explicitly: **Matthias 18, Grace 16**.
+Grace's existing portrait already reads correctly and remains unchanged.
+Matthias receives a versioned age-18 portrait and scene correction under the
+Gate 2C prompt ledger. Existing files remain preserved. Per the image-only scope,
+this decision does not modify seed/application data.
