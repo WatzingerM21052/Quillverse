@@ -188,6 +188,11 @@ explicit user permission, so it was not used. Exact prompts, output matrix,
 measurements, and audit:
 `pictures/docs/hale-final-family-round-2026-08-21.md`. No application code,
 seed data, production asset, or integration changed.
+The user then reviewed Anne's doorway scene, Grace's gate scene, Thomas's
+arrival, and the complete four-person family scene and confirmed that they look
+good. All four new scenes are now `positive`; the family-scene review checkpoint
+is closed. Only the three real-alpha Anne/Grace/Thomas cutouts remain missing
+from this visual package.
 The completed family package was staged separately but was consumed by the
 concurrently running Character Creator planning commit `9eedfa0`, which also
 contains `docs/superpowers/plans/2026-08-21-prompt-verbessern-character-creator.md`.
@@ -206,10 +211,9 @@ do first — see "Immediate next steps."
 
 ## Immediate next steps (do these first, in order)
 
-1. **Visual asset review:** Ask the user to review the three new individual scenes and
-   `hale-family-together.png` under the dated final-family folder. Icon family, Lush Sage preference,
-   all four portraits, Matthias's dawn scene, and the visible Matthias cutout are already confirmed.
-   Anne/Grace/Thomas real-alpha cutouts remain the only missing family assets. Offer the documented
+1. **Visual asset completion:** Icon family, Lush Sage preference, all four portraits, all five
+   individual/family scenes, and the visible Matthias cutout are now confirmed. Anne/Grace/Thomas
+   real-alpha cutouts remain the only missing family assets. Offer the documented
    CLI/API fallback only if the user explicitly authorizes it and confirms `OPENAI_API_KEY` is set;
    otherwise use a separately authorized deterministic extraction tool later. Do not integrate any
    candidate into the app without separate approval.

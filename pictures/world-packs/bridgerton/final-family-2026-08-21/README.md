@@ -9,7 +9,8 @@ anything into the application.
 - `portraits/`: Matthias 18, Anne 47, Grace 16, and Thomas 51. These are
   byte-identical copies of the user-accepted portraits.
 - `story-scenes/`: one individual scene per family member plus
-  `hale-family-together.png`, containing exactly all four family members.
+  `hale-family-together.png`, containing exactly all four family members. The
+  user has visually confirmed that all five scenes look good.
 - `cutouts/matthias-hale-age-18.png`: the user visually accepted this draft;
   its known edge contamination and imperfect lower-right alpha remain.
 

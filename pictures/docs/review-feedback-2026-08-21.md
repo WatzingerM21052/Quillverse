@@ -146,3 +146,8 @@ dimension checks and await user feedback.
 The new Anne/Grace/Thomas cutout controls still returned opaque RGB files. They
 remain technical failures under `Experimentelles`; real-alpha versions require
 a future explicitly authorized CLI or deterministic extraction pass.
+
+The user reviewed all four newly presented story scenes and confirmed that they
+look good. Anne's doorway scene, Grace's gate scene, Thomas's arrival, and the
+complete four-person family scene therefore move from `needs-review` to
+`positive`. This remains visual approval only; no app integration was requested.

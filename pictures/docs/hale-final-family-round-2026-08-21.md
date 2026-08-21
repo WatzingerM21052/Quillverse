@@ -1,8 +1,8 @@
 # Hale Final Family Package — 2026-08-21
 
-Status: scene generation and local audit complete. Built-in cutout generation
-remains technically blocked; no application or seed-data integration is
-authorized.
+Status: scene generation, local audit, and user visual review complete. Built-in
+cutout generation remains technically blocked; no application or seed-data
+integration is authorized.
 
 ## User decisions carried forward
 
@@ -168,8 +168,8 @@ byte-identical to their accepted source files.
 | `story-scenes/hale-family-together.png` | 1536x1024 | Exactly four distinct people: Thomas, Anne, Grace 16, and Matthias 18; no duplicate or extra person; canonical farm and candid family-circle composition retained |
 
 No scene contains text, watermark, modern objects, aristocratic glamour, or an
-extra person. The complete scene set is visually coherent and remains awaiting
-user review rather than application integration.
+extra person. The user subsequently confirmed that the complete scene set looks
+good. This visual approval is not permission for application integration.
 
 ## Cutout limitation
 
