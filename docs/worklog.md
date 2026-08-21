@@ -188,6 +188,12 @@ explicit user permission, so it was not used. Exact prompts, output matrix,
 measurements, and audit:
 `pictures/docs/hale-final-family-round-2026-08-21.md`. No application code,
 seed data, production asset, or integration changed.
+The completed family package was staged separately but was consumed by the
+concurrently running Character Creator planning commit `9eedfa0`, which also
+contains `docs/superpowers/plans/2026-08-21-prompt-verbessern-character-creator.md`.
+Do not amend or rewrite that shared commit; this note is the separate visual
+handoff. `origin/main` still ends at `5c29aa5` until the user authorizes
+publishing the two unrelated Character Creator commits together with this work.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
