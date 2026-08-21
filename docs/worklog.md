@@ -12,7 +12,51 @@ share memory otherwise.
 
 ---
 
-## Picture-library reorganization (2026-08-21, current handoff)
+## Story Mode interaction UX — Plan A spec + plan written, SDD not started (2026-08-21, current handoff)
+
+Picked up per "Dann beginne weiter nach Plan" once Continuity Guard (issue #25) closed — this is
+roadmap item 2 ("Story Mode interaction UX"). Brainstorming surfaced that `§20` Action Mode chips
+actually bundles two independent subsystems (static chips, pure frontend vs. an optional AI-generated
+suggestion mode, a new backend route + prompt builder + provider gating roughly the size of the
+Prompt-verbessern batch) — splitting them was confirmed with the user rather than bundling three
+subsystems (static chips, AI mode, `§22-23` transition cards) into one plan.
+
+**Plan A (spec + plan written and committed this session, implementation not started):** static
+`§20` Action Mode chips + `§22-23` scene/time transition cards, both pure frontend, no backend
+changes. Design spec: `docs/superpowers/specs/2026-08-21-story-interaction-ux-design.md`.
+Implementation plan: `docs/superpowers/plans/2026-08-21-story-interaction-ux-plan-a.md` (3 tasks: pure
+`detectSceneTransition()` function + unit tests, wiring it into `StoryScreen` + the transition banner,
+static chip row). Key design decisions baked into the plan:
+- Chips fill `playerInput` only when the field is empty (`trim() === ''`); never overwrite typed text.
+- Transition detection tracks `lastCommittedScene` starting at `null` (never the hardcoded starting
+  scene at `story-screen.ts:125-134`), so the first real turn of a session never fires a false
+  "you traveled here" banner against the placeholder.
+- Location change → location banner (name + date together); date-only change → time-skip chapter
+  card; both changed → location banner only (it already carries the date).
+- Verified against real production data (`turns` table, `sim_default`) that `world_time_before/after`
+  stays byte-identical across same-day turns, so exact string-inequality is a safe, parse-free trigger
+  for "no false positive within a day" — no production data yet spans an actual multi-day skip, but a
+  format-drift worst case is only a cosmetically odd (not broken) date label.
+- Banner renders outside both of `story-screen.html`'s near-identical `@if (!focusMode.active())`
+  blocks (line 3, line 36) so it stays visible in Focus Mode, since it's diegetic scene content.
+- No frontend test harness had ever been exercised beyond the Angular scaffold default
+  (`apps/web/src/app/app.spec.ts`) despite `ng test`/Karma/Jasmine being fully configured — Task 1
+  adds the first real spec file, for the pure detection function only; the `StoryScreen` wiring and
+  chip UI are manual-verification-only in the plan rather than inventing a component-test scaffold.
+
+**Plan B (AI-generated chip suggestion mode) is a separate backlog item, not started** — see "New
+backlog items" below. It needs its own brainstorm → spec → plan → SDD cycle, reusing the
+`/improve-field` provider-fallback shape, its own `logAiCall` id (parallel to
+`character-creation-field-improve`) so it doesn't pollute `§156` turn counts, and — like Continuity
+Guard — must stay unavailable on the Manual Relay path (no guaranteed connected provider there).
+
+**Not yet started: dispatching Plan A via `subagent-driven-development`.** The plan is ready and its
+execution-choice offer (Subagent-Driven vs. Inline) is open; this session closed for the day right
+after writing the plan rather than starting implementation. See "Immediate next steps."
+
+---
+
+## Picture-library reorganization (2026-08-21)
 
 The image-only work is complete and the library has been reorganized by stable
 function instead of temporary review round. The obsolete top-level
@@ -397,10 +441,17 @@ do first — see "Immediate next steps."
    Do not integrate or replace any application asset without a separate request.
 2. **Continuity Guard (issue #25) is fully done, including its final whole-batch review and fix wave —
    deployed 2026-08-21.** See roadmap item 1 below for the summary; nothing left to do here.
-3. **Next in the roadmap's existing execution order: Batch 2 (Story Mode interaction UX — §20 Action
-   Mode chips, §22-23 scene/time transition cards)** — *unless* the user wants the picture-library
-   integration or one of the newly-noted Design Rework items below prioritized instead; ask rather than
-   assume, the same way scope was checked at the start of every batch so far.
+3. **Story Mode interaction UX Plan A (static §20 chips + §22-23 transition cards) has an approved
+   spec and a written, self-reviewed implementation plan — SDD execution has not started.** See the
+   "Story Mode interaction UX" section above for the design decisions. Next action: ask the user which
+   execution mode (Subagent-Driven, recommended, vs. Inline) and whether to work directly on `main` or
+   an isolated worktree (this project's established no-branch-workflow question, asked at the start of
+   every batch), then dispatch `docs/superpowers/plans/2026-08-21-story-interaction-ux-plan-a.md` via
+   `superpowers:subagent-driven-development`.
+4. **Plan B (AI-generated Action-Mode chip suggestions) is a tracked backlog item, not started** —
+   see the "New backlog items" entry below. Needs its own brainstorm → spec → plan → SDD cycle; do not
+   start it before Plan A is merged and deployed, to avoid two live changes to the same
+   `story-screen.*` files at once.
 
 ## New backlog items noted by the user at end of session (2026-08-16, not yet scoped)
 
@@ -418,6 +469,14 @@ spec yet, don't start implementing from this one-line description alone, brainst
   up: which assets go where first (logo/favicon is the most contained, self-approving choice; location
   art overlaps issue #19's `A15 Ortsbibliothek` scope and is a bigger pass), and confirm exact target
   files (`index.html` favicon links, `app-shell` header logo, etc.) before touching anything.
+- **Story Mode interaction UX Plan B — AI-generated Action-Mode chip suggestions (2026-08-21, not yet
+  scoped).** Split out of `§20` during Plan A's brainstorming (see the "Story Mode interaction UX"
+  section above): an optional mode where chip suggestions come from a new AI call reading the current
+  scene, rather than the static 4-chip set Plan A ships. Reuses the `/improve-field` provider-fallback
+  pattern. Needs its own brainstorming pass: exact prompt/route shape, its own `logAiCall` id so it
+  doesn't pollute `§156` turn counts, provider gating (unavailable on Manual Relay, same reasoning as
+  Continuity Guard), and where the mode toggle actually lives in the Story screen UI. Do not start
+  before Plan A is merged and deployed.
 - **"Design Rework" continuation — relationship visualization.** User's own words: *"Stammbaum /
   Beziehungsbaum / Freundebaum / Bekanntschaftsbaum"*. Reads as: extend the family-tree visualization
   already built for the Relationships screen (issue #21-24-era "Structured Stammbaum" work, commit
@@ -648,9 +707,12 @@ single-pass implementation likely would have missed.
    in the guard's error-recovery path (could turn a successful turn into a 500) and a `<select>`
    value-binding timing bug (Continuity provider/model pickers in Settings never displayed the persisted
    selection). Both fixed, re-reviewed clean, deployed. Issue #25 closed.
-2. **Story Mode interaction UX** — `§20` Action Mode chips + `§22-23` scene/time transition cards. Same
-   screen as Focus Mode (just shipped), same file family (`story-screen.*`) — bundle to minimize
-   re-orientation cost.
+2. **Story Mode interaction UX** — split into **Plan A** (static `§20` chips + `§22-23` scene/time
+   transition cards, pure frontend) — **spec + plan written 2026-08-21, SDD execution not yet
+   started**, see the dedicated worklog section above — and **Plan B** (AI-generated chip suggestions,
+   its own backend route, tracked as a separate not-yet-scoped backlog item so it doesn't bundle three
+   subsystems into one review cycle). Same screen as Focus Mode (just shipped), same file family
+   (`story-screen.*`).
 3. **Settings/BYOK depth** — `B17` Provider Detail Page + `B20` session-only key + `B33` configurable
    fallback order + `B46` token-usage dashboard. Same screen (Settings), same underlying BYOK
    infrastructure (`ai-providers.ts`, `ai-providers-api.service.ts`) touched by all four.
