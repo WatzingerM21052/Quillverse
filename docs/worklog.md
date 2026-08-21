@@ -424,6 +424,16 @@ The user asked for these to be recorded for a future brainstorming pass — none
 spec yet, don't start implementing from this one-line description alone, brainstorm them properly first
 (same process as every other batch this session):
 
+- **Integrate the finished picture library into the app (2026-08-21, not yet scoped).** The
+  `pictures/` library (217 PNGs — brand, universal, world-pack, archive; see the "Picture-library
+  reorganization" section above and `pictures/README.md`/`pictures/docs/asset-catalog.md`) is generated,
+  reviewed, and organized, but **nothing from it has been wired into the running app yet** — no
+  logo/favicon/banner swap, no location art, no use of the universal character/map assets. The user
+  asked for this to be tracked as a TODO, not started now; explicitly deferred until the Continuity
+  Guard process cleanup (next item below) is done first. Needs its own brainstorming pass when picked
+  up: which assets go where first (logo/favicon is the most contained, self-approving choice; location
+  art overlaps issue #19's `A15 Ortsbibliothek` scope and is a bigger pass), and confirm exact target
+  files (`index.html` favicon links, `app-shell` header logo, etc.) before touching anything.
 - **"Design Rework" continuation — relationship visualization.** User's own words: *"Stammbaum /
   Beziehungsbaum / Freundebaum / Bekanntschaftsbaum"*. Reads as: extend the family-tree visualization
   already built for the Relationships screen (issue #21-24-era "Structured Stammbaum" work, commit
