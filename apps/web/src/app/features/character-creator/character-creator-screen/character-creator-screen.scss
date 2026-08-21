@@ -187,11 +187,8 @@
   }
 }
 
-// Equal specificity to the existing `.creator__form label` rule (character-creator-screen.scss:40-47),
-// later in source order — wins the cascade and overrides that rule's `flex-direction: column` with `row`.
-label.creator__field-label-row {
+.creator__field-label-row {
   display: flex;
-  flex-direction: row;
   align-items: center;
   justify-content: space-between;
   gap: 0.5rem;

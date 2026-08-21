@@ -43,9 +43,10 @@ Struktur exakt wie folgt:
 { "improvedText": "<der verbesserte Text für dieses eine Feld>" }`;
 
 /**
- * Field-improvement prompt for the Character Creator's per-field "Verbessern" action. Reuses the same
- * Regency starting-position framing as buildCharacterCreationPrompt so improved text stays consistent
- * with the fixed starting conditions, but only asks the model to touch one field.
+ * Field-improvement prompt for the Character Creator's per-field "Verbessern" action. Uses a condensed
+ * version of the same Regency starting-position framing as buildCharacterCreationPrompt (not the full
+ * STARTING_POSITION_RULES block) so improved text stays consistent with the fixed starting conditions,
+ * but only asks the model to touch one field.
  */
 export function buildFieldImprovementPrompt(
   field: ImprovableField,

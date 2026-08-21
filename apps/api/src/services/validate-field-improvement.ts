@@ -18,5 +18,5 @@ export function validateFieldImprovement(raw: string): FieldImprovementValidatio
     return { ok: false, error: 'Missing or empty "improvedText".' };
   }
 
-  return { ok: true, improvedText: candidate['improvedText'] };
+  return { ok: true, improvedText: candidate['improvedText'].trim() };
 }
