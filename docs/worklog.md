@@ -114,9 +114,11 @@ village, northeast London, and southeast estate sectors. The final story scene
 successfully preserves both Matthias and the Hale farm. Central navigation docs
 and the asset catalog now index all outputs; exact prompts and audits live in
 the two Gate 2 ledgers. No hard-constraint failure occurred, nothing was deleted,
-and no file under `apps/` was touched. Remaining work in this task is repository
-integrity verification, commit/push, and user visual feedback; app integration
-still requires a separate explicit approval.
+and no file under `apps/` was touched. The frozen-prompt checkpoint is commit
+`9d016e3`; all 22 images, audits, catalog entries, and navigation docs are commit
+`6e4c0a1`. Both are pushed to `origin/main`, and the worktree was clean and 0/0
+with the remote after push. Remaining work is user visual feedback only; app
+integration still requires a separate explicit approval.
 
 **Second sub-session today (after the issue #26 Quick Wins batch): implemented Roadmap Batch 1
 (Continuity Guard + Continuity model profile, issue #25).** All 6 plan tasks complete and individually
