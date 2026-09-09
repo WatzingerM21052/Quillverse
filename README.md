@@ -1,8 +1,7 @@
 # Quillverse
 
 A persistent, AI-narrated Living World Simulation engine — an immersive visual-novel-style
-app, not a chatbot. First world pack: Bridgerton (Season 1). Built to support other world
-packs (Harry Potter, Woodwalker, H2O – Mako Mermaids, ...) later on the same engine.
+app, not a chatbot
 
 ## Spec
 
