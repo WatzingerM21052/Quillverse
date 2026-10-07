@@ -13,7 +13,7 @@
     "db:migrate:remote": "wrangler d1 migrations apply quillverse-db --remote"
   },
   "dependencies": {
-    "hono": "^4.13.2"
+    "hono": "^4.13.7"
   },
   "devDependencies": {
     "@cloudflare/vitest-pool-workers": "^0.21.3",
